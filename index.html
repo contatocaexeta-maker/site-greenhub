@@ -2028,9 +2028,23 @@ h1,h2,h3,h4{
       return bom ? v : null;
     }
 
+    /* o resultado só existe como consequência do clique: se um indicador
+       mudar depois, o número velho não pode ficar na tela fingindo que
+       ainda vale */
+    var textoVazio = vazio.querySelector("p");
+    var textoPadrao = textoVazio.textContent;
+
+    function invalidaResultado(){
+      if (cheio.hidden) return;
+      cheio.hidden = true;
+      vazio.hidden = false;
+      textoVazio.textContent = "Você mudou um indicador. Clique em calcular resultados para atualizar a projeção.";
+    }
+
     campos.forEach(function(c){
       c.el.addEventListener("input", function(){
         if (c.el.closest(".field").getAttribute("data-error") === "true") valida(c);
+        invalidaResultado();
       });
     });
 
@@ -2071,6 +2085,7 @@ h1,h2,h3,h4{
 
       vazio.hidden = true;
       cheio.hidden = false;
+      textoVazio.textContent = textoPadrao;   // volta ao padrão para a próxima vez
 
       document.getElementById("projFrase").innerHTML =
         "Você investiu <b>" + moeda.format(investimento) + "</b> para gerar aproximadamente <b>" +
