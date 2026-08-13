@@ -712,24 +712,42 @@ h1,h2,h3,h4{
 /* ============================================================
    RESPONSIVO
    ============================================================ */
+/* --- tablet e desktop pequeno: ainda há largura, não colapsa tudo --- */
 @media (max-width:1024px){
   .intro,.data,.about,.contact{ grid-template-columns:1fr; }
-  .pillars,.cases{ grid-template-columns:1fr; }
-  .etapas{ grid-template-columns:1fr; gap:.9rem; }
-  .etapa{ opacity:1; filter:none; }
-  .etapa-linha{ top:auto; bottom:-.9rem; left:2.6rem; width:1px; height:.9rem; }
-  .etapa-linha::after{ transform:scaleY(0); transform-origin:top; }
-  .etapa[data-ativa="true"] .etapa-linha::after{ transform:scaleY(1); }
+  .pillars,.cases{ grid-template-columns:repeat(2,1fr); }
+  .etapas{ grid-template-columns:repeat(2,1fr); gap:.9rem; }
+  .etapa-linha{ display:none; }          /* o trilho só faz sentido em fila única */
   .counters{ grid-template-columns:repeat(2,1fr); }
   .sol-inner{ grid-template-columns:1fr; }
   .foot-top{ grid-template-columns:1fr 1fr; }
   .space-grid{ grid-template-columns:repeat(2,1fr); }
+}
+/* na fila de 2, a última etapa sozinha ocupa a linha inteira */
+@media (min-width:641px) and (max-width:1024px){
+  .etapa:last-child{ grid-column:1 / -1; }
+  .cases .case:last-child:nth-child(odd){ grid-column:1 / -1; }
+}
+/* --- celular: fila única e trilho vertical entre as etapas --- */
+@media (max-width:640px){
+  .pillars,.cases{ grid-template-columns:1fr; }
+  .etapas{ grid-template-columns:1fr; }
+  .etapa{ opacity:1; filter:none; }
+  .etapa-linha{ display:block; top:auto; bottom:-.9rem; left:2.6rem; width:1px; height:.9rem; }
+  .etapa-linha::after{ transform:scaleY(0); transform-origin:top; }
+  .etapa[data-ativa="true"] .etapa-linha::after{ transform:scaleY(1); }
 }
 @media (max-width:820px){
   .nav{ display:none; }
   .site-header .btn{ display:none; }
   .burger{ display:block; }
   .hero-stats{ grid-template-columns:repeat(2,1fr); gap:1.5rem; }
+  /* o cabeçalho é menor no celular: não precisa de tanto respiro em cima */
+  .hero{ min-height:auto; padding-block:6rem 3.5rem; }
+  .section{ padding-block:clamp(3.5rem,9vw,5rem); }
+  /* botão flutuante mais discreto na tela pequena */
+  .wa{ width:50px; height:50px; right:.9rem; bottom:.9rem; }
+  .wa svg{ width:25px; height:25px; }
 }
 @media (max-width:560px){
   .row{ grid-template-columns:1fr; }
@@ -1773,7 +1791,9 @@ h1,h2,h3,h4{
   var VERDE = [103, 255, 64];   // #67FF40
   var AZUL = [0, 178, 255];     // #00B2FF
 
-  var PROF = leve ? 7 : 9;      // profundidade da ramificação
+  /* a copa agora nasce de vários topos do tronco, então cada galho
+     precisa de bem menos profundidade para o total de pontas ficar igual */
+  var PROF = leve ? 4 : 6;
   var folhas = [];              // pontas coletadas no traçado da copa
   var trilhas = [];             // polilinhas das raízes
   var petalas = [];             // pétalas tecnológicas caindo
@@ -1840,7 +1860,7 @@ h1,h2,h3,h4{
   function rgba(c, a){ return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a + ")"; }
 
   function ajusta(){
-    var dpr = Math.min(window.devicePixelRatio || 1, leve ? 1.5 : 2);
+    var dpr = leve ? 1 : Math.min(window.devicePixelRatio || 1, 2);
     cv.width = cv.offsetWidth * dpr;
     cv.height = cv.offsetHeight * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -1868,10 +1888,99 @@ h1,h2,h3,h4{
     }
   }
 
+  /* ============================================================
+     TRONCO TRANÇADO
+     Vários fios sobem em hélice em volta do eixo. O raio da hélice
+     é largo embaixo (raízes), aperta no meio e volta a abrir em
+     cima (copa) — é o que dá a silhueta de cordão torcido.
+     O fio que está "na frente" da volta sai mais grosso e mais
+     claro que o que está atrás; é isso que lê como volume.
+     ============================================================ */
+  var FIOS = leve ? 6 : 8;
+  var VOLTAS = 1.15;          // quantas voltas o fio dá do pé ao topo
+  var SEGS = leve ? 24 : 40;  // resolução de cada fio
+
+  function raioTronco(t, rMax, rMin){
+    // t=0 pé (largo) · t=.55 cintura (estreito) · t=1 topo (largo)
+    return rMin + (rMax - rMin) * Math.pow(Math.abs(Math.cos(t * Math.PI * .92)), 1.4);
+  }
+
+  /* desenha o tronco e devolve os pontos de onde os galhos saem */
+  function desenhaTronco(cx, base, altura, cresc, tempo){
+    var rMax = altura * .35, rMin = altura * .07;
+    var topos = [];
+
+    for (var i = 0; i < FIOS; i++) {
+      var fase = (i / FIOS) * Math.PI * 2;
+      var pts = [], prof = [];
+
+      for (var s = 0; s <= SEGS; s++) {
+        var t = s / SEGS;
+        if (t > cresc) break;
+
+        var giro = t * Math.PI * 2 * VOLTAS + fase;
+        var r = raioTronco(t, rMax, rMin);
+
+        // balanço do tronco inteiro, mais forte em cima
+        var sopro = Math.sin(tempo * .0006 + t * 2) * altura * .022 * t * t;
+        var desvio = empurra(cx, base - altura * t, -Math.PI / 2, 3 + t * 4) * altura * .5;
+
+        pts.push({
+          x: cx + Math.sin(giro) * r + sopro + desvio,
+          y: base - altura * t
+        });
+        prof.push(Math.cos(giro));   // +1 = na frente · −1 = atrás
+      }
+      if (pts.length < 2) continue;
+
+      // cada trecho sai com espessura e brilho conforme a profundidade
+      for (var j = 1; j < pts.length; j++) {
+        var d = (prof[j] + 1) / 2;                 // 0..1
+        var t2 = j / SEGS;
+        var pr = perto(pts[j].x, pts[j].y);
+        var cor = mistura(VERDE, AQUA, .25 + t2 * .5);
+        if (i % 4 === 0) cor = mistura(cor, AZUL, .45 * (1 - t2));  // fio frio no meio
+
+        ctx.beginPath();
+        ctx.moveTo(pts[j - 1].x, pts[j - 1].y);
+        ctx.lineTo(pts[j].x, pts[j].y);
+        ctx.strokeStyle = rgba(cor, (.22 + d * .62) * (.6 + t2 * .4) + pr * .3);
+        ctx.lineWidth = (1.7 + d * 5) * (1 - t2 * .42) + pr * .9;
+        ctx.lineCap = "round";
+        // só o fio da frente ganha halo — senão vira borrão
+        if (d > .62 && !leve) {
+          ctx.shadowBlur = 10 * d;
+          ctx.shadowColor = rgba(cor, .55);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      var topo = pts[pts.length - 1];
+      if (cresc >= .999) topos.push({ x: topo.x, y: topo.y, i: i });
+    }
+
+    // núcleo luminoso no miolo do tronco, como se a seiva brilhasse
+    if (cresc > .2) {
+      var g = ctx.createLinearGradient(cx, base, cx, base - altura);
+      g.addColorStop(0, rgba(AQUA, .0));
+      g.addColorStop(.45, rgba(AQUA, .3 * cresc));
+      g.addColorStop(1, rgba(AQUA, .0));
+      ctx.beginPath();
+      ctx.moveTo(cx, base);
+      ctx.lineTo(cx, base - altura * cresc);
+      ctx.strokeStyle = g;
+      ctx.lineWidth = rMin * 1.5;
+      ctx.stroke();
+    }
+
+    return topos;
+  }
+
   /* ---------- raízes: trilhas ortogonais tipo placa de circuito ---------- */
   function montaRaizes(){
     var w = cv.offsetWidth, h = cv.offsetHeight;
-    var base = { x: w / 2, y: h * .84 };
+    var base = { x: w / 2, y: h * (leve ? .74 : .84) };   // acompanha o pé do tronco
     var rand = semente(2026);
     trilhas = [];
 
@@ -1929,8 +2038,7 @@ h1,h2,h3,h4{
         ctx.beginPath();
         ctx.arc(px, py, 2.4, 0, Math.PI * 2);
         ctx.fillStyle = rgba(cor, .95);
-        ctx.shadowBlur = 12;
-        ctx.shadowColor = rgba(cor, .9);
+        if (!leve) { ctx.shadowBlur = 12; ctx.shadowColor = rgba(cor, .9); }
         ctx.fill();
         ctx.shadowBlur = 0;
       }
@@ -1960,7 +2068,7 @@ h1,h2,h3,h4{
     ctx.stroke();
 
     if (nivel >= PROF) {
-      folhas.push({ x: x2, y: y2, s: rand(), pr: pr });
+      folhas.push({ x: x2, y: y2, s: rand(), pr: pr, ang: a });
       return;
     }
 
@@ -1974,18 +2082,40 @@ h1,h2,h3,h4{
     }
   }
 
+  /* folha de verdade: dois arcos formando um oval pontudo, deitado
+     na direção do galho que a segura */
   function desenhaFolhas(tempo){
     for (var i = 0; i < folhas.length; i++) {
       var f = folhas[i];
       var brilho = .45 + .55 * Math.abs(Math.sin(tempo * .0012 + f.s * 9));
       var cor = f.s > .93 ? AZUL : AQUA;
       var pr = f.pr || 0;
+      var L = (3.4 + f.s * 3.2) * (1 + pr * .5);   // comprimento
+      var W = L * .5;                              // largura
+
+      ctx.save();
+      ctx.translate(f.x, f.y);
+      ctx.rotate((f.ang || 0) + Math.sin(tempo * .0011 + f.s * 7) * .18);
+
       ctx.beginPath();
-      ctx.arc(f.x, f.y, 1.5 + f.s * 1.4 + pr * 2.2, 0, Math.PI * 2);
-      ctx.fillStyle = rgba(cor, Math.min(brilho + pr * .5, 1));
-      ctx.shadowBlur = 9 + pr * 14;
-      ctx.shadowColor = rgba(cor, .75);
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(W, L * .42, 0, L);
+      ctx.quadraticCurveTo(-W, L * .42, 0, 0);
+      ctx.fillStyle = rgba(cor, Math.min(brilho * .8 + pr * .4, 1));
+      if (!leve) { ctx.shadowBlur = 8 + pr * 14; ctx.shadowColor = rgba(cor, .7); }
       ctx.fill();
+
+      if (!leve) {
+        // nervura
+        ctx.beginPath();
+        ctx.moveTo(0, L * .08);
+        ctx.lineTo(0, L * .88);
+        ctx.strokeStyle = rgba([255, 255, 255], .35 * brilho);
+        ctx.lineWidth = .6;
+        ctx.stroke();
+      }
+
+      ctx.restore();
     }
     ctx.shadowBlur = 0;
   }
@@ -1994,11 +2124,15 @@ h1,h2,h3,h4{
   /* sacudir a copa com o cursor derruba folha: sorteia entre as
      que estão sob o mouse, não entre todas */
   function soltaPetala(porToque){
-    if (leve || !folhas.length) return;
+    // no celular a queda contínua fica desligada, mas o toque solta —
+    // é a interação principal por lá
+    if (!folhas.length || (leve && !porToque)) return;
     var f;
     if (porToque) {
-      var candidatas = folhas.filter(function(o){ return (o.pr || 0) > .35; });
-      if (!candidatas.length) return;
+      // proximidade recalculada agora: o pr guardado é do quadro anterior
+      // e no primeiro toque ainda estaria zerado
+      var candidatas = folhas.filter(function(o){ return perto(o.x, o.y) > .3; });
+      if (!candidatas.length) candidatas = folhas;   // tocou longe da copa: solta do topo
       f = candidatas[Math.floor(Math.random() * candidatas.length)];
     } else {
       f = folhas[Math.floor(Math.random() * folhas.length)];
@@ -2061,8 +2195,7 @@ h1,h2,h3,h4{
       ctx.fillStyle = rgba(cor, .13 * alfa);
       ctx.strokeStyle = rgba(cor, .8 * alfa);
       ctx.lineWidth = 1;
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = rgba(cor, .55 * alfa);
+      if (!leve) { ctx.shadowBlur = 10; ctx.shadowColor = rgba(cor, .55 * alfa); }
       ctx.fill();
       ctx.stroke();
       ctx.shadowBlur = 0;
@@ -2150,6 +2283,7 @@ h1,h2,h3,h4{
   }
 
   var ultimaPetala = 0, ultimoToque = 0;
+  var haloCache = null, haloW = 0, haloH = 0;
 
   function desenha(tempo){
     var w = cv.offsetWidth, h = cv.offsetHeight;
@@ -2162,21 +2296,45 @@ h1,h2,h3,h4{
     var cresc = reduz ? 1 : Math.min(decorrido / 2600, 1);
     var suave = 1 - Math.pow(1 - cresc, 3);
 
-    var halo = ctx.createRadialGradient(w / 2, h * .46, 0, w / 2, h * .46, Math.min(w, h) * .52);
-    halo.addColorStop(0, rgba(AQUA, .09 * suave));
-    halo.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = halo;
+    // o halo só muda enquanto a árvore cresce; depois disso é constante,
+    // então não faz sentido recriar o gradiente a cada quadro
+    if (!haloCache || haloW !== w || haloH !== h || suave < .999) {
+      haloCache = ctx.createRadialGradient(w / 2, h * .46, 0, w / 2, h * .46, Math.min(w, h) * .52);
+      haloCache.addColorStop(0, rgba(AQUA, .09 * suave));
+      haloCache.addColorStop(1, "rgba(0,0,0,0)");
+      haloW = w; haloH = h;
+    }
+    ctx.fillStyle = haloCache;
     ctx.fillRect(0, 0, w, h);
 
     desenhaRaizes(suave, tempo);
 
     folhas = [];
-    var base = h * .84;
-    var tronco = Math.min(h * .175, w * .125);
+    var cx = w / 2;
+    // no celular a tela é estreita e alta: se o tronco depender da largura
+    // ele encolhe e se esconde atrás dos números. Lá ele segue a altura.
+    var base   = h * (leve ? .74 : .84);
+    var altura = leve ? h * .26 : Math.min(h * .34, w * .26);
     var rand = semente(2026);
-    ramo(w / 2, base, tronco, -Math.PI / 2, 0, suave * (PROF + 1), rand, tempo);
 
-    if (suave > .8) desenhaFolhas(tempo);
+    // 1) o tronco sobe primeiro (0 → 45% do crescimento)
+    var pTronco = Math.min(suave / .45, 1);
+    var topos = desenhaTronco(cx, base, altura, pTronco, tempo);
+
+    // 2) a copa só abre depois que o tronco fechou (45% → 100%)
+    var pCopa = Math.max(0, (suave - .45) / .55);
+    if (pCopa > 0 && topos.length) {
+      var galho = altura * .42;
+      for (var g = 0; g < topos.length; g++) {
+        var t = topos[g];
+        // cada fio do tronco lança seu galho para um lado do leque
+        var abertura = (g / (topos.length - 1 || 1) - .5) * 1.5;
+        ramo(t.x, t.y, galho, -Math.PI / 2 + abertura, 0,
+             pCopa * (PROF + 1), rand, tempo);
+      }
+    }
+
+    if (pCopa > .6) desenhaFolhas(tempo);
 
     desenhaNos(tempo);
 
@@ -2218,6 +2376,29 @@ h1,h2,h3,h4{
       mouse.alvo = 1;
     }, { passive: true });
     palco.addEventListener("pointerleave", function(){ mouse.alvo = 0; });
+  }
+
+  /* ---------- toque/clique derruba uma rajada de folhas ----------
+     vale no celular também: é a interação principal por lá */
+  if (!reduz) {
+    var palcoToque = cv.closest(".hero") || cv;
+    palcoToque.addEventListener("pointerdown", function(e){
+      // não rouba o clique dos botões e links do hero
+      if (e.target.closest("a, button")) return;
+      var r = cv.getBoundingClientRect();
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
+      if (mouse.sx < -9000) { mouse.sx = mouse.x; mouse.sy = mouse.y; }
+      mouse.alvo = 1;
+      mouse.peso = 1;                     // pulso imediato, sem esperar a inércia
+      for (var n = 0; n < (leve ? 5 : 9); n++) soltaPetala(true);
+    }, { passive: true });
+
+    // no celular, tirar o dedo solta a copa de volta
+    if (leve) {
+      palcoToque.addEventListener("pointerup", function(){ mouse.alvo = 0; });
+      palcoToque.addEventListener("pointercancel", function(){ mouse.alvo = 0; });
+    }
   }
 
   if (reduz) {
