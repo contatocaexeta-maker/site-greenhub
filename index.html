@@ -1,0 +1,2231 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Green Hub — Hub de soluções para clínicas de estética</title>
+<meta name="description" content="Hub de soluções para clínicas de estética. Marketing, comercial e CRM de ponta a ponta: atraímos, organizamos e convertemos pacientes particulares." />
+<!-- RASCUNHO: números, cases e depoimentos ainda são de exemplo.
+     Remova esta linha quando os dados reais entrarem no bloco DADOS. -->
+<meta name="robots" content="noindex, nofollow" />
+<meta property="og:title" content="Green Hub — Hub de soluções para clínicas de estética" />
+<meta property="og:description" content="Do primeiro clique à cadeira ocupada. Aquisição, atendimento, CRM e recompra em uma única operação." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="assets/logo-lime-256.png" />
+<style>
+/* ============================================================
+   GREEN HUB — site institucional
+   Paleta e tipografia conforme o Brand Kit oficial.
+   ============================================================ */
+
+:root{
+  /* --- paleta oficial (brand kit) --- */
+  --aqua:       #79FFAA;   /* verde-água — cor de destaque: ícones e palavras */
+  --green:      #67FF40;   /* verde primário — usado com parcimônia */
+  --mint:       #3DFF9F;   /* verde secundário */
+  --deep:       #0B3D2E;   /* verde escuro */
+  --paper:      #FFFFFF;   /* branco */
+  --blue:       #00B2FF;   /* apoio — só em dados */
+
+  /* --- canais RGB: é o que permite trocar o tema por seção --- */
+  --aqua-rgb:   121,255,170;
+  --green-rgb:  103,255,64;
+  --luz-rgb:    255,255,255;   /* o que ilumina o fundo */
+  --sombra-rgb: 0,0,0;         /* o que escurece o fundo */
+
+  /* --- grounds: preto e branco no comando --- */
+  --ink:        #000000;   /* preto puro, fundo base */
+  --ink-2:      #070707;   /* fundo alternativo */
+  --card:       #0D0D0D;   /* superfície neutra sobre o preto */
+  --line:       rgba(var(--aqua-rgb),.16);
+  --line-2:     rgba(var(--luz-rgb),.09);
+
+  /* --- texto --- */
+  --tx:         #FFFFFF;
+  --tx-mut:     #9A9A9A;
+  --tx-dark:    #000000;
+  --tx-dark-mut:#5C5C5C;
+
+  --grad-1: linear-gradient(90deg, var(--green), var(--aqua));
+  --grad-2: linear-gradient(90deg, var(--aqua), var(--blue));
+  --glow: 0 0 60px rgba(var(--aqua-rgb),.28);
+
+  --wrap: 1200px;
+  --r-s: 12px;
+  --r-m: 20px;
+  --r-l: 32px;
+  --r-pill: 999px;
+
+  --font: "Helvetica Neue", Helvetica, "Inter", system-ui, -apple-system, Arial, sans-serif;
+
+  --t--1: clamp(.8rem, .78rem + .1vw, .88rem);
+  --t-0:  clamp(1rem, .97rem + .16vw, 1.1rem);
+  --t-1:  clamp(1.15rem, 1.06rem + .42vw, 1.4rem);
+  --t-2:  clamp(1.5rem, 1.25rem + 1.1vw, 2.15rem);
+  --t-3:  clamp(2rem, 1.5rem + 2.2vw, 3.3rem);
+  --t-4:  clamp(2.5rem, 1.6rem + 4.1vw, 5rem);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--tx);
+  font-family:var(--font);
+  font-size:var(--t-0);
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; color:inherit; }
+ul{ margin:0; padding:0; list-style:none; }
+p{ margin:0; }
+h1,h2,h3,h4{
+  margin:0; font-weight:700; line-height:1.05;
+  letter-spacing:-.028em; text-wrap:balance;
+}
+:focus-visible{ outline:2px solid var(--aqua); outline-offset:4px; border-radius:6px; }
+
+.wrap{ width:min(100% - 2.5rem, var(--wrap)); margin-inline:auto; }
+.stack{ display:flex; flex-direction:column; }
+.g1{ gap:.5rem; } .g2{ gap:1rem; } .g3{ gap:1.75rem; } .g4{ gap:2.75rem; } .g5{ gap:4.5rem; }
+
+/* ---------- tipografia utilitária ---------- */
+.eyebrow{
+  display:inline-flex; align-items:center; gap:.6rem;
+  font-size:var(--t--1); font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--aqua);
+}
+.eyebrow::before{
+  content:""; width:26px; height:2px; border-radius:2px; background:var(--grad-1);
+}
+.h-xl{ font-size:var(--t-4); }
+.h-lg{ font-size:var(--t-3); }
+.h-md{ font-size:var(--t-2); }
+.h-sm{ font-size:var(--t-1); }
+.lead{ font-size:var(--t-1); color:var(--tx-mut); line-height:1.55; max-width:60ch; }
+.body-mut{ color:var(--tx-mut); max-width:64ch; }
+.grad-text{
+  background:var(--grad-1); -webkit-background-clip:text; background-clip:text;
+  color:transparent;
+}
+
+/* ---------- seções ---------- */
+.section{ position:relative; padding-block:clamp(4.5rem,9vw,8rem); }
+.section--alt{ background:var(--ink-2); }
+
+/* ---- TEMAS DE SEÇÃO ----
+   Cada tema só redefine os tokens; os componentes seguem os tokens
+   e se adaptam sozinhos. É o que dá ritmo de cor ao site. */
+
+/* claro: fundo quase branco, cartões brancos */
+.section--paper{
+  --luz-rgb:    11,61,46;      /* "luz" vira verde-escuro sobre claro */
+  --aqua-rgb:   11,138,79;     /* verde-água legível no branco */
+  --green-rgb:  11,138,79;
+  --ink:        #F4F8F5;
+  --ink-2:      #FFFFFF;
+  --card:       #FFFFFF;
+  --line:       rgba(var(--aqua-rgb),.24);
+  --line-2:     rgba(11,61,46,.13);
+  --tx:         #05140D;
+  --tx-mut:     #56675E;
+  /* "texto sobre o destaque" inverte: no escuro o destaque é claro e pede
+     texto preto; no claro o destaque é verde-escuro e pede texto branco */
+  --tx-dark:    #FFFFFF;
+  --aqua:       #076B3C;   /* escurecido: no claro precisa passar de 4,5:1 */
+  --green:      #0FA057;   /* o lima da marca sumiria no branco */
+  /* os gradientes resolvem no :root, então precisam ser redeclarados aqui */
+  --grad-1:     linear-gradient(90deg, #0FA057, #076B3C);
+  --grad-2:     linear-gradient(90deg, #0B8A4F, #0077B0);
+  background:var(--ink); color:var(--tx);
+}
+.section--paper .sol-item,
+.section--paper .case,
+.section--paper .panel,
+.section--paper .quote,
+.section--paper .etapa{ box-shadow:0 12px 34px rgba(11,61,46,.07); }
+
+/* verde profundo: o mundo próprio das seções-assinatura */
+.section--deep{
+  --ink:        #072A20;
+  --ink-2:      #0B3D2E;
+  --card:       rgba(var(--luz-rgb),.05);
+  --line-2:     rgba(var(--luz-rgb),.13);
+  --tx-mut:     #9FC3B2;
+  background:
+    radial-gradient(80% 60% at 50% 0%, rgba(var(--aqua-rgb),.10), transparent 65%),
+    var(--ink-2);
+}
+
+/* faixa em gradiente: texto escuro, alto contraste, serve de respiro */
+.section--gradiente{
+  --tx:         #04140D;
+  --tx-mut:     rgba(4,20,13,.7);
+  --aqua:       #04140D;
+  --aqua-rgb:   4,20,13;
+  --line:       rgba(4,20,13,.22);
+  --line-2:     rgba(4,20,13,.16);
+  background:linear-gradient(115deg, var(--green), var(--mint) 52%, #24E0D8);
+  color:var(--tx);
+}
+.section--gradiente .eyebrow::before{ background:var(--tx); }
+/* sobre o gradiente, texto em degradê vira sólido — senão desaparece */
+.section--gradiente .grad-text{
+  background:none; color:var(--tx); -webkit-text-fill-color:var(--tx);
+}
+
+/* ---------- botões ---------- */
+.btn{
+  position:relative; display:inline-flex; align-items:center; gap:.65rem;
+  font-size:var(--t--1); font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  padding:1.05rem 1.9rem; border-radius:var(--r-pill); border:1px solid transparent;
+  cursor:pointer; overflow:hidden; isolation:isolate;
+  transition:transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, color .22s ease, border-color .22s ease;
+}
+.btn:hover{ transform:translateY(-3px); }
+.btn--primary{ background:var(--grad-1); color:var(--tx-dark); box-shadow:0 10px 34px rgba(var(--aqua-rgb),.24); }
+.btn--primary:hover{ box-shadow:0 16px 44px rgba(var(--aqua-rgb),.4); }
+.btn--ghost{ border-color:var(--line-2); color:var(--tx); }
+.btn--ghost::before{
+  content:""; position:absolute; inset:0; z-index:-1; background:var(--grad-1);
+  transform:translateY(101%); transition:transform .3s cubic-bezier(.2,.7,.3,1);
+}
+.btn--ghost:hover{ color:var(--tx-dark); border-color:transparent; }
+.btn--ghost:hover::before{ transform:translateY(0); }
+.btn--dark{ background:var(--deep); color:var(--paper); }
+.btn svg{ width:1.05em; height:1.05em; }
+
+.link-more{
+  display:inline-flex; align-items:center; gap:.5rem;
+  font-size:var(--t--1); font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--aqua);
+}
+.link-more svg{ width:1em; height:1em; transition:transform .22s ease; }
+.link-more:hover svg{ transform:translateX(5px); }
+
+/* ============================================================
+   BARRA DE PROGRESSO + HEADER
+   ============================================================ */
+.progress{
+  position:fixed; top:0; left:0; height:3px; width:0;
+  background:var(--grad-1); z-index:100; transition:width .1s linear;
+}
+.site-header{
+  position:fixed; top:0; left:0; right:0; z-index:90;
+  transition:background .3s ease, backdrop-filter .3s ease, border-color .3s ease, padding .3s ease;
+  border-bottom:1px solid transparent;
+  padding-block:1.1rem;
+}
+.site-header[data-stuck="true"]{
+  background:rgba(4,20,13,.82); backdrop-filter:blur(16px);
+  border-bottom-color:var(--line); padding-block:.65rem;
+}
+.site-header .wrap{ display:flex; align-items:center; gap:2rem; }
+
+.brand{ display:flex; align-items:center; gap:.7rem; }
+.brand img{ width:34px; height:auto; transition:transform .3s ease; }
+.brand:hover img{ transform:rotate(-8deg) scale(1.06); }
+.brand b{ font-size:1.15rem; font-weight:700; letter-spacing:-.03em; }
+.brand b span{ color:var(--aqua); }
+.brand small{
+  display:block; font-size:.56rem; font-weight:500; line-height:1;
+  letter-spacing:.24em; text-transform:uppercase; color:var(--tx-mut); margin-top:.28rem;
+}
+
+.nav{ margin-left:auto; display:flex; align-items:center; gap:1.85rem; }
+.nav a{ position:relative; font-size:.94rem; font-weight:500; padding-block:.35rem; }
+.nav a::after{
+  content:""; position:absolute; left:0; bottom:0; height:2px; width:0;
+  background:var(--grad-1); transition:width .26s cubic-bezier(.2,.7,.3,1);
+}
+.nav a:hover::after,.nav a[aria-current="true"]::after{ width:100%; }
+
+.burger{ display:none; margin-left:auto; background:none; border:0; cursor:pointer; padding:.5rem; }
+.burger i{ display:block; width:26px; height:2px; background:var(--tx); margin:6px 0; border-radius:2px; transition:transform .3s ease, opacity .25s ease; }
+.burger[aria-expanded="true"] i:nth-child(1){ transform:translateY(8px) rotate(45deg); }
+.burger[aria-expanded="true"] i:nth-child(2){ opacity:0; }
+.burger[aria-expanded="true"] i:nth-child(3){ transform:translateY(-8px) rotate(-45deg); }
+
+.drawer{
+  position:fixed; inset:0; z-index:80; display:none;
+  background:rgba(4,20,13,.97); backdrop-filter:blur(20px);
+  padding:7rem 2rem 3rem; flex-direction:column; gap:.4rem;
+}
+.drawer[data-open="true"]{ display:flex; }
+.drawer a{ font-size:1.7rem; font-weight:700; letter-spacing:-.03em; padding:.55rem 0; border-bottom:1px solid var(--line-2); }
+.drawer .btn{ margin-top:1.5rem; align-self:flex-start; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  position:relative; min-height:100svh; display:flex; align-items:center;
+  padding-block:8.5rem 4.5rem; overflow:hidden; text-align:center; background:#000;
+}
+.hero canvas{ position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+/* escurece o miolo para o texto ler por cima da copa e deixa o brilho escapar nas bordas */
+.hero::after{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+    radial-gradient(46% 40% at 50% 50%, rgba(var(--sombra-rgb),.8), rgba(var(--sombra-rgb),.45) 58%, transparent 82%),
+    linear-gradient(180deg, #000 0%, rgba(var(--sombra-rgb),.35) 22%, transparent 45%, rgba(var(--sombra-rgb),.55) 84%, #000 100%);
+}
+.hero .wrap{
+  position:relative; z-index:2;
+  display:flex; flex-direction:column; align-items:center; gap:1.7rem;
+}
+.hero-badge{
+  display:inline-flex; align-items:center; gap:.7rem;
+  font-size:var(--t-0); color:#D8D8D8;
+}
+.hero-badge img{ width:26px; height:auto; }
+.hero h1{ font-size:var(--t-4); max-width:17ch; }
+.hero h1 em{ font-style:normal; color:var(--aqua); }
+.hero .lead{ text-align:center; margin-inline:auto; color:#B4B4B4; }
+.hero .lead b{ color:var(--aqua); font-weight:600; }
+.hero-actions{ display:flex; flex-wrap:wrap; gap:.9rem; justify-content:center; }
+
+/* faixa de indicadores do hero */
+.hero-stats{
+  width:100%; display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; text-align:left;
+  margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--line-2);
+}
+.hero-stats div{ display:flex; flex-direction:column; gap:.1rem; }
+.hero-stats b{
+  font-size:var(--t-2); font-weight:700; letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums; color:var(--aqua);
+}
+.hero-stats > div > span{ font-size:.8rem; color:var(--tx-mut); line-height:1.35; }
+.hero-stats b span{ font:inherit; color:inherit; }
+
+
+/* ============================================================
+   MARQUEE DE ESPECIALIDADES
+   ============================================================ */
+.strip{ padding-block:1.4rem; border-block:1px solid var(--line); background:var(--ink-2); overflow:hidden; }
+.marquee{ -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent); mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent); }
+.marquee-track{ display:flex; gap:3rem; width:max-content; animation:slide 40s linear infinite; }
+.marquee:hover .marquee-track{ animation-play-state:paused; }
+.marquee-track span{
+  display:flex; align-items:center; gap:.75rem; white-space:nowrap;
+  font-size:.92rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--tx-mut);
+}
+.marquee-track span::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--aqua); }
+@keyframes slide{ to{ transform:translateX(-50%); } }
+
+/* ============================================================
+   REVEAL ON SCROLL
+   ============================================================ */
+.rv{ opacity:0; transform:translateY(30px); transition:opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1); }
+.rv[data-in="true"]{ opacity:1; transform:none; }
+
+/* ============================================================
+   O QUE FAZEMOS — bloco de apresentação
+   ============================================================ */
+.intro{ display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:clamp(2rem,5vw,4.5rem); align-items:center; }
+.intro-media{
+  position:relative; border-radius:var(--r-l); overflow:hidden;
+  aspect-ratio:16/10; border:1px solid var(--line);
+  background:
+    radial-gradient(90% 80% at 20% 0%, rgba(var(--aqua-rgb),.2), transparent 60%),
+    linear-gradient(150deg, var(--card), var(--ink));
+  display:grid; place-items:center;
+}
+.intro-media::after{
+  content:""; position:absolute; inset:0;
+  background-image:linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:46px 46px; opacity:.5;
+}
+.play{
+  position:relative; z-index:2; width:82px; height:82px; border-radius:50%;
+  display:grid; place-items:center; cursor:pointer;
+  background:var(--grad-1); color:var(--tx-dark); border:0;
+  box-shadow:0 0 0 0 rgba(var(--aqua-rgb),.5);
+  animation:ring 2.6s ease-out infinite;
+  transition:transform .22s ease;
+}
+.play:hover{ transform:scale(1.09); }
+.play svg{ width:26px; height:26px; margin-left:4px; }
+@keyframes ring{ 0%{ box-shadow:0 0 0 0 rgba(var(--aqua-rgb),.45); } 70%{ box-shadow:0 0 0 26px rgba(var(--aqua-rgb),0); } 100%{ box-shadow:0 0 0 0 rgba(var(--aqua-rgb),0); } }
+
+/* ============================================================
+   SOLUÇÕES — acordeão
+   ============================================================ */
+.sol{ display:flex; flex-direction:column; gap:1rem; }
+.sol-item{
+  border:1px solid var(--line-2); border-radius:var(--r-m);
+  background:linear-gradient(150deg, var(--card), var(--ink));
+  overflow:hidden; transition:border-color .3s ease, box-shadow .3s ease;
+}
+.sol-item[data-open="true"]{ border-color:rgba(var(--aqua-rgb),.4); box-shadow:0 0 44px rgba(var(--aqua-rgb),.09); }
+.sol-head{
+  width:100%; display:flex; align-items:center; gap:1.4rem; text-align:left;
+  padding:1.7rem clamp(1.2rem,3vw,2.2rem); background:none; border:0; cursor:pointer;
+}
+.sol-num{
+  flex:none; font-size:.72rem; font-weight:700; letter-spacing:.14em;
+  color:var(--aqua); font-variant-numeric:tabular-nums; padding-top:.35rem;
+}
+.sol-head h3{ flex:1; font-size:var(--t-1); }
+.sol-toggle{
+  flex:none; width:42px; height:42px; border-radius:50%; display:grid; place-items:center;
+  border:1px solid var(--line-2); transition:background .25s ease, color .25s ease, transform .3s ease, border-color .25s ease;
+}
+.sol-toggle svg{ width:15px; height:15px; }
+.sol-item[data-open="true"] .sol-toggle{ background:var(--aqua); color:var(--tx-dark); border-color:transparent; transform:rotate(135deg); }
+.sol-body{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .38s cubic-bezier(.3,.8,.3,1); }
+.sol-item[data-open="true"] .sol-body{ grid-template-rows:1fr; }
+.sol-body > div{ overflow:hidden; }
+.sol-inner{
+  padding:0 clamp(1.2rem,3vw,2.2rem) 2rem;
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:2rem; align-items:start;
+}
+.sol-inner > p{ color:var(--tx-mut); }
+.sol-tags{ display:flex; flex-wrap:wrap; gap:.5rem; }
+.sol-tags li{
+  display:flex; align-items:center; gap:.5rem;
+  font-size:.85rem; padding:.45rem .95rem; border-radius:var(--r-pill);
+  border:1px solid var(--line); color:var(--tx); background:rgba(var(--aqua-rgb),.05);
+}
+.sol-tags li::before{ content:""; width:5px; height:5px; border-radius:50%; background:var(--aqua); }
+
+/* ============================================================
+   PILARES
+   ============================================================ */
+.pillars{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; }
+.pillar{
+  position:relative; padding:2.2rem 1.9rem; border-radius:var(--r-m);
+  border:1px solid var(--line-2); background:var(--card); overflow:hidden;
+  display:flex; flex-direction:column; gap:.9rem;
+  transition:transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease;
+}
+.pillar::before{
+  content:""; position:absolute; inset:0 0 auto; height:2px; background:var(--grad-1);
+  transform:scaleX(0); transform-origin:left; transition:transform .4s cubic-bezier(.2,.7,.3,1);
+}
+.pillar:hover{ transform:translateY(-8px); border-color:rgba(var(--aqua-rgb),.3); }
+.pillar:hover::before{ transform:scaleX(1); }
+.pillar-icon{
+  width:52px; height:52px; border-radius:15px; display:grid; place-items:center;
+  background:rgba(var(--aqua-rgb),.1); color:var(--aqua); border:1px solid var(--line);
+}
+.pillar-icon svg{ width:24px; height:24px; }
+.pillar h3{ font-size:var(--t-1); }
+.pillar p{ color:var(--tx-mut); font-size:.96rem; }
+
+/* ============================================================
+   EFEITOS GLOBAIS — grão, luz que segue o cursor, parallax
+   ============================================================ */
+/* granulado sutil por cima de tudo, tira o "liso demais" do preto */
+.grao{
+  position:fixed; inset:0; z-index:99; pointer-events:none; opacity:.5;
+  background-image:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.055'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+:root[data-leve="true"] .grao{ display:none; }
+
+/* luz que acompanha o mouse dentro dos cartões */
+.lume{ position:relative; }
+.lume::after{
+  content:""; position:absolute; inset:0; border-radius:inherit;
+  pointer-events:none; z-index:0; opacity:0;
+  background:radial-gradient(340px circle at var(--mx,50%) var(--my,130%), rgba(var(--aqua-rgb),.13), transparent 68%);
+  transition:opacity .35s ease;
+}
+.lume:hover::after{ opacity:1; }
+.lume > *{ position:relative; z-index:1; }
+
+/* deslocamento suave no scroll */
+.plx{ will-change:transform; }
+
+/* ============================================================
+   MÉTODO FLOREST
+   ============================================================ */
+.florest{ position:relative; overflow:hidden; }
+.florest-fundo{ position:absolute; inset:0; width:100%; height:100%; z-index:0; opacity:.55; pointer-events:none; }
+.florest > .wrap{ position:relative; z-index:1; }
+.florest h2 em{ font-style:normal; }
+
+.etapas{
+  display:grid; grid-template-columns:repeat(5,1fr); gap:1rem;
+  counter-reset:etapa; padding:0; margin:0;
+}
+.etapa{
+  position:relative; padding:2rem 1.35rem 1.8rem;
+  border:1px solid var(--line-2); border-radius:var(--r-m);
+  background:linear-gradient(170deg, rgba(var(--luz-rgb),.035), rgba(var(--luz-rgb),0));
+  display:flex; flex-direction:column; gap:.7rem;
+  opacity:.42; filter:saturate(.35);
+  transition:opacity .6s ease, filter .6s ease, border-color .6s ease, transform .5s cubic-bezier(.2,.7,.3,1), background .6s ease;
+}
+.etapa[data-ativa="true"]{
+  opacity:1; filter:none; border-color:rgba(var(--aqua-rgb),.34);
+  background:linear-gradient(170deg, rgba(var(--aqua-rgb),.075), rgba(var(--luz-rgb),.01));
+  box-shadow:0 0 50px rgba(var(--aqua-rgb),.08);
+}
+.etapa:hover{ transform:translateY(-6px); }
+
+/* trilho que liga uma etapa na outra */
+.etapa-linha{
+  position:absolute; top:3.6rem; left:100%; width:1rem; height:1px;
+  background:var(--line-2); overflow:hidden;
+}
+.etapa-linha::after{
+  content:""; position:absolute; inset:0; background:var(--grad-1);
+  transform:scaleX(0); transform-origin:left; transition:transform .7s ease .2s;
+}
+.etapa[data-ativa="true"] .etapa-linha::after{ transform:scaleX(1); }
+
+.etapa-arte{
+  width:64px; height:64px; color:var(--aqua);
+  filter:drop-shadow(0 0 10px rgba(var(--aqua-rgb),0));
+  transition:filter .6s ease;
+}
+.etapa[data-ativa="true"] .etapa-arte{ filter:drop-shadow(0 0 12px rgba(var(--aqua-rgb),.5)); }
+.etapa-arte svg{ width:100%; height:100%; overflow:visible; }
+.etapa-arte .tr{
+  stroke-dasharray:var(--len,120); stroke-dashoffset:var(--len,120);
+  transition:stroke-dashoffset .9s cubic-bezier(.3,.8,.3,1);
+}
+.etapa[data-ativa="true"] .etapa-arte .tr{ stroke-dashoffset:0; }
+
+.etapa-num{
+  font-size:.72rem; font-weight:700; letter-spacing:.2em;
+  color:var(--aqua); font-variant-numeric:tabular-nums;
+}
+.etapa h3{ font-size:var(--t-1); }
+.etapa > p{ font-size:.92rem; color:var(--tx-mut); }
+.etapa-itens{ display:flex; flex-direction:column; gap:.42rem; margin-top:auto; padding-top:1rem; border-top:1px solid var(--line-2); }
+.etapa-itens li{
+  display:flex; align-items:flex-start; gap:.5rem;
+  font-size:.82rem; color:var(--tx-mut); line-height:1.4;
+}
+.etapa-itens li::before{
+  content:""; flex:none; width:5px; height:5px; margin-top:.5rem;
+  border-radius:50%; background:var(--aqua); opacity:.7;
+}
+
+/* ============================================================
+   CRM / DADOS
+   ============================================================ */
+.data{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(2rem,5vw,4.5rem); align-items:center; }
+.panel{
+  border:1px solid var(--line-2); border-radius:var(--r-l); padding:clamp(1.5rem,3vw,2.2rem);
+  background:linear-gradient(160deg, var(--card), var(--ink)); display:flex; flex-direction:column; gap:1.6rem;
+}
+.panel-head{ display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.panel-head > span:not(.chip){ font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--tx-mut); }
+.chip{
+  font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:.32rem .75rem; border-radius:var(--r-pill);
+  background:rgba(var(--aqua-rgb),.14); color:var(--aqua);
+}
+.chart{ display:flex; align-items:flex-end; gap:.55rem; height:180px; }
+.chart i{
+  flex:1; border-radius:7px 7px 0 0; background:var(--grad-1);
+  transform-origin:bottom; transform:scaleY(0);
+  transition:transform .8s cubic-bezier(.2,.7,.3,1);
+}
+.panel[data-in="true"] .chart i{ transform:scaleY(1); }
+.chart i:nth-child(n+7){ background:linear-gradient(180deg,var(--blue),rgba(0,178,255,.25)); }
+.metrics{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; padding-top:1.4rem; border-top:1px solid var(--line-2); }
+.metrics div{ display:flex; flex-direction:column; }
+.metrics b{ font-size:var(--t-2); font-variant-numeric:tabular-nums; letter-spacing:-.03em; }
+.metrics span{ font-size:.76rem; color:var(--tx-mut); line-height:1.3; }
+
+/* ============================================================
+   CASES
+   ============================================================ */
+.cases{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; }
+.case{
+  position:relative; border-radius:var(--r-m); overflow:hidden;
+  border:1px solid var(--line-2); background:var(--card);
+  padding:2rem 1.8rem; display:flex; flex-direction:column; gap:1.1rem;
+  transition:transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease;
+}
+.case:hover{ transform:translateY(-8px); border-color:rgba(var(--aqua-rgb),.34); }
+.case-tag{ font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--tx-mut); }
+.case-num{ font-size:clamp(2.4rem,5vw,3.4rem); font-weight:700; letter-spacing:-.045em; line-height:1; }
+.case p{ color:var(--tx-mut); font-size:.94rem; }
+.case footer{ margin-top:auto; padding-top:1rem; border-top:1px solid var(--line-2); font-size:.84rem; color:var(--tx-mut); }
+
+/* ============================================================
+   NÚMEROS
+   ============================================================ */
+.counters{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+.counter{ display:flex; flex-direction:column; gap:.3rem; padding-left:1.4rem; border-left:2px solid var(--line); }
+.counter b{
+  display:flex; align-items:baseline; gap:.12rem;
+  font-size:clamp(2.2rem,4.5vw,3.4rem); font-weight:700; letter-spacing:-.04em; line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.counter b i{ font-style:normal; color:var(--aqua); }
+.counter > span{ font-size:.88rem; color:var(--tx-mut); }
+.counter b span{ font:inherit; color:inherit; }
+
+/* ============================================================
+   DEPOIMENTOS — carrossel
+   ============================================================ */
+.quotes{ position:relative; }
+.quotes-view{ overflow:hidden; border-radius:var(--r-l); }
+.quotes-track{ display:flex; transition:transform .55s cubic-bezier(.3,.8,.3,1); }
+.quote{
+  flex:0 0 100%; padding:clamp(2rem,5vw,3.4rem);
+  border:1px solid var(--line-2); border-radius:var(--r-l);
+  background:linear-gradient(155deg, var(--card), var(--ink));
+  display:flex; flex-direction:column; gap:1.6rem;
+}
+.quote-mark{ font-size:3.4rem; line-height:.5; color:var(--aqua); }
+.quote p{ font-size:var(--t-1); line-height:1.55; }
+.quote footer{ display:flex; align-items:center; gap:.9rem; }
+.avatar{
+  width:48px; height:48px; border-radius:50%; flex:none; display:grid; place-items:center;
+  background:var(--grad-1); color:var(--tx-dark); font-weight:700; font-size:.95rem;
+}
+.quote footer b{ display:block; font-size:.98rem; }
+.quote footer span{ display:block; font-size:.84rem; color:var(--tx-mut); }
+.quotes-nav{ display:flex; gap:.6rem; justify-content:center; margin-top:1.6rem; }
+.quotes-nav button{
+  width:44px; height:44px; border-radius:50%; cursor:pointer;
+  border:1px solid var(--line-2); background:none; display:grid; place-items:center;
+  transition:background .22s ease, color .22s ease, border-color .22s ease;
+}
+.quotes-nav button:hover{ background:var(--aqua); color:var(--tx-dark); border-color:transparent; }
+.quotes-nav svg{ width:16px; height:16px; }
+.dots{ display:flex; gap:.45rem; align-items:center; justify-content:center; margin-top:1rem; }
+.dots button{
+  width:8px; height:8px; padding:0; border-radius:50%; border:0; cursor:pointer;
+  background:var(--line-2); transition:width .25s ease, background .25s ease;
+}
+.dots button[aria-current="true"]{ width:26px; border-radius:var(--r-pill); background:var(--aqua); }
+
+/* ============================================================
+   SOBRE / ESPAÇO
+   ============================================================ */
+.about{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(2rem,5vw,4.5rem); align-items:center; }
+.about-list li{ display:flex; gap:.9rem; padding:1rem 0; border-bottom:1px solid rgba(var(--sombra-rgb),.1); }
+.about-list li svg{ width:20px; height:20px; flex:none; margin-top:.3rem; color:#0B8A4F; }
+.space-grid{ display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:150px; gap:1rem; }
+.space-grid div{
+  border-radius:var(--r-m); border:1px solid var(--line-2); overflow:hidden;
+  background:linear-gradient(150deg, var(--card), var(--ink));
+  position:relative; transition:transform .3s cubic-bezier(.2,.7,.3,1);
+  display:grid; place-items:center; color:var(--tx-mut); font-size:.8rem; letter-spacing:.12em; text-transform:uppercase;
+}
+.space-grid div:hover{ transform:scale(1.03); }
+.space-grid div:nth-child(1){ grid-column:span 2; grid-row:span 2; }
+.space-grid div:nth-child(4){ grid-column:span 2; }
+
+/* ============================================================
+   FORMULÁRIO
+   ============================================================ */
+.contact{ display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:clamp(2rem,5vw,4.5rem); align-items:start; }
+.form{
+  border:1px solid var(--line-2); border-radius:var(--r-l);
+  background:linear-gradient(160deg, var(--card), var(--ink));
+  padding:clamp(1.6rem,3vw,2.6rem); display:flex; flex-direction:column; gap:1.1rem;
+}
+.row{ display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; }
+.field{ display:flex; flex-direction:column; gap:.45rem; }
+.field label{ font-size:.8rem; font-weight:600; letter-spacing:.04em; color:var(--tx-mut); }
+.field input,.field select,.field textarea{
+  font-family:inherit; font-size:1rem; color:var(--tx);
+  background:rgba(238,255,247,.04); border:1px solid var(--line-2);
+  border-radius:var(--r-s); padding:.9rem 1rem;
+  transition:border-color .22s ease, background .22s ease;
+}
+.field textarea{ resize:vertical; min-height:110px; }
+.field input:focus,.field select:focus,.field textarea:focus{ outline:none; border-color:var(--aqua); background:rgba(var(--aqua-rgb),.05); }
+.field select option{ background:var(--ink); color:var(--tx); }
+.field small{ font-size:.78rem; color:#ff7b7b; display:none; }
+.field[data-error="true"] input,.field[data-error="true"] select{ border-color:#ff7b7b; }
+.field[data-error="true"] small{ display:block; }
+.form-note{ font-size:.82rem; color:var(--tx-mut); }
+.form-ok{
+  display:none; gap:.8rem; align-items:flex-start;
+  padding:1rem 1.2rem; border-radius:var(--r-s);
+  background:rgba(var(--aqua-rgb),.1); border:1px solid var(--line); font-size:.92rem;
+}
+.form-ok[data-show="true"]{ display:flex; }
+.form-ok svg{ width:20px; height:20px; flex:none; color:var(--aqua); margin-top:.15rem; }
+
+.contact-info{ display:flex; flex-direction:column; gap:1.6rem; }
+.contact-info ul{ display:flex; flex-direction:column; gap:1rem; }
+.contact-info li{ display:flex; gap:.9rem; align-items:flex-start; }
+.contact-info li svg{ width:20px; height:20px; flex:none; margin-top:.25rem; color:var(--aqua); }
+.contact-info li b{ display:block; font-size:.95rem; }
+.contact-info li span{ display:block; font-size:.9rem; color:var(--tx-mut); }
+
+/* ============================================================
+   CTA FINAL + FOOTER
+   ============================================================ */
+.cta-band{
+  position:relative; overflow:hidden; border-radius:var(--r-l);
+  padding:clamp(2.5rem,6vw,4.5rem); text-align:center;
+  background:linear-gradient(140deg, rgba(var(--aqua-rgb),.16), rgba(0,178,255,.09));
+  border:1px solid var(--line);
+  display:flex; flex-direction:column; align-items:center; gap:1.5rem;
+}
+.cta-band::before{
+  content:""; position:absolute; inset:-50% -10% auto; height:200%;
+  background:radial-gradient(closest-side, rgba(var(--aqua-rgb),.16), transparent);
+  animation:sweep 9s linear infinite;
+}
+@keyframes sweep{ 0%{ transform:translateX(-40%); } 50%{ transform:translateX(40%); } 100%{ transform:translateX(-40%); } }
+.cta-band > *{ position:relative; z-index:1; }
+
+.site-footer{ background:var(--ink-2); border-top:1px solid var(--line); padding-block:4rem 2rem; }
+.foot-top{ display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:2.5rem; }
+.foot-brand{ display:flex; flex-direction:column; gap:1.1rem; }
+.foot-brand p{ font-size:.9rem; color:var(--tx-mut); max-width:32ch; }
+.foot-col h5{ font-size:.74rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--aqua); margin:0 0 1.1rem; }
+.foot-col li + li{ margin-top:.6rem; }
+.foot-col a{ font-size:.92rem; color:var(--tx-mut); transition:color .2s ease; }
+.foot-col a:hover{ color:var(--tx); }
+.socials{ display:flex; gap:.6rem; }
+.socials a{
+  width:40px; height:40px; border-radius:50%; display:grid; place-items:center;
+  border:1px solid var(--line-2); color:var(--tx-mut);
+  transition:background .22s ease, color .22s ease, border-color .22s ease, transform .22s ease;
+}
+.socials a:hover{ background:var(--grad-1); color:var(--tx-dark); border-color:transparent; transform:translateY(-3px); }
+.socials svg{ width:17px; height:17px; }
+.foot-bottom{
+  margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--line-2);
+  display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between;
+  font-size:.8rem; color:var(--tx-mut);
+}
+
+.wa{
+  position:fixed; right:1.25rem; bottom:1.25rem; z-index:95;
+  width:58px; height:58px; border-radius:50%; display:grid; place-items:center;
+  background:#25D366; color:#fff; box-shadow:0 12px 34px rgba(37,211,102,.42);
+  transition:transform .22s ease;
+}
+.wa:hover{ transform:scale(1.08); }
+.wa svg{ width:29px; height:29px; }
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media (max-width:1024px){
+  .intro,.data,.about,.contact{ grid-template-columns:1fr; }
+  .pillars,.cases{ grid-template-columns:1fr; }
+  .etapas{ grid-template-columns:1fr; gap:.9rem; }
+  .etapa{ opacity:1; filter:none; }
+  .etapa-linha{ top:auto; bottom:-.9rem; left:2.6rem; width:1px; height:.9rem; }
+  .etapa-linha::after{ transform:scaleY(0); transform-origin:top; }
+  .etapa[data-ativa="true"] .etapa-linha::after{ transform:scaleY(1); }
+  .counters{ grid-template-columns:repeat(2,1fr); }
+  .sol-inner{ grid-template-columns:1fr; }
+  .foot-top{ grid-template-columns:1fr 1fr; }
+  .space-grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:820px){
+  .nav{ display:none; }
+  .site-header .btn{ display:none; }
+  .burger{ display:block; }
+  .hero-stats{ grid-template-columns:repeat(2,1fr); gap:1.5rem; }
+}
+@media (max-width:560px){
+  .row{ grid-template-columns:1fr; }
+  .counters{ grid-template-columns:1fr; }
+  .foot-top{ grid-template-columns:1fr; }
+  .metrics{ grid-template-columns:1fr; }
+  .space-grid div:nth-child(1){ grid-column:span 2; }
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+  html{ scroll-behavior:auto; }
+  .rv{ opacity:1; transform:none; }
+  .chart i{ transform:scaleY(1); }
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progresso"></div>
+<div class="grao" aria-hidden="true"></div>
+
+<!-- ==================== HEADER ==================== -->
+<header class="site-header" id="cabecalho">
+  <div class="wrap">
+    <a href="#topo" class="brand">
+      <img src="assets/logo-prata-256.png" alt="" width="34" />
+      <span>
+        <b>Green<span>Hub</span></b>
+        <small>Clínicas de estética</small>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Principal">
+      <a href="#topo">Home</a>
+      <a href="#solucoes">Soluções</a>
+      <a href="#metodo">Método</a>
+      <a href="#cases">Cases</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato">Contato</a>
+    </nav>
+
+    <a href="#contato" class="btn btn--primary">Falar com especialista</a>
+
+    <button class="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="gaveta">
+      <i></i><i></i><i></i>
+    </button>
+  </div>
+</header>
+
+<nav class="drawer" id="gaveta" aria-label="Menu">
+  <a href="#topo">Home</a>
+  <a href="#solucoes">Soluções</a>
+  <a href="#metodo">Método</a>
+  <a href="#cases">Cases</a>
+  <a href="#sobre">Sobre</a>
+  <a href="#contato">Contato</a>
+  <a href="#contato" class="btn btn--primary">Falar com especialista</a>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="topo">
+  <canvas id="arvore" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <p class="hero-badge">
+      <img src="assets/logo-prata-256.png" alt="" />
+      Bem-vindo ao ecossistema Green Hub
+    </p>
+
+    <h1>A agenda cheia começa <em>antes</em> do agendamento</h1>
+
+    <p class="lead">Somos um hub de soluções para <b>clínicas de estética</b>. Ligamos marketing, atendimento e comercial em uma operação só — do primeiro clique à cadeira ocupada.</p>
+
+    <div class="hero-actions">
+      <a href="#contato" class="btn btn--primary">
+        Falar com especialista
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#solucoes" class="btn btn--ghost">Ver soluções</a>
+    </div>
+
+    <div class="hero-stats rv">
+      <div><b data-dado="clinicas" data-count="120" data-prefix="+">0</b><span>Clínicas de estética atendidas</span></div>
+      <div><b data-dado="investidoMi" data-count="18" data-prefix="+" data-suffix="M">0</b><span>Investidos em mídia</span></div>
+      <div><b data-dado="agendamentosMil" data-count="240" data-prefix="+" data-suffix="mil">0</b><span>Agendamentos gerados</span></div>
+      <div><b data-dado="estados" data-count="14" data-prefix="+">0</b><span>Estados atendidos</span></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ==================== MARQUEE ==================== -->
+<div class="strip">
+  <div class="marquee"><div class="marquee-track" id="trilha"></div></div>
+</div>
+
+<!-- ==================== O QUE FAZEMOS ==================== -->
+<section class="section" id="oquefazemos">
+  <div class="wrap intro">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Green Hub</p>
+      <h2 class="h-lg">O que a Green Hub faz pela sua clínica?</h2>
+      <p class="body-mut">Clínica de estética não perde paciente por falta de anúncio — perde por buraco entre o anúncio e o atendimento. A gente fecha esse buraco: campanha, criativo, WhatsApp, CRM e follow-up funcionando como uma coisa só.</p>
+      <a href="#solucoes" class="link-more" style="margin-top:.6rem;">
+        Conhecer o método
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <div class="intro-media rv plx" data-plx="20">
+      <button class="play" type="button" aria-label="Assistir apresentação da Green Hub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SOLUÇÕES ==================== -->
+<section class="section section--paper" id="solucoes">
+  <div class="wrap stack g4">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Soluções</p>
+      <h2 class="h-lg">O que a sua clínica precisa agora?</h2>
+      <p class="lead">Quatro frentes que podem entrar juntas ou separadas, conforme o gargalo do momento.</p>
+    </div>
+
+    <div class="sol">
+      <article class="sol-item rv" data-open="true">
+        <button class="sol-head" type="button" aria-expanded="true">
+          <span class="sol-num">01</span>
+          <h3>Atrair pacientes particulares todos os dias</h3>
+          <span class="sol-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="sol-body"><div><div class="sol-inner">
+          <p>Campanhas desenhadas por procedimento e por ticket, com criativo próprio e página de captura que conversa com quem clicou. Sem promessa de volume: o alvo é agenda cheia de paciente que fecha.</p>
+          <ul class="sol-tags">
+            <li>Meta Ads</li><li>Google Ads</li><li>Criativos e edição de vídeo</li>
+            <li>Landing pages</li><li>Social media</li><li>Copy por procedimento</li>
+          </ul>
+        </div></div></div>
+      </article>
+
+      <article class="sol-item rv">
+        <button class="sol-head" type="button" aria-expanded="false">
+          <span class="sol-num">02</span>
+          <h3>Organizar o comercial e parar de perder lead no WhatsApp</h3>
+          <span class="sol-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="sol-body"><div><div class="sol-inner">
+          <p>Chega de planilha e conversa perdida. Implementamos CRM de verdade, com etapas, responsáveis e régua de follow-up — para que nenhum paciente esfrie por esquecimento.</p>
+          <ul class="sol-tags">
+            <li>Implementação de CRM</li><li>Integração com WhatsApp</li><li>Automações</li>
+            <li>Réguas de resgate</li><li>Distribuição de leads</li><li>Painel comercial</li>
+          </ul>
+        </div></div></div>
+      </article>
+
+      <article class="sol-item rv">
+        <button class="sol-head" type="button" aria-expanded="false">
+          <span class="sol-num">03</span>
+          <h3>Treinar a recepção para converter mais avaliações</h3>
+          <span class="sol-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="sol-body"><div><div class="sol-inner">
+          <p>O anúncio traz, mas quem fecha é a recepção. Treinamos abordagem, contorno de objeção e follow-up, com script vivo e acompanhamento das ligações e conversas.</p>
+          <ul class="sol-tags">
+            <li>Scripts de atendimento</li><li>Contorno de objeção</li><li>Gestão de agenda</li>
+            <li>Follow-up estruturado</li><li>Escuta de atendimentos</li><li>Metas por etapa</li>
+          </ul>
+        </div></div></div>
+      </article>
+
+      <article class="sol-item rv">
+        <button class="sol-head" type="button" aria-expanded="false">
+          <span class="sol-num">04</span>
+          <h3>Construir uma marca que sustenta preço</h3>
+          <span class="sol-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="sol-body"><div><div class="sol-inner">
+          <p>Clínica que compete por preço vive de desconto. Identidade, site e audiovisual construídos para posicionar a sua clínica no topo — e justificar o ticket que ela merece.</p>
+          <ul class="sol-tags">
+            <li>Identidade visual</li><li>Site institucional</li><li>Audiovisual</li>
+            <li>Ensaios e bastidores</li><li>Posicionamento</li><li>Materiais internos</li>
+          </ul>
+        </div></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== MÉTODO FLOREST ==================== -->
+<section class="section section--deep florest" id="metodo">
+  <canvas class="florest-fundo" id="chuva" aria-hidden="true"></canvas>
+
+  <div class="wrap stack g4">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Método proprietário</p>
+      <h2 class="h-lg">Método <em class="grad-text">FLOREST</em></h2>
+      <p class="lead">Nada cresce fora de estação. São cinco etapas, na ordem — e a clínica só avança quando a anterior deu resultado.</p>
+    </div>
+
+    <ol class="etapas" id="etapas">
+      <li class="etapa" data-etapa="1">
+        <span class="etapa-linha" aria-hidden="true"></span>
+        <div class="etapa-arte" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="32" cy="30" rx="9" ry="12" class="tr"/>
+            <path d="M32 42v12" class="tr"/>
+            <path d="M32 50c-5 0-8-3-9-7M32 50c5 0 8-3 9-7" class="tr"/>
+            <path d="M23 56h18" class="tr" opacity=".45"/>
+          </svg>
+        </div>
+        <span class="etapa-num">01</span>
+        <h3>Semente</h3>
+        <p>Entendimento dos procedimentos, do ticket e do público. É aqui que a estratégia é definida — antes de gastar um real.</p>
+        <ul class="etapa-itens">
+          <li>Diagnóstico da clínica</li>
+          <li>Mapa de procedimentos e ticket</li>
+          <li>Definição da oferta</li>
+        </ul>
+      </li>
+
+      <li class="etapa" data-etapa="2">
+        <span class="etapa-linha" aria-hidden="true"></span>
+        <div class="etapa-arte" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M32 54V26" class="tr"/>
+            <path d="M32 34c-9 0-13-6-13-13 8 0 13 4 13 13z" class="tr"/>
+            <path d="M32 40c8 0 12-5 12-11-7 0-12 4-12 11z" class="tr"/>
+            <path d="M20 56h24" class="tr" opacity=".45"/>
+          </svg>
+        </div>
+        <span class="etapa-num">02</span>
+        <h3>Plantio</h3>
+        <p>Criação dos materiais, montagem das contas e estruturação de tudo o que foi desenhado. A estratégia sai do papel e vai pro ar.</p>
+        <ul class="etapa-itens">
+          <li>Criativos e páginas</li>
+          <li>Contas, pixel e CRM</li>
+          <li>Campanhas no ar</li>
+        </ul>
+      </li>
+
+      <li class="etapa" data-etapa="3">
+        <span class="etapa-linha" aria-hidden="true"></span>
+        <div class="etapa-arte" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M32 56V22" class="tr"/>
+            <path d="M32 34L21 25M32 42l11-9M32 30l9-8" class="tr"/>
+            <circle cx="18" cy="14" r="2.5" class="tr"/>
+            <circle cx="46" cy="16" r="2.5" class="tr"/>
+            <circle cx="32" cy="10" r="2.5" class="tr"/>
+            <path d="M20 58h24" class="tr" opacity=".45"/>
+          </svg>
+        </div>
+        <span class="etapa-num">03</span>
+        <h3>Cultivo</h3>
+        <p>Teste, leitura e ajuste. Trocamos gancho, público e oferta até o custo por agendamento fechar a conta da clínica.</p>
+        <ul class="etapa-itens">
+          <li>Testes de criativo e público</li>
+          <li>Ajuste de oferta</li>
+          <li>Otimização de custo</li>
+        </ul>
+      </li>
+
+      <li class="etapa" data-etapa="4">
+        <span class="etapa-linha" aria-hidden="true"></span>
+        <div class="etapa-arte" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M32 56V20" class="tr"/>
+            <path d="M32 30c-10 0-16-6-16-14 10 0 16 5 16 14zM32 34c10 0 16-6 16-13-10 0-16 4-16 13z" class="tr"/>
+            <circle cx="22" cy="38" r="4" class="tr"/>
+            <circle cx="42" cy="42" r="4" class="tr"/>
+            <path d="M20 58h24" class="tr" opacity=".45"/>
+          </svg>
+        </div>
+        <span class="etapa-num">04</span>
+        <h3>Colheita</h3>
+        <p>O resultado aparece e é rastreado até a origem: quantas avaliações entraram, quantas fecharam e quanto cada procedimento devolveu.</p>
+        <ul class="etapa-itens">
+          <li>Agenda cheia</li>
+          <li>Receita rastreada</li>
+          <li>Painel de indicadores</li>
+        </ul>
+      </li>
+
+      <li class="etapa" data-etapa="5">
+        <div class="etapa-arte" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 56V36M32 58V26M48 56V38" class="tr"/>
+            <path d="M16 40c-7 0-10-4-10-10 6 0 10 4 10 10zM16 40c7 0 10-4 10-9-6 0-10 3-10 9z" class="tr"/>
+            <path d="M32 32c-9 0-13-6-13-13 8 0 13 5 13 13zM32 32c9 0 13-6 13-13-8 0-13 5-13 13z" class="tr"/>
+            <path d="M48 42c-7 0-10-4-10-10 6 0 10 4 10 10zM48 42c7 0 10-4 10-9-6 0-10 3-10 9z" class="tr"/>
+            <path d="M8 58h48" class="tr" opacity=".45"/>
+          </svg>
+        </div>
+        <span class="etapa-num">05</span>
+        <h3>Floresta</h3>
+        <p>O que provou retorno recebe verba, canal novo e mais unidade. Escala é a última etapa — não a primeira.</p>
+        <ul class="etapa-itens">
+          <li>Aumento de verba</li>
+          <li>Novos canais</li>
+          <li>Expansão de unidades</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== DADOS / CRM ==================== -->
+<section class="section">
+  <div class="wrap data">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Dados</p>
+      <h2 class="h-lg">O que não se mede, não se gerencia</h2>
+      <p class="body-mut">Quanto custa um paciente novo na sua clínica hoje? Qual procedimento paga a mídia e qual só ocupa agenda? Sem essa resposta, aumentar verba é aposta.</p>
+      <p class="body-mut">Montamos o painel que liga investimento, agendamento e faturamento — e usamos ele em toda reunião de rota.</p>
+    </div>
+
+    <div class="panel rv plx" data-plx="16">
+      <div class="panel-head">
+        <span>Agendamentos por semana</span>
+        <span class="chip">+38% no trimestre</span>
+      </div>
+      <div class="chart" aria-hidden="true">
+        <i style="height:38%"></i><i style="height:52%"></i><i style="height:45%"></i>
+        <i style="height:68%"></i><i style="height:74%"></i><i style="height:63%"></i>
+        <i style="height:88%"></i><i style="height:100%"></i>
+      </div>
+      <div class="metrics">
+        <div><b>R$ 71</b><span>Custo por agendamento</span></div>
+        <div><b>34%</b><span>Avaliação → fechamento</span></div>
+        <div><b>4,8x</b><span>Retorno sobre a mídia</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CASES ==================== -->
+<section class="section section--paper" id="cases">
+  <div class="wrap stack g4">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Cases</p>
+      <h2 class="h-lg">Resultado que aparece na agenda</h2>
+      <p class="lead">Três recortes reais da operação — números do próprio painel do cliente.</p>
+    </div>
+
+    <div class="cases">
+      <article class="case rv">
+        <span class="case-tag">Harmonização facial · DF</span>
+        <span class="case-num grad-text">3,2x</span>
+        <p>Mais avaliações agendadas em 90 dias, sem aumentar a verba de mídia — o ganho veio de criativo por procedimento e follow-up estruturado.</p>
+        <footer>Clínica com 2 unidades</footer>
+      </article>
+
+      <article class="case rv">
+        <span class="case-tag">Estética corporal · SP</span>
+        <span class="case-num grad-text">−41%</span>
+        <p>Queda no custo por agendamento após reestruturar campanhas por ticket e cortar público que enchia o WhatsApp sem fechar.</p>
+        <footer>Primeiros 4 meses</footer>
+      </article>
+
+      <article class="case rv">
+        <span class="case-tag">Odonto estética · MG</span>
+        <span class="case-num grad-text">R$ 1,4M</span>
+        <p>Faturamento rastreado até a origem depois da implementação de CRM e régua de resgate na base parada.</p>
+        <footer>12 meses de operação</footer>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== NÚMEROS ==================== -->
+<section class="section section--gradiente">
+  <div class="wrap stack g4">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Por que a Green Hub</p>
+      <h2 class="h-lg">Especialistas em estética, não em tudo</h2>
+    </div>
+
+    <div class="counters">
+      <div class="counter rv"><b><i>+</i><span data-dado="clinicas" data-count="120">0</span></b><span>Clínicas atendidas</span></div>
+      <div class="counter rv"><b><i>+</i><span data-dado="investidoMi" data-count="18">0</span><i>M</i></b><span>Investidos em mídia</span></div>
+      <div class="counter rv"><b><i>+</i><span data-dado="agendamentosMil" data-count="240">0</span><i>mil</i></b><span>Agendamentos gerados</span></div>
+      <div class="counter rv"><b><i>+</i><span data-dado="estados" data-count="14">0</span></b><span>Estados atendidos</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== DEPOIMENTOS ==================== -->
+<section class="section">
+  <div class="wrap stack g4">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Depoimentos</p>
+      <h2 class="h-lg">Quem já opera com a gente</h2>
+    </div>
+
+    <div class="quotes rv" id="carrossel">
+      <div class="quotes-view">
+        <div class="quotes-track" id="trilha-quotes">
+          <article class="quote">
+            <span class="quote-mark">&ldquo;</span>
+            <p>A diferença não foi só o anúncio. Foi ter processo: hoje eu sei quantas avaliações entraram, quantas fecharam e por quê. Antes eu chutava.</p>
+            <footer>
+              <span class="avatar">MF</span>
+              <span><b>Marla F.</b><span>Clínica de estética avançada · DF</span></span>
+            </footer>
+          </article>
+          <article class="quote">
+            <span class="quote-mark">&ldquo;</span>
+            <p>Minha recepção mudou de patamar. O treinamento e o CRM juntos fizeram a taxa de fechamento subir sem eu gastar um real a mais em mídia.</p>
+            <footer>
+              <span class="avatar">RC</span>
+              <span><b>Dra. Renata C.</b><span>Harmonização facial · SP</span></span>
+            </footer>
+          </article>
+          <article class="quote">
+            <span class="quote-mark">&ldquo;</span>
+            <p>Já tinha passado por três agências. A Green foi a primeira que entendeu que estética não se vende como e-commerce.</p>
+            <footer>
+              <span class="avatar">LP</span>
+              <span><b>Lucas P.</b><span>Rede de clínicas · MG</span></span>
+            </footer>
+          </article>
+        </div>
+      </div>
+
+      <div class="quotes-nav">
+        <button type="button" data-dir="-1" aria-label="Depoimento anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" data-dir="1" aria-label="Próximo depoimento">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      <div class="dots" id="pontos"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SOBRE ==================== -->
+<section class="section section--paper" id="sobre">
+  <div class="wrap about">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Sobre a Green Hub</p>
+      <h2 class="h-lg">Mais que agência. Um hub de soluções.</h2>
+      <p class="body-mut">Nascemos dentro do universo da estética e ficamos nele. Cada processo que aplicamos foi testado em clínica real — com agenda real, recepção real e paciente que compara preço.</p>
+      <p class="body-mut">Não vendemos pacote fechado. Entramos pelo gargalo que está travando o crescimento hoje e vamos abrindo as outras frentes conforme a operação aguenta.</p>
+      <a href="#contato" class="btn btn--dark" style="margin-top:1rem;align-self:flex-start;">Conhecer a Green Hub</a>
+    </div>
+
+    <ul class="about-list rv">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <span><b>Só estética.</b> Nada de atender restaurante, imobiliária e clínica com o mesmo playbook.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <span><b>Squad dedicado.</b> Gestor de tráfego, editor, copy, CS e implantador de CRM na mesma conta.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <span><b>Número aberto.</b> Painel compartilhado, sem relatório maquiado no fim do mês.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <span><b>Sem fidelidade.</b> Cancelamento com 30 dias de aviso. A conta segue porque o resultado sustenta.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==================== NOSSO ESPAÇO ==================== -->
+<section class="section section--deep">
+  <div class="wrap stack g4">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Nosso espaço</p>
+      <h2 class="h-lg">Onde a operação acontece</h2>
+      <p class="lead">Estúdio próprio para gravação, sala de edição e time de performance no mesmo lugar.</p>
+    </div>
+
+    <div class="space-grid rv plx" data-plx="12">
+      <div>Estúdio de gravação</div>
+      <div>Sala de edição</div>
+      <div>Performance</div>
+      <div>Reuniões</div>
+      <div>Recepção</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CONTATO ==================== -->
+<section class="section section--alt" id="contato">
+  <div class="wrap contact">
+    <div class="contact-info rv">
+      <div class="stack g2">
+        <p class="eyebrow">Contato</p>
+        <h2 class="h-lg">Pronto para encher a agenda?</h2>
+        <p class="body-mut">Preencha o formulário e o nosso time entra em contato para entender o momento da sua clínica e montar um diagnóstico — sem custo.</p>
+      </div>
+
+      <ul>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .3 1.9.6 2.8a2 2 0 01-.5 2.1L8.1 9.7a16 16 0 006 6l1.1-1.1a2 2 0 012.1-.5c.9.3 1.8.5 2.8.6a2 2 0 011.9 2.2z"/></svg>
+          <span><b>WhatsApp</b><span data-dado="telefone">(61) 0000-0000</span></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2.5 7l9.5 6 9.5-6"/></svg>
+          <span><b>E-mail</b><span data-dado="email">contato@greenhub.com.br</span></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+          <span><b>Onde estamos</b><span data-dado="cidade">Brasília — DF · atendimento em todo o Brasil</span></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+          <span><b>Atendimento</b><span>Segunda a sexta, das 9h às 18h</span></span>
+        </li>
+      </ul>
+    </div>
+
+    <form class="form rv" id="form-contato" novalidate>
+      <div class="row">
+        <div class="field">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" name="nome" autocomplete="name" required />
+          <small>Preencha o seu nome.</small>
+        </div>
+        <div class="field">
+          <label for="clinica">Nome da clínica</label>
+          <input type="text" id="clinica" name="clinica" autocomplete="organization" required />
+          <small>Preencha o nome da clínica.</small>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" autocomplete="email" required />
+          <small>Informe um e-mail válido.</small>
+        </div>
+        <div class="field">
+          <label for="tel">WhatsApp</label>
+          <input type="tel" id="tel" name="tel" autocomplete="tel" placeholder="(00) 00000-0000" required />
+          <small>Informe um WhatsApp com DDD.</small>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="gargalo">Qual é o principal gargalo hoje?</label>
+        <select id="gargalo" name="gargalo" required>
+          <option value="">Selecione</option>
+          <option>Chegam poucos pacientes novos</option>
+          <option>Chegam leads, mas não fecham</option>
+          <option>Perco conversa no WhatsApp</option>
+          <option>Não sei de onde vêm meus pacientes</option>
+          <option>Quero aumentar o ticket médio</option>
+          <option>Outro</option>
+        </select>
+        <small>Escolha uma opção.</small>
+      </div>
+
+      <div class="field">
+        <label for="msg">Conta um pouco da sua clínica</label>
+        <textarea id="msg" name="msg" rows="4"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn--primary" style="justify-content:center;">
+        Quero meu diagnóstico
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+
+      <p class="form-note">Ao enviar, você concorda em ser contatado pelo time da Green Hub. Não enviamos spam.</p>
+
+      <div class="form-ok" id="ok" role="status" aria-live="polite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <span>Recebemos os seus dados. Nosso time entra em contato pelo WhatsApp em até 1 dia útil.</span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ==================== CTA FINAL ==================== -->
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="cta-band rv">
+      <p class="eyebrow" style="justify-content:center;">Vamos conversar</p>
+      <h2 class="h-lg" style="max-width:20ch;">Sua clínica não precisa de mais um anúncio. Precisa de um sistema.</h2>
+      <p class="lead" style="text-align:center;margin-inline:auto;">Fale com um especialista e receba o diagnóstico da sua operação.</p>
+      <a href="https://wa.me/5561000000000" class="btn btn--primary">
+        Falar no WhatsApp
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="#topo" class="brand">
+          <img src="assets/logo-prata-256.png" alt="" width="34" />
+          <span><b>Green<span>Hub</span></b><small>Clínicas de estética</small></span>
+        </a>
+        <p>Hub de soluções para clínicas de estética. Marketing, comercial e CRM operando junto.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.75-1.95 4 0 4.4 2.5 4.4 5.8V21h-4v-5.2c0-1.25-.02-2.85-1.75-2.85-1.75 0-2.02 1.35-2.02 2.75V21h-4z"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.4-.43-5.03a2.62 2.62 0 00-1.85-1.85C19.1 4.7 12 4.7 12 4.7s-7.1 0-8.72.42a2.62 2.62 0 00-1.85 1.85C1 8.6 1 12 1 12s0 3.4.43 5.03c.24.9.94 1.6 1.85 1.85 1.62.42 8.72.42 8.72.42s7.1 0 8.72-.42a2.62 2.62 0 001.85-1.85C23 15.4 23 12 23 12zM9.75 15.3V8.7L15.5 12z"/></svg></a>
+          <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 2h-3v13.2a2.7 2.7 0 11-2.2-2.66V9.4a5.9 5.9 0 105.2 5.86V9.1a6.7 6.7 0 003.7 1.13V7.1a3.85 3.85 0 01-3.7-3.9V2z"/></svg></a>
+        </div>
+      </div>
+
+      <div class="foot-col">
+        <h5>Soluções</h5>
+        <ul>
+          <li><a href="#solucoes">Tráfego pago</a></li>
+          <li><a href="#solucoes">Criativos e audiovisual</a></li>
+          <li><a href="#solucoes">Implementação de CRM</a></li>
+          <li><a href="#solucoes">Treinamento de recepção</a></li>
+          <li><a href="#solucoes">Sites e identidade</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h5>Green Hub</h5>
+        <ul>
+          <li><a href="#sobre">Sobre nós</a></li>
+          <li><a href="#metodo">Método</a></li>
+          <li><a href="#cases">Cases</a></li>
+          <li><a href="#contato">Trabalhe conosco</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h5>Conteúdos</h5>
+        <ul>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Materiais gratuitos</a></li>
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">Podcast</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© <span id="ano"></span> Green Hub. Todos os direitos reservados.</span>
+      <a href="#">Política de privacidade</a>
+    </div>
+  </div>
+</footer>
+
+<a class="wa" href="https://wa.me/5561000000000" aria-label="Falar no WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 004.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.02-5.1-2.88-6.96A9.76 9.76 0 0012.04 2zm5.75 14.06c-.24.68-1.42 1.3-1.95 1.35-.5.05-1.13.07-1.82-.11-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.8-4.17-4.94-4.37-.15-.2-1.19-1.58-1.19-3.02s.76-2.14 1.03-2.44c.27-.3.58-.37.78-.37h.56c.18 0 .42-.07.66.5.24.59.83 2.03.9 2.18.07.15.12.32.02.52-.1.2-.15.32-.3.5l-.44.51c-.15.15-.3.31-.13.61.17.3.76 1.25 1.63 2.03 1.12 1 2.06 1.3 2.36 1.45.3.15.47.13.64-.08.17-.2.73-.86.93-1.15.2-.3.4-.25.66-.15.27.1 1.7.8 1.99.95.3.15.49.22.56.34.07.13.07.72-.17 1.4z"/></svg>
+</a>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     ⚠️  TROCAR ANTES DE PUBLICAR — dados de vitrine
+     Todos os números, contatos e provas sociais do site saem daqui.
+     ============================================================ */
+  var DADOS = {
+    clinicas:        120,                  // clínicas atendidas
+    investidoMi:     18,                   // milhões investidos em mídia
+    agendamentosMil: 240,                  // mil agendamentos gerados
+    estados:         14,                   // estados atendidos
+    whatsapp:        "5561000000000",      // só dígitos, com 55 na frente
+    email:           "contato@greenhub.com.br",
+    telefone:        "(61) 0000-0000",
+    cidade:          "Brasília — DF · atendimento em todo o Brasil"
+  };
+
+  var reduz = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* modo leve: celular e aparelhos sem mouse rodam a versão reduzida */
+  var leve = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768;
+  document.documentElement.setAttribute("data-leve", String(leve));
+
+  /* ---------- ano ---------- */
+  document.getElementById("ano").textContent = new Date().getFullYear();
+
+  /* ---------- aplica os dados de vitrine ---------- */
+  document.querySelectorAll("[data-dado]").forEach(function(el){
+    var v = DADOS[el.getAttribute("data-dado")];
+    if (v === undefined) return;
+    if (el.hasAttribute("data-count")) el.setAttribute("data-count", v);
+    else el.textContent = v;
+  });
+  document.querySelectorAll('[href^="https://wa.me/"]').forEach(function(a){
+    a.setAttribute("href", "https://wa.me/" + DADOS.whatsapp);
+  });
+
+  /* ---------- barra de progresso + header ---------- */
+  var barra = document.getElementById("progresso");
+  var cab = document.getElementById("cabecalho");
+  function aoRolar(){
+    var alt = document.documentElement.scrollHeight - window.innerHeight;
+    barra.style.width = (alt > 0 ? (window.scrollY / alt) * 100 : 0) + "%";
+    cab.setAttribute("data-stuck", String(window.scrollY > 40));
+  }
+  window.addEventListener("scroll", aoRolar, { passive: true });
+  aoRolar();
+
+  /* ---------- menu mobile ---------- */
+  var burger = document.querySelector(".burger");
+  var gaveta = document.getElementById("gaveta");
+  function fechaMenu(){
+    gaveta.setAttribute("data-open", "false");
+    burger.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+  burger.addEventListener("click", function(){
+    var aberto = gaveta.getAttribute("data-open") === "true";
+    gaveta.setAttribute("data-open", String(!aberto));
+    burger.setAttribute("aria-expanded", String(!aberto));
+    document.body.style.overflow = aberto ? "" : "hidden";
+  });
+  gaveta.addEventListener("click", function(e){ if (e.target.tagName === "A") fechaMenu(); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") fechaMenu(); });
+
+  /* ---------- marquee de especialidades ---------- */
+  var itens = [
+    "Harmonização facial", "Estética corporal", "Depilação a laser", "Odonto estética",
+    "Capilar", "Dermatologia estética", "Emagrecimento", "Pós-operatório",
+    "Bioestimuladores", "Skincare", "Massoterapia", "Micropigmentação"
+  ];
+  var trilha = document.getElementById("trilha");
+  itens.concat(itens).forEach(function(t){
+    var s = document.createElement("span");
+    s.textContent = t;
+    trilha.appendChild(s);
+  });
+
+  /* ---------- reveal on scroll ---------- */
+  var alvos = document.querySelectorAll(".rv, .panel");
+  if ("IntersectionObserver" in window && !reduz) {
+    var obs = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(e){
+        if (e.isIntersecting) {
+          e.target.setAttribute("data-in", "true");
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: .16, rootMargin: "0px 0px -60px 0px" });
+    alvos.forEach(function(el, i){
+      el.style.transitionDelay = (Math.min(i % 4, 3) * 90) + "ms";
+      obs.observe(el);
+    });
+  } else {
+    alvos.forEach(function(el){ el.setAttribute("data-in", "true"); });
+  }
+
+  /* ---------- contadores animados ---------- */
+  function anima(el, alvo){
+    if (reduz) { el.textContent = alvo; return; }
+    var ini = performance.now(), dur = 1500;
+    function passo(t){
+      var p = Math.min((t - ini) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(alvo * eased);
+      if (p < 1) requestAnimationFrame(passo);
+    }
+    requestAnimationFrame(passo);
+  }
+  var contadores = document.querySelectorAll("[data-count]");
+  if ("IntersectionObserver" in window) {
+    var obsC = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(e){
+        if (!e.isIntersecting) return;
+        var el = e.target;
+        var alvo = parseInt(el.getAttribute("data-count"), 10);
+        var pre = el.getAttribute("data-prefix") || "";
+        var suf = el.getAttribute("data-suffix") || "";
+        if (pre || suf) {
+          // formato compacto do hero: prefixo + número + sufixo no mesmo elemento
+          var span = document.createElement("span");
+          el.textContent = "";
+          el.append(pre, span, suf);
+          anima(span, alvo);
+        } else {
+          anima(el, alvo);
+        }
+        obsC.unobserve(el);
+      });
+    }, { threshold: .5 });
+    contadores.forEach(function(el){ obsC.observe(el); });
+  } else {
+    contadores.forEach(function(el){ el.textContent = el.getAttribute("data-count"); });
+  }
+
+  /* ============================================================
+     EFEITOS GLOBAIS (só no desktop, para não pesar no celular)
+     ============================================================ */
+  if (!leve && !reduz) {
+
+    /* --- luz seguindo o cursor dentro dos cartões --- */
+    var cartoes = document.querySelectorAll(".pillar, .case, .etapa, .sol-item, .quote, .panel, .form, .cta-band");
+    cartoes.forEach(function(c){
+      c.classList.add("lume");
+      c.addEventListener("pointermove", function(e){
+        var r = c.getBoundingClientRect();
+        c.style.setProperty("--mx", (e.clientX - r.left) + "px");
+        c.style.setProperty("--my", (e.clientY - r.top) + "px");
+      });
+    });
+
+    /* --- botão principal com leve atração ao cursor --- */
+    document.querySelectorAll(".btn--primary").forEach(function(b){
+      b.addEventListener("pointermove", function(e){
+        var r = b.getBoundingClientRect();
+        var trava = function(v){ return Math.max(-1, Math.min(1, v)); };
+        var dx = trava((e.clientX - (r.left + r.width / 2)) / (r.width / 2));
+        var dy = trava((e.clientY - (r.top + r.height / 2)) / (r.height / 2));
+        b.style.transform = "translate(" + (dx * 6).toFixed(2) + "px," + (dy * 4 - 3).toFixed(2) + "px)";
+      });
+      b.addEventListener("pointerleave", function(){ b.style.transform = ""; });
+    });
+
+    /* --- parallax leve em blocos marcados --- */
+    var plx = document.querySelectorAll(".plx");
+    if (plx.length) {
+      var tickPlx = false;
+      window.addEventListener("scroll", function(){
+        if (tickPlx) return;
+        tickPlx = true;
+        requestAnimationFrame(function(){
+          var meio = window.innerHeight / 2;
+          plx.forEach(function(el){
+            var r = el.getBoundingClientRect();
+            var d = (r.top + r.height / 2 - meio) / meio;
+            var f = parseFloat(el.getAttribute("data-plx")) || 14;
+            el.style.transform = "translateY(" + (d * f).toFixed(1) + "px)";
+          });
+          tickPlx = false;
+        });
+      }, { passive: true });
+    }
+  }
+
+  /* ============================================================
+     MÉTODO FLOREST — etapas acendem em sequência ao entrar na tela
+     ============================================================ */
+  (function(){
+    var etapas = document.querySelectorAll(".etapa");
+    if (!etapas.length) return;
+
+    // mede cada traço do SVG para o desenho sair certinho
+    etapas.forEach(function(et){
+      et.querySelectorAll(".tr").forEach(function(tr){
+        var len = 120;
+        try { len = Math.ceil(tr.getTotalLength()) || 120; } catch (e) {}
+        tr.style.setProperty("--len", len);
+      });
+    });
+
+    if (!("IntersectionObserver" in window) || reduz) {
+      etapas.forEach(function(et){ et.setAttribute("data-ativa", "true"); });
+      return;
+    }
+
+    var obs = new IntersectionObserver(function(ent){
+      ent.forEach(function(e){
+        if (!e.isIntersecting) return;
+        var i = parseInt(e.target.getAttribute("data-etapa"), 10) - 1;
+        setTimeout(function(){ e.target.setAttribute("data-ativa", "true"); }, i * 260);
+        obs.unobserve(e.target);
+      });
+    }, { threshold: .3, rootMargin: "0px 0px -50px 0px" });
+
+    etapas.forEach(function(et){ obs.observe(et); });
+  })();
+
+  /* ---------- chuva de luz atrás do FLOREST ---------- */
+  (function(){
+    var c = document.getElementById("chuva");
+    if (!c || reduz) return;
+    var x = c.getContext("2d");
+    var gotas = [], rodando = false, rafC;
+
+    function dim(){
+      var dpr = Math.min(window.devicePixelRatio || 1, leve ? 1.5 : 2);
+      c.width = c.offsetWidth * dpr;
+      c.height = c.offsetHeight * dpr;
+      x.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var qtd = leve ? 18 : Math.min(Math.round(c.offsetWidth / 22), 60);
+      gotas = [];
+      for (var i = 0; i < qtd; i++) {
+        gotas.push({
+          x: Math.random() * c.offsetWidth,
+          y: Math.random() * c.offsetHeight,
+          v: .25 + Math.random() * .7,
+          h: 12 + Math.random() * 28,
+          a: .08 + Math.random() * .22
+        });
+      }
+    }
+
+    function pinta(){
+      var w = c.offsetWidth, h = c.offsetHeight;
+      x.clearRect(0, 0, w, h);
+      for (var i = 0; i < gotas.length; i++) {
+        var g = gotas[i];
+        g.y += g.v;
+        if (g.y > h + g.h) { g.y = -g.h; g.x = Math.random() * w; }
+        var grad = x.createLinearGradient(g.x, g.y, g.x, g.y + g.h);
+        grad.addColorStop(0, "rgba(121,255,170,0)");
+        grad.addColorStop(1, "rgba(121,255,170," + g.a + ")");
+        x.strokeStyle = grad;
+        x.lineWidth = 1;
+        x.beginPath();
+        x.moveTo(g.x, g.y);
+        x.lineTo(g.x, g.y + g.h);
+        x.stroke();
+      }
+      rafC = requestAnimationFrame(pinta);
+    }
+
+    dim();
+    window.addEventListener("resize", dim);
+
+    // só gasta quadro enquanto a seção está visível
+    new IntersectionObserver(function(ent){
+      ent.forEach(function(e){
+        if (e.isIntersecting && !rodando) { rodando = true; rafC = requestAnimationFrame(pinta); }
+        else if (!e.isIntersecting && rodando) { rodando = false; cancelAnimationFrame(rafC); }
+      });
+    }, { threshold: .05 }).observe(c.parentElement);
+  })();
+
+  /* ---------- acordeão de soluções ---------- */
+  document.querySelectorAll(".sol-head").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var item = btn.closest(".sol-item");
+      var aberto = item.getAttribute("data-open") === "true";
+      document.querySelectorAll(".sol-item").forEach(function(i){
+        i.setAttribute("data-open", "false");
+        i.querySelector(".sol-head").setAttribute("aria-expanded", "false");
+      });
+      if (!aberto) {
+        item.setAttribute("data-open", "true");
+        btn.setAttribute("aria-expanded", "true");
+      }
+    });
+  });
+
+  /* ---------- carrossel de depoimentos ---------- */
+  var trilhaQ = document.getElementById("trilha-quotes");
+  var total = trilhaQ.children.length;
+  var atual = 0;
+  var pontos = document.getElementById("pontos");
+  var timer;
+
+  for (var i = 0; i < total; i++) {
+    (function(idx){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", "Depoimento " + (idx + 1));
+      b.addEventListener("click", function(){ vaiPara(idx); reinicia(); });
+      pontos.appendChild(b);
+    })(i);
+  }
+
+  function vaiPara(idx){
+    atual = (idx + total) % total;
+    trilhaQ.style.transform = "translateX(" + (-atual * 100) + "%)";
+    [].forEach.call(pontos.children, function(b, i){
+      b.setAttribute("aria-current", String(i === atual));
+    });
+  }
+  function reinicia(){
+    if (reduz) return;
+    clearInterval(timer);
+    timer = setInterval(function(){ vaiPara(atual + 1); }, 6500);
+  }
+  document.querySelectorAll(".quotes-nav button").forEach(function(b){
+    b.addEventListener("click", function(){
+      vaiPara(atual + parseInt(b.getAttribute("data-dir"), 10));
+      reinicia();
+    });
+  });
+  vaiPara(0);
+  reinicia();
+
+  /* ---------- vídeo de apresentação ---------- */
+  var play = document.querySelector(".play");
+  if (play) {
+    play.addEventListener("click", function(){
+      alert("Substitua este botão pelo embed do vídeo de apresentação da Green Hub.");
+    });
+  }
+
+  /* ---------- formulário ---------- */
+  var form = document.getElementById("form-contato");
+  var ok = document.getElementById("ok");
+
+  function valida(campo){
+    var val = campo.value.trim();
+    var bom = true;
+    if (campo.hasAttribute("required") && !val) bom = false;
+    if (bom && campo.type === "email") bom = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    if (bom && campo.type === "tel") bom = val.replace(/\D/g, "").length >= 10;
+    campo.closest(".field").setAttribute("data-error", String(!bom));
+    return bom;
+  }
+
+  form.querySelectorAll("input, select").forEach(function(c){
+    c.addEventListener("blur", function(){ if (c.value.trim()) valida(c); });
+    c.addEventListener("input", function(){
+      if (c.closest(".field").getAttribute("data-error") === "true") valida(c);
+    });
+  });
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var campos = form.querySelectorAll("[required]");
+    var tudoOk = true;
+    campos.forEach(function(c){ if (!valida(c)) tudoOk = false; });
+    if (!tudoOk) {
+      form.querySelector('.field[data-error="true"] input, .field[data-error="true"] select').focus();
+      return;
+    }
+    // TODO: enviar para o CRM / webhook da Green Hub
+    ok.setAttribute("data-show", "true");
+    form.querySelectorAll("input, select, textarea").forEach(function(c){ c.value = ""; });
+    ok.scrollIntoView({ block: "nearest", behavior: reduz ? "auto" : "smooth" });
+  });
+
+  /* ============================================================
+     ÁRVORE DO HERO
+     Copa que cresce ao carregar, solta pétalas tecnológicas e se
+     conecta aos nós flutuantes quando o mouse chega perto.
+     Raízes em traçado de circuito com pulsos correndo pelas trilhas.
+     ============================================================ */
+  var cv = document.getElementById("arvore");
+  var ctx = cv.getContext("2d");
+  var raf, t0 = 0;
+
+  var AQUA = [121, 255, 170];   // #79FFAA
+  var VERDE = [103, 255, 64];   // #67FF40
+  var AZUL = [0, 178, 255];     // #00B2FF
+
+  var PROF = leve ? 7 : 9;      // profundidade da ramificação
+  var folhas = [];              // pontas coletadas no traçado da copa
+  var trilhas = [];             // polilinhas das raízes
+  var petalas = [];             // pétalas tecnológicas caindo
+  var nos = [];                 // nós flutuantes que a árvore conecta
+  /* mouse com inércia: sx/sy perseguem o cursor e "peso" sobe ao entrar
+     e desce ao sair, para a copa voltar ao lugar sem estalo */
+  var mouse = {
+    x: -9999, y: -9999,     // posição crua
+    sx: -9999, sy: -9999,   // posição suavizada
+    peso: 0, alvo: 0,       // 0 = sem influência, 1 = influência total
+    vel: 0, ativo: false
+  };
+
+  function atualizaMouse(){
+    mouse.peso += (mouse.alvo - mouse.peso) * .07;
+    if (mouse.sx < -9000) { mouse.sx = mouse.x; mouse.sy = mouse.y; }
+    var ax = (mouse.x - mouse.sx) * .14;
+    var ay = (mouse.y - mouse.sy) * .14;
+    mouse.sx += ax;
+    mouse.sy += ay;
+    mouse.vel = Math.min(Math.hypot(ax, ay), 40);
+    mouse.ativo = mouse.peso > .01;
+  }
+
+  /* quanto o galho cede ao passar o cursor: os finos cedem mais que o tronco */
+  var RAIO_TOQUE = 270;
+  function empurra(x, y, ang, nivel){
+    if (mouse.peso < .01) return 0;
+    var dx = x - mouse.sx, dy = y - mouse.sy;
+    var d = Math.hypot(dx, dy);
+    if (d > RAIO_TOQUE) return 0;
+
+    var forca = Math.pow(1 - d / RAIO_TOQUE, 2) * mouse.peso;
+    var paraFora = Math.atan2(dy, dx);
+    var dif = Math.atan2(Math.sin(paraFora - ang), Math.cos(paraFora - ang));
+    return dif * forca * (.06 + nivel * .06);
+  }
+
+  /* proximidade 0..1 de um ponto ao cursor, para acender folha e galho */
+  function perto(x, y){
+    if (mouse.peso < .01) return 0;
+    var d = Math.hypot(x - mouse.sx, y - mouse.sy);
+    return d > RAIO_TOQUE ? 0 : (1 - d / RAIO_TOQUE) * mouse.peso;
+  }
+
+  /* PRNG com semente: a árvore é sorteada uma vez e se repete igual
+     a cada quadro, então ela balança sem trocar de forma. */
+  function semente(s){
+    return function(){
+      s |= 0; s = s + 0x6D2B79F5 | 0;
+      var r = Math.imul(s ^ s >>> 15, 1 | s);
+      r = r + Math.imul(r ^ r >>> 7, 61 | r) ^ r;
+      return ((r ^ r >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function mistura(a, b, k){
+    return [
+      Math.round(a[0] + (b[0] - a[0]) * k),
+      Math.round(a[1] + (b[1] - a[1]) * k),
+      Math.round(a[2] + (b[2] - a[2]) * k)
+    ];
+  }
+  function rgba(c, a){ return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + a + ")"; }
+
+  function ajusta(){
+    var dpr = Math.min(window.devicePixelRatio || 1, leve ? 1.5 : 2);
+    cv.width = cv.offsetWidth * dpr;
+    cv.height = cv.offsetHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    montaRaizes();
+    montaNos();
+    petalas = [];
+  }
+
+  /* ---------- nós flutuantes ---------- */
+  function montaNos(){
+    nos = [];
+    if (leve) return;
+    var w = cv.offsetWidth, h = cv.offsetHeight;
+    var rand = semente(77);
+    var qtd = Math.min(Math.round(w / 90), 16);
+    for (var i = 0; i < qtd; i++) {
+      nos.push({
+        x: rand() * w,
+        y: h * .12 + rand() * h * .62,
+        vx: (rand() - .5) * .16,
+        vy: (rand() - .5) * .16,
+        r: 1.4 + rand() * 1.8,
+        fase: rand()
+      });
+    }
+  }
+
+  /* ---------- raízes: trilhas ortogonais tipo placa de circuito ---------- */
+  function montaRaizes(){
+    var w = cv.offsetWidth, h = cv.offsetHeight;
+    var base = { x: w / 2, y: h * .84 };
+    var rand = semente(2026);
+    trilhas = [];
+
+    var qtd = leve ? 4 : (w < 700 ? 5 : 9);
+    for (var i = 0; i < qtd; i++) {
+      var dir = i % 2 ? 1 : -1;
+      var pts = [{ x: base.x, y: base.y }];
+      var x = base.x, y = base.y;
+      var passos = 3 + Math.floor(rand() * 3);
+
+      for (var s = 0; s < passos; s++) {
+        var dx = (45 + rand() * 130) * dir;
+        var dy = 14 + rand() * 30;
+        x += dx; y += dy;
+        pts.push({ x: x - dx * .35, y: y });   // diagonal curta
+        pts.push({ x: x, y: y });              // trecho reto
+      }
+      pts.push({ x: x, y: Math.min(y + 30 + rand() * 40, h + 20) });
+      trilhas.push({ pts: pts, fase: rand() });
+    }
+  }
+
+  function desenhaRaizes(cresc, tempo){
+    var vis = Math.max(0, Math.min((cresc - .25) / .75, 1));
+    if (vis <= 0) return;
+
+    for (var i = 0; i < trilhas.length; i++) {
+      var tr = trilhas[i], pts = tr.pts;
+      var ate = 1 + (pts.length - 1) * vis;
+
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (var j = 1; j < ate; j++) {
+        var p = pts[j], ant = pts[j - 1];
+        var f = Math.min(ate - j, 1);
+        ctx.lineTo(ant.x + (p.x - ant.x) * f, ant.y + (p.y - ant.y) * f);
+      }
+      ctx.strokeStyle = rgba(AQUA, .16);
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+
+      for (var k = 2; k < Math.floor(ate); k += 2) {
+        ctx.fillStyle = rgba(AQUA, .3);
+        ctx.fillRect(pts[k].x - 2, pts[k].y - 2, 4, 4);
+      }
+
+      if (vis > .95) {
+        var prog = ((tempo * .00016) + tr.fase) % 1;
+        var idx = prog * (pts.length - 1);
+        var i0 = Math.floor(idx), i1 = Math.min(i0 + 1, pts.length - 1);
+        var fr = idx - i0;
+        var px = pts[i0].x + (pts[i1].x - pts[i0].x) * fr;
+        var py = pts[i0].y + (pts[i1].y - pts[i0].y) * fr;
+        var cor = i % 3 === 0 ? AZUL : AQUA;
+        ctx.beginPath();
+        ctx.arc(px, py, 2.4, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(cor, .95);
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = rgba(cor, .9);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+  }
+
+  /* ---------- copa ---------- */
+  function ramo(x, y, comp, ang, nivel, orcamento, rand, tempo){
+    if (nivel > orcamento) return;
+    var frac = Math.min(orcamento - nivel, 1);
+
+    var amp = .015 * nivel;
+    var a = ang + Math.sin(tempo * .0007 + nivel * .9 + x * .02) * amp + empurra(x, y, ang, nivel);
+
+    var x2 = x + Math.cos(a) * comp * frac;
+    var y2 = y + Math.sin(a) * comp * frac;
+
+    var k = nivel / PROF;
+    var pr = perto(x2, y2);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x2, y2);
+    // o galho acende quando o cursor encosta
+    ctx.strokeStyle = rgba(mistura(VERDE, AQUA, Math.min(k + pr * .5, 1)), .28 + k * .5 + pr * .35);
+    ctx.lineWidth = Math.max(.7, (PROF - nivel) * .78) + pr * .6;
+    ctx.lineCap = "round";
+    ctx.stroke();
+
+    if (nivel >= PROF) {
+      folhas.push({ x: x2, y: y2, s: rand(), pr: pr });
+      return;
+    }
+
+    var abre = .34 + rand() * .26;
+    var enc = .74 + rand() * .1;
+    ramo(x2, y2, comp * enc, a - abre, nivel + 1, orcamento, rand, tempo);
+    ramo(x2, y2, comp * enc, a + abre * (.85 + rand() * .3), nivel + 1, orcamento, rand, tempo);
+
+    if (nivel > 2 && nivel < 6 && rand() > .72) {
+      ramo(x2, y2, comp * enc * .8, a + (rand() - .5) * .3, nivel + 1, orcamento, rand, tempo);
+    }
+  }
+
+  function desenhaFolhas(tempo){
+    for (var i = 0; i < folhas.length; i++) {
+      var f = folhas[i];
+      var brilho = .45 + .55 * Math.abs(Math.sin(tempo * .0012 + f.s * 9));
+      var cor = f.s > .93 ? AZUL : AQUA;
+      var pr = f.pr || 0;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, 1.5 + f.s * 1.4 + pr * 2.2, 0, Math.PI * 2);
+      ctx.fillStyle = rgba(cor, Math.min(brilho + pr * .5, 1));
+      ctx.shadowBlur = 9 + pr * 14;
+      ctx.shadowColor = rgba(cor, .75);
+      ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+  }
+
+  /* ---------- pétalas tecnológicas ---------- */
+  /* sacudir a copa com o cursor derruba folha: sorteia entre as
+     que estão sob o mouse, não entre todas */
+  function soltaPetala(porToque){
+    if (leve || !folhas.length) return;
+    var f;
+    if (porToque) {
+      var candidatas = folhas.filter(function(o){ return (o.pr || 0) > .35; });
+      if (!candidatas.length) return;
+      f = candidatas[Math.floor(Math.random() * candidatas.length)];
+    } else {
+      f = folhas[Math.floor(Math.random() * folhas.length)];
+    }
+    petalas.push({
+      x: f.x, y: f.y,
+      vx: (Math.random() - .5) * .32,
+      vy: .22 + Math.random() * .35,
+      giro: Math.random() * Math.PI * 2,
+      vgiro: (Math.random() - .5) * .022,
+      tam: 4.5 + Math.random() * 4.5,
+      vida: 0,
+      total: 420 + Math.random() * 320,
+      azul: Math.random() > .86
+    });
+  }
+
+  function desenhaPetalas(){
+    var h = cv.offsetHeight;
+    for (var i = petalas.length - 1; i >= 0; i--) {
+      var p = petalas[i];
+      p.vida++;
+
+      // o cursor empurra a pétala para longe ao passar
+      if (mouse.peso > .01) {
+        var ex = p.x - mouse.sx, ey = p.y - mouse.sy;
+        var ed = Math.hypot(ex, ey);
+        if (ed < 130 && ed > .5) {
+          var sopro = (1 - ed / 130) * mouse.peso * .9;
+          p.vx += (ex / ed) * sopro;
+          p.vy += (ey / ed) * sopro * .5;
+          p.vgiro += sopro * .012;
+        }
+      }
+      p.vx *= .97;   // atrito, senão a pétala sai voando
+
+      // deriva lateral tipo folha caindo
+      p.x += p.vx + Math.sin(p.vida * .028) * .5;
+      p.y += p.vy;
+      p.vy = Math.min(p.vy + .0016, 1.1);
+      p.giro += p.vgiro;
+      p.vgiro *= .99;
+
+      var prog = p.vida / p.total;
+      if (prog >= 1 || p.y > h + 30) { petalas.splice(i, 1); continue; }
+
+      // some no começo e no fim
+      var alfa = Math.min(prog * 6, 1) * (1 - Math.max(0, (prog - .7) / .3));
+      var cor = p.azul ? AZUL : AQUA;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.giro);
+
+      // corpo da pétala: losango alongado
+      ctx.beginPath();
+      ctx.moveTo(0, -p.tam);
+      ctx.quadraticCurveTo(p.tam * .62, 0, 0, p.tam);
+      ctx.quadraticCurveTo(-p.tam * .62, 0, 0, -p.tam);
+      ctx.fillStyle = rgba(cor, .13 * alfa);
+      ctx.strokeStyle = rgba(cor, .8 * alfa);
+      ctx.lineWidth = 1;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = rgba(cor, .55 * alfa);
+      ctx.fill();
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // nervura central + traços de circuito
+      ctx.beginPath();
+      ctx.moveTo(0, -p.tam * .78);
+      ctx.lineTo(0, p.tam * .78);
+      ctx.moveTo(0, -p.tam * .3); ctx.lineTo(p.tam * .34, -p.tam * .05);
+      ctx.moveTo(0, p.tam * .18);  ctx.lineTo(-p.tam * .34, p.tam * .44);
+      ctx.strokeStyle = rgba(cor, .55 * alfa);
+      ctx.lineWidth = .8;
+      ctx.stroke();
+
+      ctx.restore();
+    }
+  }
+
+  /* ---------- nós + conexões no mouse ---------- */
+  function desenhaNos(tempo){
+    if (leve || !nos.length) return;
+    var w = cv.offsetWidth, h = cv.offsetHeight;
+    var R = 240;
+
+    for (var i = 0; i < nos.length; i++) {
+      var n = nos[i];
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > w) n.vx *= -1;
+      if (n.y < h * .08 || n.y > h * .82) n.vy *= -1;
+
+      var d = mouse.ativo ? Math.hypot(n.x - mouse.x, n.y - mouse.y) : 9999;
+      var perto = d < R ? 1 - d / R : 0;
+
+      // o nó acende quando o mouse chega perto
+      var base = .18 + .12 * Math.abs(Math.sin(tempo * .001 + n.fase * 8));
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r + perto * 2.2, 0, Math.PI * 2);
+      ctx.fillStyle = rgba(AQUA, base + perto * .8);
+      if (perto > 0) { ctx.shadowBlur = 14 * perto; ctx.shadowColor = rgba(AQUA, .8); }
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      if (perto <= 0) continue;
+
+      // linha do nó até o mouse
+      ctx.beginPath();
+      ctx.moveTo(n.x, n.y);
+      ctx.lineTo(mouse.x, mouse.y);
+      ctx.strokeStyle = rgba(AQUA, .34 * perto);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // e do nó até a folha mais próxima da árvore — é a conexão
+      var melhor = null, dm = 1e9;
+      for (var j = 0; j < folhas.length; j += 3) {
+        var f = folhas[j];
+        var df = Math.hypot(f.x - n.x, f.y - n.y);
+        if (df < dm) { dm = df; melhor = f; }
+      }
+      if (melhor && dm < 320) {
+        ctx.beginPath();
+        ctx.moveTo(n.x, n.y);
+        ctx.lineTo(melhor.x, melhor.y);
+        ctx.strokeStyle = rgba(AZUL, .3 * perto * (1 - dm / 320));
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // pulso viajando do nó para a folha
+        var pr = ((tempo * .0006) + n.fase) % 1;
+        ctx.beginPath();
+        ctx.arc(n.x + (melhor.x - n.x) * pr, n.y + (melhor.y - n.y) * pr, 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(AQUA, .9 * perto);
+        ctx.fill();
+      }
+    }
+
+    // halo seguindo o cursor
+    if (mouse.ativo) {
+      var halo = ctx.createRadialGradient(mouse.sx, mouse.sy, 0, mouse.sx, mouse.sy, 150);
+      halo.addColorStop(0, rgba(AQUA, .1 * mouse.peso));
+      halo.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = halo;
+      ctx.fillRect(mouse.sx - 150, mouse.sy - 150, 300, 300);
+    }
+  }
+
+  var ultimaPetala = 0, ultimoToque = 0;
+
+  function desenha(tempo){
+    var w = cv.offsetWidth, h = cv.offsetHeight;
+    if (!w || !h) return;
+    ctx.clearRect(0, 0, w, h);
+
+    atualizaMouse();
+
+    var decorrido = t0 ? tempo - t0 : 0;
+    var cresc = reduz ? 1 : Math.min(decorrido / 2600, 1);
+    var suave = 1 - Math.pow(1 - cresc, 3);
+
+    var halo = ctx.createRadialGradient(w / 2, h * .46, 0, w / 2, h * .46, Math.min(w, h) * .52);
+    halo.addColorStop(0, rgba(AQUA, .09 * suave));
+    halo.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = halo;
+    ctx.fillRect(0, 0, w, h);
+
+    desenhaRaizes(suave, tempo);
+
+    folhas = [];
+    var base = h * .84;
+    var tronco = Math.min(h * .175, w * .125);
+    var rand = semente(2026);
+    ramo(w / 2, base, tronco, -Math.PI / 2, 0, suave * (PROF + 1), rand, tempo);
+
+    if (suave > .8) desenhaFolhas(tempo);
+
+    desenhaNos(tempo);
+
+    // solta pétala a cada ~700ms depois que a copa está formada
+    if (suave > .9 && tempo - ultimaPetala > 700 && petalas.length < 22) {
+      soltaPetala(false);
+      ultimaPetala = tempo;
+    }
+
+    // sacudir a copa com o cursor derruba folha extra
+    if (suave > .9 && mouse.vel > 4 && tempo - ultimoToque > 140 && petalas.length < 40) {
+      soltaPetala(true);
+      ultimoToque = tempo;
+    }
+
+    desenhaPetalas();
+  }
+
+  function loop(tempo){
+    if (!t0) t0 = tempo;
+    desenha(tempo);
+    raf = requestAnimationFrame(loop);
+  }
+
+  ajusta();
+  window.addEventListener("resize", function(){
+    ajusta();
+    if (reduz) desenha(performance.now());
+  });
+
+  if (!leve && !reduz) {
+    /* escuta na seção inteira: o canvas fica atrás do texto, e sem isso
+       a árvore congelaria justamente quando o cursor passa na headline */
+    var palco = cv.closest(".hero") || cv;
+    palco.addEventListener("pointermove", function(e){
+      var r = cv.getBoundingClientRect();
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
+      mouse.alvo = 1;
+    }, { passive: true });
+    palco.addEventListener("pointerleave", function(){ mouse.alvo = 0; });
+  }
+
+  if (reduz) {
+    desenha(performance.now());
+  } else {
+    raf = requestAnimationFrame(loop);
+  }
+})();
+</script>
+</body>
+</html>
