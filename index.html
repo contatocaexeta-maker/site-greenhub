@@ -657,16 +657,112 @@ h1,h2,h3,h4{
 .about{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(2rem,5vw,4.5rem); align-items:center; }
 .about-list li{ display:flex; gap:.9rem; padding:1rem 0; border-bottom:1px solid rgba(var(--sombra-rgb),.1); }
 .about-list li svg{ width:20px; height:20px; flex:none; margin-top:.3rem; color:#0B8A4F; }
-.space-grid{ display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:150px; gap:1rem; }
-.space-grid div{
-  border-radius:var(--r-m); border:1px solid var(--line-2); overflow:hidden;
-  background:linear-gradient(150deg, var(--card), var(--ink));
-  position:relative; transition:transform .3s cubic-bezier(.2,.7,.3,1);
-  display:grid; place-items:center; color:var(--tx-mut); font-size:.8rem; letter-spacing:.12em; text-transform:uppercase;
+/* ============================================================
+   CALCULADORA DE PROJEÇÃO
+   ============================================================ */
+.projecao{
+  display:grid; grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+  gap:clamp(2rem,5vw,4rem); align-items:start;
 }
-.space-grid div:hover{ transform:scale(1.03); }
-.space-grid div:nth-child(1){ grid-column:span 2; grid-row:span 2; }
-.space-grid div:nth-child(4){ grid-column:span 2; }
+.proj-form{ display:flex; flex-direction:column; gap:1.1rem; }
+
+/* campo com prefixo R$ ou sufixo % dentro da borda */
+.campo-moeda{
+  display:flex; align-items:center; gap:.5rem;
+  background:rgba(var(--luz-rgb),.05); border:1px solid var(--line-2);
+  border-radius:var(--r-s); padding:0 1rem;
+  transition:border-color .22s ease, background .22s ease;
+}
+.campo-moeda:focus-within{ border-color:var(--aqua); background:rgba(var(--aqua-rgb),.07); }
+.campo-moeda span{
+  font-size:.95rem; font-weight:600; color:var(--tx-mut); flex:none;
+}
+.campo-moeda input{
+  flex:1; min-width:0; background:none; border:0; outline:none;
+  font-family:inherit; font-size:1.05rem; color:var(--tx);
+  padding:.9rem 0; font-variant-numeric:tabular-nums;
+}
+.campo-moeda--fim{ justify-content:space-between; }
+.field[data-error="true"] .campo-moeda{ border-color:#ff7b7b; }
+
+/* ---- saída ---- */
+.proj-saida{
+  border:1px solid var(--line-2); border-radius:var(--r-l);
+  background:linear-gradient(160deg, var(--card), rgba(var(--sombra-rgb),.25));
+  padding:clamp(1.5rem,3vw,2.4rem);
+  min-height:340px; display:flex; flex-direction:column; justify-content:center;
+}
+.proj-vazio{
+  display:flex; flex-direction:column; align-items:center; gap:1rem;
+  text-align:center; color:var(--tx-mut); padding-block:2rem;
+}
+.proj-vazio-icone{
+  width:64px; height:64px; border-radius:18px; display:grid; place-items:center;
+  border:1px solid var(--line); color:var(--aqua); background:rgba(var(--aqua-rgb),.06);
+}
+.proj-vazio-icone svg{ width:30px; height:30px; }
+.proj-vazio p{ max-width:30ch; font-size:.95rem; }
+
+.proj-cheio{ display:flex; flex-direction:column; gap:1.3rem; }
+.proj-cheio[hidden]{ display:none; }
+.proj-selo{
+  font-size:.72rem; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--aqua);
+}
+.proj-titulo{ font-size:var(--t-2); }
+.proj-frase{
+  font-size:var(--t-1); line-height:1.5; color:var(--tx);
+  padding-bottom:1.2rem; border-bottom:1px solid var(--line-2);
+}
+.proj-frase b{ color:var(--aqua); font-weight:700; }
+
+.proj-linhas{ display:flex; flex-direction:column; }
+.proj-linhas li{
+  display:flex; align-items:baseline; justify-content:space-between; gap:1rem;
+  padding:.72rem 0; border-bottom:1px solid var(--line-2);
+}
+.proj-linhas li:last-child{ border-bottom:0; }
+.proj-linhas span{ font-size:.92rem; color:var(--tx-mut); }
+.proj-linhas b{
+  font-size:1.12rem; font-weight:700; font-variant-numeric:tabular-nums;
+  letter-spacing:-.02em; white-space:nowrap;
+}
+.proj-linhas .destaque{
+  margin-top:.4rem; padding:1rem 1.1rem; border-radius:var(--r-s);
+  background:rgba(var(--aqua-rgb),.1); border:1px solid var(--line);
+}
+.proj-linhas .destaque span{ color:var(--tx); font-weight:600; }
+.proj-linhas .destaque b{ font-size:var(--t-2); color:var(--aqua); }
+
+/* barra investimento x retorno */
+.proj-barra{ display:flex; flex-direction:column; gap:.5rem; }
+.proj-barra-topo{
+  display:flex; justify-content:space-between;
+  font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--tx-mut);
+}
+.proj-trilho{ display:flex; flex-direction:column; gap:.4rem; }
+.proj-trilho i{
+  display:block; height:10px; border-radius:var(--r-pill); width:0;
+  transition:width .9s cubic-bezier(.2,.7,.3,1);
+}
+#rBarraInv{ background:rgba(var(--luz-rgb),.22); }
+#rBarraFat{ background:var(--grad-1); }
+
+.proj-overview{
+  display:flex; flex-direction:column; gap:.7rem;
+  padding:1.2rem 1.3rem; border-radius:var(--r-m);
+  background:rgba(var(--luz-rgb),.04); border:1px solid var(--line-2);
+}
+.proj-overview p{ font-size:.95rem; line-height:1.6; color:var(--tx-mut); }
+.proj-selo-retorno{
+  align-self:flex-start;
+  font-size:.7rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  padding:.34rem .8rem; border-radius:var(--r-pill);
+}
+.proj-selo-retorno[data-nivel="forte"]{ background:rgba(var(--aqua-rgb),.18); color:var(--aqua); }
+.proj-selo-retorno[data-nivel="ok"]{ background:rgba(255,196,74,.18); color:#FFC44A; }
+.proj-selo-retorno[data-nivel="fraco"]{ background:rgba(255,99,110,.18); color:#FF636E; }
+.proj-aviso{ font-size:.78rem; color:var(--tx-mut); opacity:.8; }
 
 /* ============================================================
    FORMULÁRIO
@@ -769,7 +865,7 @@ h1,h2,h3,h4{
   .counters{ grid-template-columns:repeat(2,1fr); }
   .sol-inner{ grid-template-columns:1fr; }
   .foot-top{ grid-template-columns:1fr 1fr; }
-  .space-grid{ grid-template-columns:repeat(2,1fr); }
+  .projecao{ grid-template-columns:1fr; }
 }
 /* na fila de 2, a última etapa sozinha ocupa a linha inteira */
 @media (min-width:641px) and (max-width:1024px){
@@ -802,7 +898,7 @@ h1,h2,h3,h4{
   .counters{ grid-template-columns:1fr; }
   .foot-top{ grid-template-columns:1fr; }
   .metrics{ grid-template-columns:1fr; }
-  .space-grid div:nth-child(1){ grid-column:span 2; }
+  .proj-linhas b{ font-size:1rem; }
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
@@ -1281,21 +1377,108 @@ h1,h2,h3,h4{
   </div>
 </section>
 
-<!-- ==================== NOSSO ESPAÇO ==================== -->
-<section class="section section--deep">
-  <div class="wrap stack g4">
-    <div class="stack g2 rv">
-      <p class="eyebrow">Nosso espaço</p>
-      <h2 class="h-lg">Onde a operação acontece</h2>
-      <p class="lead">Estúdio próprio para gravação, sala de edição e time de performance no mesmo lugar.</p>
+<!-- ==================== CALCULADORA DE PROJEÇÃO ==================== -->
+<section class="section section--deep" id="calculadora">
+  <div class="wrap projecao">
+
+    <div class="stack g3 rv">
+      <div class="stack g2">
+        <p class="eyebrow">Calculadora</p>
+        <h2 class="h-lg">Planeje o potencial dos seus resultados</h2>
+        <p class="lead">Informe seus principais indicadores e veja uma projeção do resultado da sua operação.</p>
+      </div>
+
+      <form class="proj-form" id="formProjecao" novalidate>
+        <div class="field">
+          <label for="pInvest">Investimento em mídia</label>
+          <div class="campo-moeda">
+            <span>R$</span>
+            <input type="text" id="pInvest" inputmode="decimal" placeholder="10.000" autocomplete="off" />
+          </div>
+          <small>Informe um valor maior que zero.</small>
+        </div>
+
+        <div class="field">
+          <label for="pCpl">Custo por lead (CPL)</label>
+          <div class="campo-moeda">
+            <span>R$</span>
+            <input type="text" id="pCpl" inputmode="decimal" placeholder="25" autocomplete="off" />
+          </div>
+          <small>Informe um valor maior que zero.</small>
+        </div>
+
+        <div class="field">
+          <label for="pConv">Taxa de conversão</label>
+          <div class="campo-moeda campo-moeda--fim">
+            <input type="text" id="pConv" inputmode="decimal" placeholder="12" autocomplete="off" />
+            <span>%</span>
+          </div>
+          <small>Informe algo entre 0,1 e 100.</small>
+        </div>
+
+        <div class="field">
+          <label for="pTicket">Ticket médio</label>
+          <div class="campo-moeda">
+            <span>R$</span>
+            <input type="text" id="pTicket" inputmode="decimal" placeholder="1.800" autocomplete="off" />
+          </div>
+          <small>Informe um valor maior que zero.</small>
+        </div>
+
+        <button type="submit" class="btn btn--primary" style="justify-content:center;">
+          Calcular resultados
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </form>
     </div>
 
-    <div class="space-grid rv plx" data-plx="12">
-      <div>Estúdio de gravação</div>
-      <div>Sala de edição</div>
-      <div>Performance</div>
-      <div>Reuniões</div>
-      <div>Recepção</div>
+    <!-- saída -->
+    <div class="proj-saida rv" id="projSaida" role="status" aria-live="polite">
+
+      <div class="proj-vazio" id="projVazio">
+        <div class="proj-vazio-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="2.5" width="16" height="19" rx="3"/>
+            <path d="M8 7h8"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01"/>
+            <path d="M15.5 16h.01"/>
+          </svg>
+        </div>
+        <p>Preencha os quatro campos ao lado para ver a projeção da sua operação.</p>
+      </div>
+
+      <div class="proj-cheio" id="projCheio" hidden>
+        <p class="proj-selo">Com base nos indicadores informados</p>
+        <h3 class="proj-titulo">Resultados previstos estimados</h3>
+
+        <p class="proj-frase" id="projFrase"></p>
+
+        <ul class="proj-linhas">
+          <li><span>Investimento em mídia</span><b id="rInvest"></b></li>
+          <li><span>Oportunidades geradas</span><b id="rOport"></b></li>
+          <li><span>Custo por oportunidade</span><b id="rCusto"></b></li>
+          <li><span>Taxa de conversão</span><b id="rConv"></b></li>
+          <li><span>Fechamentos previstos</span><b id="rFech"></b></li>
+          <li class="destaque"><span>Faturamento estimado</span><b id="rFat"></b></li>
+        </ul>
+
+        <div class="proj-barra" aria-hidden="true">
+          <div class="proj-barra-topo">
+            <span>Investimento</span>
+            <span>Retorno</span>
+          </div>
+          <div class="proj-trilho">
+            <i id="rBarraInv"></i>
+            <i id="rBarraFat"></i>
+          </div>
+        </div>
+
+        <div class="proj-overview">
+          <span class="proj-selo-retorno" id="rSelo"></span>
+          <p id="rOverview"></p>
+        </div>
+
+        <p class="proj-aviso">Projeção baseada nos números que você informou. Serve para dimensionar cenário, não é promessa de resultado.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1803,6 +1986,149 @@ h1,h2,h3,h4{
       alert("Substitua este botão pelo embed do vídeo de apresentação da Green Hub.");
     });
   }
+
+  /* ============================================================
+     CALCULADORA DE PROJEÇÃO
+     oportunidades = investimento ÷ CPL
+     fechamentos   = oportunidades × taxa de conversão
+     faturamento   = fechamentos × ticket médio
+     ============================================================ */
+  (function(){
+    var form = document.getElementById("formProjecao");
+    if (!form) return;
+
+    var vazio = document.getElementById("projVazio");
+    var cheio = document.getElementById("projCheio");
+
+    var moeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+    var moeda2 = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    var inteiro = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
+
+    /* aceita "10.000", "10000", "1.234,56" e "1234.56" */
+    function numero(txt){
+      if (!txt) return NaN;
+      var t = String(txt).trim().replace(/\s/g, "");
+      if (t.indexOf(",") > -1) t = t.replace(/\./g, "").replace(",", ".");
+      else if ((t.match(/\./g) || []).length > 1) t = t.replace(/\./g, "");
+      else if (/\.\d{3}$/.test(t)) t = t.replace(/\./g, "");   // 10.000 é milhar, não decimal
+      return parseFloat(t);
+    }
+
+    var campos = [
+      { el: document.getElementById("pInvest"), min: 0.01, max: Infinity },
+      { el: document.getElementById("pCpl"),    min: 0.01, max: Infinity },
+      { el: document.getElementById("pConv"),   min: 0.1,  max: 100 },
+      { el: document.getElementById("pTicket"), min: 0.01, max: Infinity }
+    ];
+
+    function valida(c){
+      var v = numero(c.el.value);
+      var bom = isFinite(v) && v >= c.min && v <= c.max;
+      c.el.closest(".field").setAttribute("data-error", String(!bom));
+      return bom ? v : null;
+    }
+
+    campos.forEach(function(c){
+      c.el.addEventListener("input", function(){
+        if (c.el.closest(".field").getAttribute("data-error") === "true") valida(c);
+      });
+    });
+
+    function anima(el, alvo, formata, dur){
+      // grava o valor final ANTES de animar: se o requestAnimationFrame
+      // estiver suspenso (aba em segundo plano), o número já está certo
+      // na tela em vez de ficar em branco
+      el.textContent = formata(alvo);
+      if (reduz || document.hidden) return;
+
+      var ini = performance.now();
+      function passo(t){
+        var p = Math.min((t - ini) / (dur || 900), 1);
+        el.textContent = formata(alvo * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(passo);
+      }
+      requestAnimationFrame(passo);
+    }
+
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+
+      var vals = campos.map(valida);
+      if (vals.some(function(v){ return v === null; })) {
+        var erro = form.querySelector('.field[data-error="true"] input');
+        if (erro) erro.focus();
+        return;
+      }
+
+      var investimento = vals[0], cpl = vals[1], conv = vals[2], ticket = vals[3];
+
+      var oportunidades = investimento / cpl;
+      var fechamentos   = oportunidades * (conv / 100);
+      var faturamento   = fechamentos * ticket;
+      var custoCliente  = fechamentos > 0 ? investimento / fechamentos : 0;
+      var roas          = investimento > 0 ? faturamento / investimento : 0;
+      var lucro         = faturamento - investimento;
+
+      vazio.hidden = true;
+      cheio.hidden = false;
+
+      document.getElementById("projFrase").innerHTML =
+        "Você investiu <b>" + moeda.format(investimento) + "</b> para gerar aproximadamente <b>" +
+        inteiro.format(Math.round(oportunidades)) + "</b> oportunidade" + (Math.round(oportunidades) === 1 ? "" : "s") +
+        ", a um custo médio de <b>" + moeda2.format(cpl) + "</b> por oportunidade.";
+
+      anima(document.getElementById("rInvest"), investimento, function(v){ return moeda.format(v); });
+      anima(document.getElementById("rOport"), oportunidades, function(v){ return inteiro.format(Math.round(v)); });
+      anima(document.getElementById("rCusto"), cpl, function(v){ return moeda2.format(v); });
+      document.getElementById("rConv").textContent = inteiro.format(conv).replace(".", ",") + "%";
+      anima(document.getElementById("rFech"), fechamentos, function(v){ return inteiro.format(Math.round(v)); });
+      anima(document.getElementById("rFat"), faturamento, function(v){ return moeda.format(v); }, 1200);
+
+      // barra: o maior dos dois ocupa 100%
+      var maior = Math.max(investimento, faturamento) || 1;
+      var barraInv = document.getElementById("rBarraInv");
+      var barraFat = document.getElementById("rBarraFat");
+      barraInv.style.width = "0"; barraFat.style.width = "0";
+      void barraInv.offsetWidth;          // força o reflow: a transição reinicia
+      barraInv.style.width = (investimento / maior * 100) + "%";
+      barraFat.style.width = (faturamento / maior * 100) + "%";
+
+      // leitura do cenário
+      var selo = document.getElementById("rSelo");
+      var texto = document.getElementById("rOverview");
+      var nivel, rotulo, leitura;
+
+      if (roas >= 4) {
+        nivel = "forte"; rotulo = "Retorno forte";
+        leitura = "Cada real investido devolve " + moeda2.format(roas) + " em faturamento. " +
+          "Nesse patamar o gargalo deixa de ser a mídia e passa a ser a capacidade de atendimento: " +
+          "vale checar se a agenda e a recepção aguentam " + inteiro.format(Math.round(fechamentos)) + " fechamentos no período antes de subir a verba.";
+      } else if (roas >= 2) {
+        nivel = "ok"; rotulo = "Retorno saudável";
+        leitura = "Cada real investido devolve " + moeda2.format(roas) + " em faturamento, o que sustenta a operação. " +
+          "O caminho mais barato para crescer daqui costuma ser a taxa de conversão: subir de " + inteiro.format(conv).replace(".", ",") + "% para " +
+          inteiro.format(Math.min(conv * 1.3, 100)).replace(".", ",") + "% levaria o faturamento a " +
+          moeda.format(faturamento * Math.min(1.3, 100 / conv)) + " sem investir um real a mais.";
+      } else if (roas >= 1) {
+        nivel = "ok"; rotulo = "No limite";
+        leitura = "O retorno de " + moeda2.format(roas) + " por real investido paga a mídia, mas sobra pouco para o resto da operação. " +
+          "Com esse ticket, o custo por cliente de " + moeda.format(custoCliente) + " está apertado — mexer no CPL ou na conversão muda mais o jogo do que aumentar a verba.";
+      } else {
+        nivel = "fraco"; rotulo = "Atenção";
+        leitura = "A projeção devolve menos do que entra: " + moeda2.format(roas) + " por real investido. " +
+          "Cada cliente está custando " + moeda.format(custoCliente) + " para um ticket de " + moeda.format(ticket) + ". " +
+          "Antes de escalar, o ponto é conversão e oferta — mais verba nesse cenário só aumenta o prejuízo.";
+      }
+
+      selo.setAttribute("data-nivel", nivel);
+      selo.textContent = rotulo + " · " + moeda2.format(roas).replace("R$", "").trim() + "x";
+      texto.textContent = leitura + (lucro >= 0
+        ? " Sobre o investimento, isso representa " + moeda.format(lucro) + " acima do que foi aplicado em mídia."
+        : " Isso representa " + moeda.format(Math.abs(lucro)) + " a menos do que foi aplicado em mídia.");
+
+      if (!reduz) cheio.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    });
+  })();
 
   /* ---------- formulário ---------- */
   var form = document.getElementById("form-contato");
