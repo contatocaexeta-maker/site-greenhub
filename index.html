@@ -267,6 +267,21 @@ h1,h2,h3,h4{
   padding-block:8.5rem 4.5rem; overflow:hidden; text-align:center; background:#000;
 }
 .hero canvas{ position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+
+/* árvore em imagem: só aparece quando o arquivo existe (o JS liga) */
+.hero-foto{
+  position:absolute; z-index:0; display:none;
+  left:50%; top:50%; transform:translate(-50%,-50%);
+  width:min(88vw, 720px); height:auto;
+  opacity:.9; pointer-events:none;
+  mix-blend-mode:screen;   /* come o fundo preto do arquivo */
+  animation:respira 8s ease-in-out infinite;
+}
+.hero[data-foto="true"] .hero-foto{ display:block; }
+@keyframes respira{
+  0%,100%{ transform:translate(-50%,-50%) scale(1); }
+  50%    { transform:translate(-50%,-51%) scale(1.025); }
+}
 /* escurece o miolo para o texto ler por cima da copa e deixa o brilho escapar nas bordas */
 .hero::after{
   content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
@@ -810,6 +825,10 @@ h1,h2,h3,h4{
 <!-- ==================== HERO ==================== -->
 <section class="hero" id="topo">
   <canvas id="arvore" aria-hidden="true"></canvas>
+  <!-- Salve a árvore em assets/arvore.png (ou .jpg/.webp) e ela assume
+       o lugar da árvore desenhada. Se o arquivo não existir, o site
+       continua com a versão em canvas e nada quebra. -->
+  <img class="hero-foto" id="arvoreFoto" src="assets/arvore.png" alt="" aria-hidden="true" />
   <div class="wrap">
     <p class="hero-badge">
       <img src="assets/logo-prata-256.png" alt="" />
@@ -1794,6 +1813,41 @@ h1,h2,h3,h4{
   /* a copa agora nasce de vários topos do tronco, então cada galho
      precisa de bem menos profundidade para o total de pontas ficar igual */
   var PROF = leve ? 4 : 6;
+  /* modoFoto: liga sozinho quando assets/arvore.* carrega. Nesse modo o
+     canvas para de desenhar a árvore e fica só com as pétalas e o halo,
+     que continuam caindo por cima da imagem. */
+  var modoFoto = false;
+  (function(){
+    var img = document.getElementById("arvoreFoto");
+    if (!img) return;
+    img.addEventListener("load", function(){
+      modoFoto = true;
+      cv.closest(".hero").setAttribute("data-foto", "true");
+      // as pétalas precisam de pontos de origem: usa a copa da imagem
+      montaPontasDaFoto(img);
+    });
+    img.addEventListener("error", function(){
+      img.remove();   // arquivo não existe: segue com a árvore desenhada
+    });
+  })();
+
+  /* pontos espalhados pela metade de cima da imagem, de onde as
+     folhas se soltam */
+  var pontasFoto = [];
+  function montaPontasDaFoto(img){
+    var r = img.getBoundingClientRect(), c = cv.getBoundingClientRect();
+    var ox = r.left - c.left, oy = r.top - c.top;
+    var rand = semente(31);
+    pontasFoto = [];
+    for (var i = 0; i < 60; i++) {
+      pontasFoto.push({
+        x: ox + r.width * (.18 + rand() * .64),
+        y: oy + r.height * (.08 + rand() * .42),
+        s: rand()
+      });
+    }
+  }
+
   var folhas = [];              // pontas coletadas no traçado da copa
   var trilhas = [];             // polilinhas das raízes
   var petalas = [];             // pétalas tecnológicas caindo
@@ -2307,6 +2361,23 @@ h1,h2,h3,h4{
     ctx.fillStyle = haloCache;
     ctx.fillRect(0, 0, w, h);
 
+    // com a imagem no ar, o canvas não desenha árvore nenhuma:
+    // fica só com as pétalas caindo e o halo do cursor por cima
+    if (modoFoto) {
+      folhas = pontasFoto;
+      desenhaNos(tempo);
+      if (tempo - ultimaPetala > 600 && petalas.length < 26) {
+        soltaPetala(false);
+        ultimaPetala = tempo;
+      }
+      if (mouse.vel > 4 && tempo - ultimoToque > 140 && petalas.length < 44) {
+        soltaPetala(true);
+        ultimoToque = tempo;
+      }
+      desenhaPetalas();
+      return;
+    }
+
     desenhaRaizes(suave, tempo);
 
     folhas = [];
@@ -2362,6 +2433,9 @@ h1,h2,h3,h4{
   ajusta();
   window.addEventListener("resize", function(){
     ajusta();
+    // a imagem muda de tamanho junto: refaz de onde as folhas se soltam
+    var img = document.getElementById("arvoreFoto");
+    if (modoFoto && img) montaPontasDaFoto(img);
     if (reduz) desenha(performance.now());
   });
 
