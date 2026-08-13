@@ -269,18 +269,51 @@ h1,h2,h3,h4{
 .hero canvas{ position:absolute; inset:0; width:100%; height:100%; z-index:0; }
 
 /* árvore em imagem: só aparece quando o arquivo existe (o JS liga) */
-.hero-foto{
+.hero-arvore{
   position:absolute; z-index:0; display:none;
-  left:50%; top:50%; transform:translate(-50%,-50%);
-  width:min(88vw, 720px); height:auto;
-  opacity:.9; pointer-events:none;
-  mix-blend-mode:screen;   /* come o fundo preto do arquivo */
-  animation:respira 8s ease-in-out infinite;
+  left:50%; top:52%;
+  width:min(118vw, 1340px);
+  pointer-events:none;
+  /* --px/--py vêm do JS: é o deslocamento suave que a árvore faz
+     na direção contrária ao cursor */
+  animation:respira 9s ease-in-out infinite;
 }
-.hero[data-foto="true"] .hero-foto{ display:block; }
+.hero[data-foto="true"] .hero-arvore{ display:block; }
 @keyframes respira{
-  0%,100%{ transform:translate(-50%,-50%) scale(1); }
-  50%    { transform:translate(-50%,-51%) scale(1.025); }
+  0%,100%{ transform:translate(calc(-50% + var(--px,0px)), calc(-50% + var(--py,0px))) scale(1); }
+  50%    { transform:translate(calc(-50% + var(--px,0px)), calc(-50.6% + var(--py,0px))) scale(1.02); }
+}
+
+.hero-foto{
+  display:block; width:100%; height:auto;
+  opacity:.85; mix-blend-mode:screen;   /* funde o fundo escuro no hero */
+  /* o fundo do arquivo é escuro mas não preto: sem esta máscara
+     ele apareceria como um retângulo por cima do hero */
+  -webkit-mask-image:radial-gradient(58% 62% at 50% 48%, #000 42%, transparent 82%);
+  mask-image:radial-gradient(58% 62% at 50% 48%, #000 42%, transparent 82%);
+}
+
+/* camada acesa, recortada num círculo que segue o cursor */
+.hero-foto--luz{
+  position:absolute; inset:0; opacity:0;
+  filter:brightness(1.85) saturate(1.3);
+  -webkit-mask-image:radial-gradient(circle 210px at var(--lx,50%) var(--ly,50%), #000 0%, rgba(0,0,0,.4) 46%, transparent 72%);
+  mask-image:radial-gradient(circle 210px at var(--lx,50%) var(--ly,50%), #000 0%, rgba(0,0,0,.4) 46%, transparent 72%);
+  transition:opacity .4s ease;
+}
+.hero[data-luz="true"] .hero-foto--luz{ opacity:1; }
+
+@media (max-width:820px){
+  /* a imagem é panorâmica (1,77:1) e a tela do celular é em pé.
+     Dimensionar pela altura cortaria os lados e sobraria só uma fatia
+     do miolo, que não lê como árvore. Então ela cabe pela LARGURA,
+     inteira, atrás da headline. */
+  .hero-arvore{ width:132vw; height:auto; top:34%; }
+  .hero-foto{ opacity:.62; }
+  .hero-foto--luz{
+    -webkit-mask-image:radial-gradient(circle 130px at var(--lx,50%) var(--ly,50%), #000 0%, rgba(0,0,0,.4) 46%, transparent 72%);
+    mask-image:radial-gradient(circle 130px at var(--lx,50%) var(--ly,50%), #000 0%, rgba(0,0,0,.4) 46%, transparent 72%);
+  }
 }
 /* escurece o miolo para o texto ler por cima da copa e deixa o brilho escapar nas bordas */
 .hero::after{
@@ -828,7 +861,18 @@ h1,h2,h3,h4{
   <!-- Salve a árvore em assets/arvore.png (ou .jpg/.webp) e ela assume
        o lugar da árvore desenhada. Se o arquivo não existir, o site
        continua com a versão em canvas e nada quebra. -->
-  <img class="hero-foto" id="arvoreFoto" src="assets/arvore.png" alt="" aria-hidden="true" />
+  <div class="hero-arvore" id="arvoreWrap" aria-hidden="true">
+    <img class="hero-foto" id="arvoreFoto" alt="" decoding="async"
+         src="assets/arvore-1600.webp"
+         srcset="assets/arvore-900.webp 900w, assets/arvore-1600.webp 1600w"
+         sizes="(max-width:820px) 190vw, 118vw" />
+    <!-- mesma imagem, mais acesa, recortada num círculo que segue o cursor:
+         é o que faz a árvore acender onde a mão passa -->
+    <img class="hero-foto hero-foto--luz" id="arvoreLuz" alt="" decoding="async"
+         src="assets/arvore-1600.webp"
+         srcset="assets/arvore-900.webp 900w, assets/arvore-1600.webp 1600w"
+         sizes="(max-width:820px) 190vw, 118vw" />
+  </div>
   <div class="wrap">
     <p class="hero-badge">
       <img src="assets/logo-prata-256.png" alt="" />
@@ -1831,6 +1875,41 @@ h1,h2,h3,h4{
     });
   })();
 
+  /* --- a imagem reagindo ao cursor ---
+     A luz é um recorte circular de uma cópia mais acesa da própria
+     árvore. O centro do recorte segue o cursor, e a árvore inteira
+     desliza um pouco na direção contrária, o que dá profundidade. */
+  var wrap = document.getElementById("arvoreWrap");
+  var luzX = 50, luzY = 50;   // em % da imagem
+
+  function atualizaFoto(){
+    if (!wrap) return;
+    var hero = cv.closest(".hero");
+    var r = wrap.getBoundingClientRect();
+    var c = cv.getBoundingClientRect();
+
+    if (mouse.peso > .01 && r.width && r.height) {
+      // posição do cursor dentro da imagem, em porcentagem
+      var alvoX = ((mouse.sx + c.left) - r.left) / r.width * 100;
+      var alvoY = ((mouse.sy + c.top) - r.top) / r.height * 100;
+      luzX += (alvoX - luzX) * .16;
+      luzY += (alvoY - luzY) * .16;
+      wrap.style.setProperty("--lx", luzX.toFixed(1) + "%");
+      wrap.style.setProperty("--ly", luzY.toFixed(1) + "%");
+      hero.setAttribute("data-luz", "true");
+
+      // a árvore recua de leve para o lado oposto ao cursor
+      var w2 = cv.offsetWidth, h2 = cv.offsetHeight;
+      var forca = leve ? 6 : 16;
+      wrap.style.setProperty("--px", (-(mouse.sx / w2 - .5) * forca).toFixed(1) + "px");
+      wrap.style.setProperty("--py", (-(mouse.sy / h2 - .5) * forca * .6).toFixed(1) + "px");
+    } else {
+      hero.setAttribute("data-luz", "false");
+      wrap.style.setProperty("--px", "0px");
+      wrap.style.setProperty("--py", "0px");
+    }
+  }
+
   /* pontos espalhados pela metade de cima da imagem, de onde as
      folhas se soltam */
   var pontasFoto = [];
@@ -2364,6 +2443,7 @@ h1,h2,h3,h4{
     // com a imagem no ar, o canvas não desenha árvore nenhuma:
     // fica só com as pétalas caindo e o halo do cursor por cima
     if (modoFoto) {
+      atualizaFoto();
       folhas = pontasFoto;
       desenhaNos(tempo);
       if (tempo - ultimaPetala > 600 && petalas.length < 26) {
@@ -2450,6 +2530,18 @@ h1,h2,h3,h4{
       mouse.alvo = 1;
     }, { passive: true });
     palco.addEventListener("pointerleave", function(){ mouse.alvo = 0; });
+  }
+
+  /* no celular não existe hover: a luz acompanha o dedo enquanto ele
+     estiver encostado na tela */
+  if (leve && !reduz) {
+    var palcoArrasta = cv.closest(".hero") || cv;
+    palcoArrasta.addEventListener("pointermove", function(e){
+      if (mouse.alvo !== 1) return;          // só enquanto pressionado
+      var r = cv.getBoundingClientRect();
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
+    }, { passive: true });
   }
 
   /* ---------- toque/clique derruba uma rajada de folhas ----------
