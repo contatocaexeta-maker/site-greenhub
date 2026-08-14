@@ -606,8 +606,10 @@ h1,h2,h3,h4{
    DEPOIMENTOS EM VÍDEO
    ============================================================ */
 .depos{
-  display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem;
-  width:min(100%, 860px); margin-inline:auto;   /* com 2 cards, largura total esticaria demais */
+  display:grid; grid-template-columns:repeat(2,1fr); gap:1.25rem;
+  /* vídeo em pé é alto por natureza: a largura do card é o que controla
+     a altura da seção, então ela fica curta de propósito */
+  width:min(100%, 620px); margin-inline:auto;
 }
 .depo{
   display:flex; flex-direction:column;
@@ -673,8 +675,8 @@ h1,h2,h3,h4{
    SOBRE / ESPAÇO
    ============================================================ */
 .about{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(2rem,5vw,4.5rem); align-items:center; }
-.about-list li{ display:flex; gap:.9rem; padding:1rem 0; border-bottom:1px solid rgba(var(--sombra-rgb),.1); }
-.about-list li svg{ width:20px; height:20px; flex:none; margin-top:.3rem; color:#0B8A4F; }
+.about-list li{ display:flex; gap:.9rem; padding:1rem 0; border-bottom:1px solid var(--line-2); }
+.about-list li svg{ width:20px; height:20px; flex:none; margin-top:.3rem; color:var(--aqua); }
 /* ============================================================
    CALCULADORA DE PROJEÇÃO
    ============================================================ */
@@ -782,14 +784,24 @@ h1,h2,h3,h4{
 .proj-selo-retorno[data-nivel="fraco"]{ background:rgba(255,99,110,.18); color:#FF636E; }
 .proj-aviso{ font-size:.78rem; color:var(--tx-mut); opacity:.8; }
 
-.equipe{ margin-top:clamp(2.5rem,6vw,4rem); display:flex; flex-direction:column; gap:.9rem; }
-.equipe img{
-  width:100%; height:auto; border-radius:var(--r-l);
-  border:1px solid var(--line-2);
-  box-shadow:0 20px 50px rgba(11,61,46,.12);
+/* a foto da equipe fica por baixo, e o verde da marca por cima dela */
+.sobre-foto{
+  position:relative; overflow:hidden;
+  background-image:url("assets/equipe.webp");
+  background-size:cover;
+  background-position:center 28%;   /* mantém os rostos no enquadramento */
 }
-.equipe p{
-  font-size:.9rem; color:var(--tx-mut); text-align:center;
+.sobre-foto::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:
+    linear-gradient(100deg, rgba(7,42,32,.97) 0%, rgba(7,42,32,.9) 42%, rgba(11,61,46,.62) 100%),
+    radial-gradient(70% 60% at 15% 40%, rgba(var(--aqua-rgb),.10), transparent 70%);
+}
+.sobre-foto > .wrap{ position:relative; z-index:1; }
+@media (max-width:1024px){
+  /* na tela estreita o texto cobre a foto inteira: véu mais forte e parelho */
+  .sobre-foto{ background-position:center 22%; }
+  .sobre-foto::before{ background:linear-gradient(180deg, rgba(7,42,32,.95), rgba(7,42,32,.9)); }
 }
 
 /* ============================================================
@@ -1411,14 +1423,14 @@ h1,h2,h3,h4{
 </section>
 
 <!-- ==================== SOBRE ==================== -->
-<section class="section section--paper" id="sobre">
+<section class="section section--deep sobre-foto" id="sobre">
   <div class="wrap about">
     <div class="stack g2 rv">
       <p class="eyebrow">Sobre a Green Hub</p>
       <h2 class="h-lg">Mais que agência. Um hub de soluções.</h2>
       <p class="body-mut">Nascemos dentro do universo das clínicas e ficamos nele. Cada processo que aplicamos foi testado em clínica real, com agenda real, recepção real e paciente que compara preço.</p>
       <p class="body-mut">Não vendemos pacote fechado. Entramos pelo gargalo que está travando o crescimento hoje e vamos abrindo as outras frentes conforme a operação aguenta.</p>
-      <a href="#contato" class="btn btn--dark" style="margin-top:1rem;align-self:flex-start;">Conhecer a Green Hub</a>
+      <a href="#contato" class="btn btn--primary" style="margin-top:1rem;align-self:flex-start;">Conhecer a Green Hub</a>
     </div>
 
     <ul class="about-list rv">
@@ -1439,12 +1451,6 @@ h1,h2,h3,h4{
         <span><b>Sem fidelidade.</b> Cancelamento com 30 dias de aviso. A conta segue porque o resultado sustenta.</span>
       </li>
     </ul>
-  </div>
-
-  <div class="wrap equipe rv">
-    <img src="assets/equipe.webp" width="1500" height="844" loading="lazy" decoding="async"
-         alt="Time da Green Hub no escritório, de camisa polo verde com a marca da empresa" />
-    <p>O time que atende a sua clínica.</p>
   </div>
 </section>
 
