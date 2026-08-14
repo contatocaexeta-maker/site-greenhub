@@ -829,6 +829,8 @@ h1,h2,h3,h4{
 }
 @keyframes sweep{ 0%{ transform:translateX(-40%); } 50%{ transform:translateX(40%); } 100%{ transform:translateX(-40%); } }
 .cta-band > *{ position:relative; z-index:1; }
+/* o remate é a virada da frase: fica na cor de destaque */
+.cta-remate{ font-style:normal; color:var(--aqua); }
 
 .site-footer{ background:var(--ink-2); border-top:1px solid var(--line); padding-block:4rem 2rem; }
 .foot-top{ display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:2.5rem; }
@@ -1567,7 +1569,10 @@ h1,h2,h3,h4{
   <div class="wrap">
     <div class="cta-band rv">
       <p class="eyebrow" style="justify-content:center;">Vamos conversar</p>
-      <h2 class="h-lg" style="max-width:20ch;">Sua clínica não precisa de mais um anúncio. Precisa de um sistema.</h2>
+      <h2 class="h-lg" style="max-width:22ch;">
+        Sua clínica não precisa de mais um anúncio.<br />
+        <em class="cta-remate">Precisa de um Hub.</em>
+      </h2>
       <p class="lead" style="text-align:center;margin-inline:auto;">Fale com um especialista e receba o diagnóstico da sua operação.</p>
       <a href="https://wa.me/5561000000000" class="btn btn--primary">
         Falar no WhatsApp
