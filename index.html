@@ -605,7 +605,10 @@ h1,h2,h3,h4{
 /* ============================================================
    DEPOIMENTOS EM VÍDEO
    ============================================================ */
-.depos{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; }
+.depos{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem;
+  width:min(100%, 860px); margin-inline:auto;   /* com 2 cards, largura total esticaria demais */
+}
 .depo{
   display:flex; flex-direction:column;
   border:1px solid var(--line-2); border-radius:var(--r-m); overflow:hidden;
@@ -616,7 +619,7 @@ h1,h2,h3,h4{
 
 /* tela do vídeo, em formato vertical (é como o depoimento é gravado) */
 .depo-tela{
-  position:relative; width:100%; aspect-ratio:9/13; cursor:pointer;
+  position:relative; width:100%; aspect-ratio:9/16; cursor:pointer;   /* mesmo formato dos vídeos: 576x1024 */
   border:0; padding:0; display:grid; place-items:center; align-content:center; gap:.9rem;
   /* tela de vídeo é escura em qualquer seção: se herdar o tema claro,
      vira um cinza que apaga o rótulo */
@@ -648,20 +651,18 @@ h1,h2,h3,h4{
   font-size:.68rem; font-weight:700; letter-spacing:.16em;
   text-transform:uppercase; color:#B9CFC3;   /* fixo: a tela é sempre escura */
 }
-.depo-tela iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; z-index:3; }
+.depo-tela video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:3; background:#000; }
 
-.depo blockquote{
-  margin:0; padding:1.5rem; display:flex; flex-direction:column; gap:1.1rem;
-  border-top:1px solid var(--line-2); flex:1;
+.depo-pe{
+  display:flex; align-items:center; gap:.85rem;
+  padding:1.25rem 1.5rem; border-top:1px solid var(--line-2);
 }
-.depo blockquote p{ font-size:1rem; line-height:1.55; }
-.depo footer{ display:flex; align-items:center; gap:.85rem; margin-top:auto; }
 .avatar{
   width:44px; height:44px; border-radius:50%; flex:none; display:grid; place-items:center;
   background:var(--grad-1); color:var(--tx-dark); font-weight:700; font-size:.9rem;
 }
-.depo footer b{ display:block; font-size:.95rem; }
-.depo footer > span:last-child > span{ display:block; font-size:.82rem; color:var(--tx-mut); }
+.depo-pe b{ display:block; font-size:1rem; }
+.depo-pe > span:last-child > span{ display:block; font-size:.85rem; color:var(--tx-mut); }
 
 /* ============================================================
    SOBRE / ESPAÇO
@@ -1346,54 +1347,32 @@ h1,h2,h3,h4{
     </div>
 
     <div class="depos">
-      <!-- Para publicar um vídeo, coloque o ID do YouTube em data-video.
-           Ex.: data-video="dQw4w9WgXcQ". Vazio, o card avisa que falta. -->
-      <article class="depo rv" data-video="">
+      <!-- data-arquivo aponta para o vídeo em videos/. Nada é baixado
+           até o visitante clicar no card. -->
+      <article class="depo rv" data-arquivo="videos/gyovanna.mp4">
         <button class="depo-tela" type="button">
           <span class="depo-play" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </span>
-          <span class="depo-selo">Depoimento em vídeo</span>
+          <span class="depo-selo">Ver depoimento</span>
         </button>
-        <blockquote>
-          <p>Espaço reservado para o depoimento do cliente.</p>
-          <footer>
-            <span class="avatar">CL</span>
-            <span><b>Nome do cliente</b><span>Especialidade · UF</span></span>
-          </footer>
-        </blockquote>
+        <footer class="depo-pe">
+          <span class="avatar">GC</span>
+          <span><b>Gyovanna Cortelleti</b><span>Brasília, DF</span></span>
+        </footer>
       </article>
 
-      <article class="depo rv" data-video="">
+      <article class="depo rv" data-arquivo="videos/cecilia.mp4">
         <button class="depo-tela" type="button">
           <span class="depo-play" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </span>
-          <span class="depo-selo">Depoimento em vídeo</span>
+          <span class="depo-selo">Ver depoimento</span>
         </button>
-        <blockquote>
-          <p>Espaço reservado para o depoimento do cliente.</p>
-          <footer>
-            <span class="avatar">CL</span>
-            <span><b>Nome do cliente</b><span>Especialidade · UF</span></span>
-          </footer>
-        </blockquote>
-      </article>
-
-      <article class="depo rv" data-video="">
-        <button class="depo-tela" type="button">
-          <span class="depo-play" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </span>
-          <span class="depo-selo">Depoimento em vídeo</span>
-        </button>
-        <blockquote>
-          <p>Espaço reservado para o depoimento do cliente.</p>
-          <footer>
-            <span class="avatar">CL</span>
-            <span><b>Nome do cliente</b><span>Especialidade · UF</span></span>
-          </footer>
-        </blockquote>
+        <footer class="depo-pe">
+          <span class="avatar">CG</span>
+          <span><b>Cecilia Guedes</b><span>Recife, PE</span></span>
+        </footer>
       </article>
     </div>
   </div>
@@ -1910,25 +1889,39 @@ h1,h2,h3,h4{
     });
   });
 
-  /* ---------- depoimentos em vídeo ---------- */
+  /* ---------- depoimentos em vídeo ----------
+     O card só mostra a capa. O arquivo em si não é baixado até o
+     clique, então o peso do vídeo não entra no carregamento da página. */
   document.querySelectorAll(".depo").forEach(function(card){
     var tela = card.querySelector(".depo-tela");
     if (!tela) return;
-    var nome = (card.querySelector("footer b") || {}).textContent || "cliente";
+    var nome = (card.querySelector(".depo-pe b") || {}).textContent || "cliente";
     tela.setAttribute("aria-label", "Assistir depoimento de " + nome);
 
     tela.addEventListener("click", function(){
-      var id = (card.getAttribute("data-video") || "").trim();
-      if (!id) {
-        alert("Coloque o ID do vídeo do YouTube no atributo data-video deste card.");
+      if (tela.querySelector("video")) return;      // já está tocando
+
+      var src = (card.getAttribute("data-arquivo") || "").trim();
+      if (!src) {
+        alert("Aponte o arquivo do vídeo em data-arquivo neste card.");
         return;
       }
-      var f = document.createElement("iframe");
-      f.src = "https://www.youtube.com/embed/" + encodeURIComponent(id) + "?autoplay=1&rel=0";
-      f.title = "Depoimento de " + nome;
-      f.allow = "accelerometer; autoplay; encrypted-media; picture-in-picture";
-      f.setAttribute("allowfullscreen", "");
-      tela.appendChild(f);
+
+      // pausa qualquer outro depoimento que esteja rodando
+      document.querySelectorAll(".depo-tela video").forEach(function(v){ v.pause(); });
+
+      var v = document.createElement("video");
+      v.src = src;
+      v.controls = true;
+      v.autoplay = true;
+      v.playsInline = true;
+      v.setAttribute("playsinline", "");           // Safari no iPhone
+      v.preload = "auto";
+      v.title = "Depoimento de " + nome;
+      tela.appendChild(v);
+
+      var p = v.play();
+      if (p && p.catch) p.catch(function(){ /* bloqueado pelo navegador: os controles resolvem */ });
     });
   });
 
