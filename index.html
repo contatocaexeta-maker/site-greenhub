@@ -397,7 +397,7 @@ h1,h2,h3,h4{
 }
 .play:hover{ transform:scale(1.09); }
 .play svg{ width:26px; height:26px; margin-left:4px; }
-@keyframes ring{ 0%{ box-shadow:0 0 0 0 rgba(var(--aqua-rgb),.45); } 70%{ box-shadow:0 0 0 26px rgba(var(--aqua-rgb),0); } 100%{ box-shadow:0 0 0 0 rgba(var(--aqua-rgb),0); } }
+@keyframes ring{ 0%{ box-shadow:0 0 0 0 rgba(121,255,170,.45); } 70%{ box-shadow:0 0 0 26px rgba(121,255,170,0); } 100%{ box-shadow:0 0 0 0 rgba(121,255,170,0); } }
 
 /* ============================================================
    SOLUÇÕES — acordeão
@@ -618,22 +618,26 @@ h1,h2,h3,h4{
 .depo-tela{
   position:relative; width:100%; aspect-ratio:9/13; cursor:pointer;
   border:0; padding:0; display:grid; place-items:center; align-content:center; gap:.9rem;
+  /* tela de vídeo é escura em qualquer seção: se herdar o tema claro,
+     vira um cinza que apaga o rótulo */
   background:
-    radial-gradient(80% 60% at 50% 40%, rgba(var(--aqua-rgb),.14), transparent 65%),
-    linear-gradient(160deg, rgba(var(--luz-rgb),.06), rgba(var(--sombra-rgb),.35));
+    radial-gradient(80% 60% at 50% 40%, rgba(121,255,170,.16), transparent 65%),
+    linear-gradient(160deg, #12261D, #05100B);
   overflow:hidden;
 }
 .depo-tela::after{
   content:""; position:absolute; inset:0; pointer-events:none;
-  background-image:linear-gradient(var(--line-2) 1px, transparent 1px),
-                   linear-gradient(90deg, var(--line-2) 1px, transparent 1px);
-  background-size:34px 34px; opacity:.45;
+  background-image:linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+                   linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+  background-size:34px 34px;
 }
 .depo-play{
   position:relative; z-index:1;
   width:62px; height:62px; border-radius:50%; display:grid; place-items:center;
-  background:var(--grad-1); color:var(--tx-dark);
-  box-shadow:0 0 0 0 rgba(var(--aqua-rgb),.5);
+  /* fixo pelo mesmo motivo da tela: o verde escuro do tema claro
+     sumiria sobre o fundo escuro do player */
+  background:linear-gradient(90deg, #67FF40, #79FFAA); color:#04140D;
+  box-shadow:0 0 0 0 rgba(121,255,170,.5);
   animation:ring 2.8s ease-out infinite;
   transition:transform .22s ease;
 }
@@ -642,7 +646,7 @@ h1,h2,h3,h4{
 .depo-selo{
   position:relative; z-index:1;
   font-size:.68rem; font-weight:700; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--tx-mut);
+  text-transform:uppercase; color:#B9CFC3;   /* fixo: a tela é sempre escura */
 }
 .depo-tela iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; z-index:3; }
 
@@ -1332,37 +1336,8 @@ h1,h2,h3,h4{
   </div>
 </section>
 
-<!-- ==================== DADOS / CRM ==================== -->
-<section class="section section--paper">
-  <div class="wrap data">
-    <div class="stack g2 rv">
-      <p class="eyebrow">Dados</p>
-      <h2 class="h-lg">O que não se mede, não se gerencia</h2>
-      <p class="body-mut">Quanto custa um paciente novo na sua clínica hoje? Qual procedimento paga a mídia e qual só ocupa agenda? Sem essa resposta, aumentar verba é aposta.</p>
-      <p class="body-mut">Montamos o painel que liga investimento, agendamento e faturamento, e usamos ele em toda reunião de rota.</p>
-    </div>
-
-    <div class="panel rv plx" data-plx="16">
-      <div class="panel-head">
-        <span>Agendamentos por semana</span>
-        <span class="chip">+38% no trimestre</span>
-      </div>
-      <div class="chart" aria-hidden="true">
-        <i style="height:38%"></i><i style="height:52%"></i><i style="height:45%"></i>
-        <i style="height:68%"></i><i style="height:74%"></i><i style="height:63%"></i>
-        <i style="height:88%"></i><i style="height:100%"></i>
-      </div>
-      <div class="metrics">
-        <div><b>R$ 71</b><span>Custo por agendamento</span></div>
-        <div><b>34%</b><span>Avaliação → fechamento</span></div>
-        <div><b>4,8x</b><span>Retorno sobre a mídia</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ==================== CASES E DEPOIMENTOS ==================== -->
-<section class="section" id="cases">
+<section class="section section--paper" id="cases">
   <div class="wrap stack g4">
     <div class="stack g2 rv">
       <p class="eyebrow">Cases e depoimentos</p>
