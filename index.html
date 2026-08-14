@@ -2183,12 +2183,21 @@ h1,h2,h3,h4{
   (function(){
     var img = document.getElementById("arvoreFoto");
     if (!img) return;
-    img.addEventListener("load", function(){
+
+    function liga(){
+      if (modoFoto) return;
       modoFoto = true;
       cv.closest(".hero").setAttribute("data-foto", "true");
       // as pétalas precisam de pontos de origem: usa a copa da imagem
       montaPontasDaFoto(img);
-    });
+    }
+
+    /* Com a imagem em cache, o "load" já disparou antes deste script rodar
+       e o ouvinte nunca seria chamado — o site cairia de volta na árvore
+       desenhada. Por isso o estado é conferido na hora, além do ouvinte. */
+    if (img.complete && img.naturalWidth > 0) liga();
+
+    img.addEventListener("load", liga);
     img.addEventListener("error", function(){
       img.remove();   // arquivo não existe: segue com a árvore desenhada
     });
