@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Green Hub — Hub de soluções para clínicas de estética</title>
-<meta name="description" content="Hub de soluções para clínicas de estética. Marketing, comercial e CRM de ponta a ponta: atraímos, organizamos e convertemos pacientes particulares." />
+<title>Green Hub | O 1º Hub de soluções para clínicas do Brasil</title>
+<meta name="description" content="O 1º Hub de soluções para clínicas do Brasil. Marketing, comercial e CRM de ponta a ponta: atraímos, organizamos e convertemos pacientes particulares." />
 <!-- RASCUNHO: números, cases e depoimentos ainda são de exemplo.
      Remova esta linha quando os dados reais entrarem no bloco DADOS. -->
 <meta name="robots" content="noindex, nofollow" />
-<meta property="og:title" content="Green Hub — Hub de soluções para clínicas de estética" />
+<meta property="og:title" content="Green Hub | O 1º Hub de soluções para clínicas do Brasil" />
 <meta property="og:description" content="Do primeiro clique à cadeira ocupada. Aquisição, atendimento, CRM e recompra em uma única operação." />
 <meta property="og:type" content="website" />
 <link rel="icon" href="assets/logo-lime-256.png" />
@@ -144,9 +144,8 @@ h1,h2,h3,h4{
   background:var(--ink); color:var(--tx);
 }
 .section--paper .sol-item,
-.section--paper .case,
+.section--paper .depo,
 .section--paper .panel,
-.section--paper .quote,
 .section--paper .etapa{ box-shadow:0 12px 34px rgba(11,61,46,.07); }
 
 /* verde profundo: o mundo próprio das seções-assinatura */
@@ -588,18 +587,6 @@ h1,h2,h3,h4{
 /* ============================================================
    CASES
    ============================================================ */
-.cases{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; }
-.case{
-  position:relative; border-radius:var(--r-m); overflow:hidden;
-  border:1px solid var(--line-2); background:var(--card);
-  padding:2rem 1.8rem; display:flex; flex-direction:column; gap:1.1rem;
-  transition:transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease;
-}
-.case:hover{ transform:translateY(-8px); border-color:rgba(var(--aqua-rgb),.34); }
-.case-tag{ font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--tx-mut); }
-.case-num{ font-size:clamp(2.4rem,5vw,3.4rem); font-weight:700; letter-spacing:-.045em; line-height:1; }
-.case p{ color:var(--tx-mut); font-size:.94rem; }
-.case footer{ margin-top:auto; padding-top:1rem; border-top:1px solid var(--line-2); font-size:.84rem; color:var(--tx-mut); }
 
 /* ============================================================
    NÚMEROS
@@ -616,40 +603,61 @@ h1,h2,h3,h4{
 .counter b span{ font:inherit; color:inherit; }
 
 /* ============================================================
-   DEPOIMENTOS — carrossel
+   DEPOIMENTOS EM VÍDEO
    ============================================================ */
-.quotes{ position:relative; }
-.quotes-view{ overflow:hidden; border-radius:var(--r-l); }
-.quotes-track{ display:flex; transition:transform .55s cubic-bezier(.3,.8,.3,1); }
-.quote{
-  flex:0 0 100%; padding:clamp(2rem,5vw,3.4rem);
-  border:1px solid var(--line-2); border-radius:var(--r-l);
-  background:linear-gradient(155deg, var(--card), var(--ink));
-  display:flex; flex-direction:column; gap:1.6rem;
+.depos{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; }
+.depo{
+  display:flex; flex-direction:column;
+  border:1px solid var(--line-2); border-radius:var(--r-m); overflow:hidden;
+  background:var(--card);
+  transition:transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease;
 }
-.quote-mark{ font-size:3.4rem; line-height:.5; color:var(--aqua); }
-.quote p{ font-size:var(--t-1); line-height:1.55; }
-.quote footer{ display:flex; align-items:center; gap:.9rem; }
+.depo:hover{ transform:translateY(-6px); border-color:rgba(var(--aqua-rgb),.34); }
+
+/* tela do vídeo, em formato vertical (é como o depoimento é gravado) */
+.depo-tela{
+  position:relative; width:100%; aspect-ratio:9/13; cursor:pointer;
+  border:0; padding:0; display:grid; place-items:center; align-content:center; gap:.9rem;
+  background:
+    radial-gradient(80% 60% at 50% 40%, rgba(var(--aqua-rgb),.14), transparent 65%),
+    linear-gradient(160deg, rgba(var(--luz-rgb),.06), rgba(var(--sombra-rgb),.35));
+  overflow:hidden;
+}
+.depo-tela::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:linear-gradient(var(--line-2) 1px, transparent 1px),
+                   linear-gradient(90deg, var(--line-2) 1px, transparent 1px);
+  background-size:34px 34px; opacity:.45;
+}
+.depo-play{
+  position:relative; z-index:1;
+  width:62px; height:62px; border-radius:50%; display:grid; place-items:center;
+  background:var(--grad-1); color:var(--tx-dark);
+  box-shadow:0 0 0 0 rgba(var(--aqua-rgb),.5);
+  animation:ring 2.8s ease-out infinite;
+  transition:transform .22s ease;
+}
+.depo-tela:hover .depo-play{ transform:scale(1.09); }
+.depo-play svg{ width:22px; height:22px; margin-left:3px; }
+.depo-selo{
+  position:relative; z-index:1;
+  font-size:.68rem; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--tx-mut);
+}
+.depo-tela iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; z-index:3; }
+
+.depo blockquote{
+  margin:0; padding:1.5rem; display:flex; flex-direction:column; gap:1.1rem;
+  border-top:1px solid var(--line-2); flex:1;
+}
+.depo blockquote p{ font-size:1rem; line-height:1.55; }
+.depo footer{ display:flex; align-items:center; gap:.85rem; margin-top:auto; }
 .avatar{
-  width:48px; height:48px; border-radius:50%; flex:none; display:grid; place-items:center;
-  background:var(--grad-1); color:var(--tx-dark); font-weight:700; font-size:.95rem;
+  width:44px; height:44px; border-radius:50%; flex:none; display:grid; place-items:center;
+  background:var(--grad-1); color:var(--tx-dark); font-weight:700; font-size:.9rem;
 }
-.quote footer b{ display:block; font-size:.98rem; }
-.quote footer span{ display:block; font-size:.84rem; color:var(--tx-mut); }
-.quotes-nav{ display:flex; gap:.6rem; justify-content:center; margin-top:1.6rem; }
-.quotes-nav button{
-  width:44px; height:44px; border-radius:50%; cursor:pointer;
-  border:1px solid var(--line-2); background:none; display:grid; place-items:center;
-  transition:background .22s ease, color .22s ease, border-color .22s ease;
-}
-.quotes-nav button:hover{ background:var(--aqua); color:var(--tx-dark); border-color:transparent; }
-.quotes-nav svg{ width:16px; height:16px; }
-.dots{ display:flex; gap:.45rem; align-items:center; justify-content:center; margin-top:1rem; }
-.dots button{
-  width:8px; height:8px; padding:0; border-radius:50%; border:0; cursor:pointer;
-  background:var(--line-2); transition:width .25s ease, background .25s ease;
-}
-.dots button[aria-current="true"]{ width:26px; border-radius:var(--r-pill); background:var(--aqua); }
+.depo footer b{ display:block; font-size:.95rem; }
+.depo footer > span:last-child > span{ display:block; font-size:.82rem; color:var(--tx-mut); }
 
 /* ============================================================
    SOBRE / ESPAÇO
@@ -859,7 +867,7 @@ h1,h2,h3,h4{
 /* --- tablet e desktop pequeno: ainda há largura, não colapsa tudo --- */
 @media (max-width:1024px){
   .intro,.data,.about,.contact{ grid-template-columns:1fr; }
-  .pillars,.cases{ grid-template-columns:repeat(2,1fr); }
+  .pillars,.depos{ grid-template-columns:repeat(2,1fr); }
   .etapas{ grid-template-columns:repeat(2,1fr); gap:.9rem; }
   .etapa-linha{ display:none; }          /* o trilho só faz sentido em fila única */
   .counters{ grid-template-columns:repeat(2,1fr); }
@@ -870,11 +878,11 @@ h1,h2,h3,h4{
 /* na fila de 2, a última etapa sozinha ocupa a linha inteira */
 @media (min-width:641px) and (max-width:1024px){
   .etapa:last-child{ grid-column:1 / -1; }
-  .cases .case:last-child:nth-child(odd){ grid-column:1 / -1; }
+  .depos .depo:last-child:nth-child(odd){ grid-column:1 / -1; }
 }
 /* --- celular: fila única e trilho vertical entre as etapas --- */
 @media (max-width:640px){
-  .pillars,.cases{ grid-template-columns:1fr; }
+  .pillars,.depos{ grid-template-columns:1fr; }
   .etapas{ grid-template-columns:1fr; }
   .etapa{ opacity:1; filter:none; }
   .etapa-linha{ display:block; top:auto; bottom:-.9rem; left:2.6rem; width:1px; height:.9rem; }
@@ -920,7 +928,7 @@ h1,h2,h3,h4{
       <img src="assets/logo-prata-256.png" alt="" width="34" />
       <span>
         <b>Green<span>Hub</span></b>
-        <small>Clínicas de estética</small>
+        <small>Soluções para clínicas</small>
       </span>
     </a>
 
@@ -928,7 +936,8 @@ h1,h2,h3,h4{
       <a href="#topo">Home</a>
       <a href="#solucoes">Soluções</a>
       <a href="#metodo">Método</a>
-      <a href="#cases">Cases</a>
+      <a href="#calculadora">Calculadora</a>
+      <a href="#cases">Depoimentos</a>
       <a href="#sobre">Sobre</a>
       <a href="#contato">Contato</a>
     </nav>
@@ -945,7 +954,8 @@ h1,h2,h3,h4{
   <a href="#topo">Home</a>
   <a href="#solucoes">Soluções</a>
   <a href="#metodo">Método</a>
-  <a href="#cases">Cases</a>
+  <a href="#calculadora">Calculadora</a>
+  <a href="#cases">Depoimentos</a>
   <a href="#sobre">Sobre</a>
   <a href="#contato">Contato</a>
   <a href="#contato" class="btn btn--primary">Falar com especialista</a>
@@ -975,9 +985,9 @@ h1,h2,h3,h4{
       Bem-vindo ao ecossistema Green Hub
     </p>
 
-    <h1>A agenda cheia começa <em>antes</em> do agendamento</h1>
+    <h1>O <em>1º Hub</em> de soluções para clínicas do Brasil</h1>
 
-    <p class="lead">Somos um hub de soluções para <b>clínicas de estética</b>. Ligamos marketing, atendimento e comercial em uma operação só — do primeiro clique à cadeira ocupada.</p>
+    <p class="lead">Ligamos marketing, atendimento e comercial em uma operação só, do primeiro clique à cadeira ocupada. Sua <b>agenda cheia</b> começa antes do agendamento.</p>
 
     <div class="hero-actions">
       <a href="#contato" class="btn btn--primary">
@@ -988,7 +998,7 @@ h1,h2,h3,h4{
     </div>
 
     <div class="hero-stats rv">
-      <div><b data-dado="clinicas" data-count="120" data-prefix="+">0</b><span>Clínicas de estética atendidas</span></div>
+      <div><b data-dado="clinicas" data-count="120" data-prefix="+">0</b><span>Clínicas atendidas</span></div>
       <div><b data-dado="investidoMi" data-count="18" data-prefix="+" data-suffix="M">0</b><span>Investidos em mídia</span></div>
       <div><b data-dado="agendamentosMil" data-count="240" data-prefix="+" data-suffix="mil">0</b><span>Agendamentos gerados</span></div>
       <div><b data-dado="estados" data-count="14" data-prefix="+">0</b><span>Estados atendidos</span></div>
@@ -1008,7 +1018,7 @@ h1,h2,h3,h4{
     <div class="stack g2 rv">
       <p class="eyebrow">Green Hub</p>
       <h2 class="h-lg">O que a Green Hub faz pela sua clínica?</h2>
-      <p class="body-mut">Clínica de estética não perde paciente por falta de anúncio — perde por buraco entre o anúncio e o atendimento. A gente fecha esse buraco: campanha, criativo, WhatsApp, CRM e follow-up funcionando como uma coisa só.</p>
+      <p class="body-mut">Clínica não perde paciente por falta de anúncio. Perde pelo buraco entre o anúncio e o atendimento. A gente fecha esse buraco: campanha, criativo, WhatsApp, CRM e follow-up funcionando como uma coisa só.</p>
       <a href="#solucoes" class="link-more" style="margin-top:.6rem;">
         Conhecer o método
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -1055,7 +1065,7 @@ h1,h2,h3,h4{
           <span class="sol-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
         </button>
         <div class="sol-body"><div><div class="sol-inner">
-          <p>Chega de planilha e conversa perdida. Implementamos CRM de verdade, com etapas, responsáveis e régua de follow-up — para que nenhum paciente esfrie por esquecimento.</p>
+          <p>Chega de planilha e conversa perdida. Implementamos CRM de verdade, com etapas, responsáveis e régua de follow-up, para que nenhum paciente esfrie por esquecimento.</p>
           <ul class="sol-tags">
             <li>Implementação de CRM</li><li>Integração com WhatsApp</li><li>Automações</li>
             <li>Réguas de resgate</li><li>Distribuição de leads</li><li>Painel comercial</li>
@@ -1085,7 +1095,7 @@ h1,h2,h3,h4{
           <span class="sol-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
         </button>
         <div class="sol-body"><div><div class="sol-inner">
-          <p>Clínica que compete por preço vive de desconto. Identidade, site e audiovisual construídos para posicionar a sua clínica no topo — e justificar o ticket que ela merece.</p>
+          <p>Clínica que compete por preço vive de desconto. Identidade, site e audiovisual construídos para posicionar a sua clínica no topo e justificar o ticket que ela merece.</p>
           <ul class="sol-tags">
             <li>Identidade visual</li><li>Site institucional</li><li>Audiovisual</li>
             <li>Ensaios e bastidores</li><li>Posicionamento</li><li>Materiais internos</li>
@@ -1104,7 +1114,7 @@ h1,h2,h3,h4{
     <div class="stack g2 rv">
       <p class="eyebrow">Método proprietário</p>
       <h2 class="h-lg">Método <em class="grad-text">FLOREST</em></h2>
-      <p class="lead">Nada cresce fora de estação. São cinco etapas, na ordem — e a clínica só avança quando a anterior deu resultado.</p>
+      <p class="lead">Nada cresce fora de estação. São cinco etapas, na ordem, e a clínica só avança quando a anterior deu resultado.</p>
     </div>
 
     <ol class="etapas" id="etapas">
@@ -1120,7 +1130,7 @@ h1,h2,h3,h4{
         </div>
         <span class="etapa-num">01</span>
         <h3>Semente</h3>
-        <p>Entendimento dos procedimentos, do ticket e do público. É aqui que a estratégia é definida — antes de gastar um real.</p>
+        <p>Entendimento dos procedimentos, do ticket e do público. É aqui que a estratégia é definida, antes de gastar um real.</p>
         <ul class="etapa-itens">
           <li>Diagnóstico da clínica</li>
           <li>Mapa de procedimentos e ticket</li>
@@ -1203,7 +1213,7 @@ h1,h2,h3,h4{
         </div>
         <span class="etapa-num">05</span>
         <h3>Floresta</h3>
-        <p>O que provou retorno recebe verba, canal novo e mais unidade. Escala é a última etapa — não a primeira.</p>
+        <p>O que provou retorno recebe verba, canal novo e mais unidade. Escala é a última etapa, não a primeira.</p>
         <ul class="etapa-itens">
           <li>Aumento de verba</li>
           <li>Novos canais</li>
@@ -1214,171 +1224,8 @@ h1,h2,h3,h4{
   </div>
 </section>
 
-<!-- ==================== DADOS / CRM ==================== -->
-<section class="section">
-  <div class="wrap data">
-    <div class="stack g2 rv">
-      <p class="eyebrow">Dados</p>
-      <h2 class="h-lg">O que não se mede, não se gerencia</h2>
-      <p class="body-mut">Quanto custa um paciente novo na sua clínica hoje? Qual procedimento paga a mídia e qual só ocupa agenda? Sem essa resposta, aumentar verba é aposta.</p>
-      <p class="body-mut">Montamos o painel que liga investimento, agendamento e faturamento — e usamos ele em toda reunião de rota.</p>
-    </div>
-
-    <div class="panel rv plx" data-plx="16">
-      <div class="panel-head">
-        <span>Agendamentos por semana</span>
-        <span class="chip">+38% no trimestre</span>
-      </div>
-      <div class="chart" aria-hidden="true">
-        <i style="height:38%"></i><i style="height:52%"></i><i style="height:45%"></i>
-        <i style="height:68%"></i><i style="height:74%"></i><i style="height:63%"></i>
-        <i style="height:88%"></i><i style="height:100%"></i>
-      </div>
-      <div class="metrics">
-        <div><b>R$ 71</b><span>Custo por agendamento</span></div>
-        <div><b>34%</b><span>Avaliação → fechamento</span></div>
-        <div><b>4,8x</b><span>Retorno sobre a mídia</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== CASES ==================== -->
-<section class="section section--paper" id="cases">
-  <div class="wrap stack g4">
-    <div class="stack g2 rv">
-      <p class="eyebrow">Cases</p>
-      <h2 class="h-lg">Resultado que aparece na agenda</h2>
-      <p class="lead">Três recortes reais da operação — números do próprio painel do cliente.</p>
-    </div>
-
-    <div class="cases">
-      <article class="case rv">
-        <span class="case-tag">Harmonização facial · DF</span>
-        <span class="case-num grad-text">3,2x</span>
-        <p>Mais avaliações agendadas em 90 dias, sem aumentar a verba de mídia — o ganho veio de criativo por procedimento e follow-up estruturado.</p>
-        <footer>Clínica com 2 unidades</footer>
-      </article>
-
-      <article class="case rv">
-        <span class="case-tag">Estética corporal · SP</span>
-        <span class="case-num grad-text">−41%</span>
-        <p>Queda no custo por agendamento após reestruturar campanhas por ticket e cortar público que enchia o WhatsApp sem fechar.</p>
-        <footer>Primeiros 4 meses</footer>
-      </article>
-
-      <article class="case rv">
-        <span class="case-tag">Odonto estética · MG</span>
-        <span class="case-num grad-text">R$ 1,4M</span>
-        <p>Faturamento rastreado até a origem depois da implementação de CRM e régua de resgate na base parada.</p>
-        <footer>12 meses de operação</footer>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== NÚMEROS ==================== -->
-<section class="section section--gradiente">
-  <div class="wrap stack g4">
-    <div class="stack g2 rv">
-      <p class="eyebrow">Por que a Green Hub</p>
-      <h2 class="h-lg">Especialistas em estética, não em tudo</h2>
-    </div>
-
-    <div class="counters">
-      <div class="counter rv"><b><i>+</i><span data-dado="clinicas" data-count="120">0</span></b><span>Clínicas atendidas</span></div>
-      <div class="counter rv"><b><i>+</i><span data-dado="investidoMi" data-count="18">0</span><i>M</i></b><span>Investidos em mídia</span></div>
-      <div class="counter rv"><b><i>+</i><span data-dado="agendamentosMil" data-count="240">0</span><i>mil</i></b><span>Agendamentos gerados</span></div>
-      <div class="counter rv"><b><i>+</i><span data-dado="estados" data-count="14">0</span></b><span>Estados atendidos</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== DEPOIMENTOS ==================== -->
-<section class="section">
-  <div class="wrap stack g4">
-    <div class="stack g2 rv">
-      <p class="eyebrow">Depoimentos</p>
-      <h2 class="h-lg">Quem já opera com a gente</h2>
-    </div>
-
-    <div class="quotes rv" id="carrossel">
-      <div class="quotes-view">
-        <div class="quotes-track" id="trilha-quotes">
-          <article class="quote">
-            <span class="quote-mark">&ldquo;</span>
-            <p>A diferença não foi só o anúncio. Foi ter processo: hoje eu sei quantas avaliações entraram, quantas fecharam e por quê. Antes eu chutava.</p>
-            <footer>
-              <span class="avatar">MF</span>
-              <span><b>Marla F.</b><span>Clínica de estética avançada · DF</span></span>
-            </footer>
-          </article>
-          <article class="quote">
-            <span class="quote-mark">&ldquo;</span>
-            <p>Minha recepção mudou de patamar. O treinamento e o CRM juntos fizeram a taxa de fechamento subir sem eu gastar um real a mais em mídia.</p>
-            <footer>
-              <span class="avatar">RC</span>
-              <span><b>Dra. Renata C.</b><span>Harmonização facial · SP</span></span>
-            </footer>
-          </article>
-          <article class="quote">
-            <span class="quote-mark">&ldquo;</span>
-            <p>Já tinha passado por três agências. A Green foi a primeira que entendeu que estética não se vende como e-commerce.</p>
-            <footer>
-              <span class="avatar">LP</span>
-              <span><b>Lucas P.</b><span>Rede de clínicas · MG</span></span>
-            </footer>
-          </article>
-        </div>
-      </div>
-
-      <div class="quotes-nav">
-        <button type="button" data-dir="-1" aria-label="Depoimento anterior">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
-        </button>
-        <button type="button" data-dir="1" aria-label="Próximo depoimento">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-      </div>
-      <div class="dots" id="pontos"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== SOBRE ==================== -->
-<section class="section section--paper" id="sobre">
-  <div class="wrap about">
-    <div class="stack g2 rv">
-      <p class="eyebrow">Sobre a Green Hub</p>
-      <h2 class="h-lg">Mais que agência. Um hub de soluções.</h2>
-      <p class="body-mut">Nascemos dentro do universo da estética e ficamos nele. Cada processo que aplicamos foi testado em clínica real — com agenda real, recepção real e paciente que compara preço.</p>
-      <p class="body-mut">Não vendemos pacote fechado. Entramos pelo gargalo que está travando o crescimento hoje e vamos abrindo as outras frentes conforme a operação aguenta.</p>
-      <a href="#contato" class="btn btn--dark" style="margin-top:1rem;align-self:flex-start;">Conhecer a Green Hub</a>
-    </div>
-
-    <ul class="about-list rv">
-      <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-        <span><b>Só estética.</b> Nada de atender restaurante, imobiliária e clínica com o mesmo playbook.</span>
-      </li>
-      <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-        <span><b>Squad dedicado.</b> Gestor de tráfego, editor, copy, CS e implantador de CRM na mesma conta.</span>
-      </li>
-      <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-        <span><b>Número aberto.</b> Painel compartilhado, sem relatório maquiado no fim do mês.</span>
-      </li>
-      <li>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-        <span><b>Sem fidelidade.</b> Cancelamento com 30 dias de aviso. A conta segue porque o resultado sustenta.</span>
-      </li>
-    </ul>
-  </div>
-</section>
-
 <!-- ==================== CALCULADORA DE PROJEÇÃO ==================== -->
-<section class="section section--deep" id="calculadora">
+<section class="section" id="calculadora">
   <div class="wrap projecao">
 
     <div class="stack g3 rv">
@@ -1483,6 +1330,147 @@ h1,h2,h3,h4{
   </div>
 </section>
 
+<!-- ==================== DADOS / CRM ==================== -->
+<section class="section section--paper">
+  <div class="wrap data">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Dados</p>
+      <h2 class="h-lg">O que não se mede, não se gerencia</h2>
+      <p class="body-mut">Quanto custa um paciente novo na sua clínica hoje? Qual procedimento paga a mídia e qual só ocupa agenda? Sem essa resposta, aumentar verba é aposta.</p>
+      <p class="body-mut">Montamos o painel que liga investimento, agendamento e faturamento, e usamos ele em toda reunião de rota.</p>
+    </div>
+
+    <div class="panel rv plx" data-plx="16">
+      <div class="panel-head">
+        <span>Agendamentos por semana</span>
+        <span class="chip">+38% no trimestre</span>
+      </div>
+      <div class="chart" aria-hidden="true">
+        <i style="height:38%"></i><i style="height:52%"></i><i style="height:45%"></i>
+        <i style="height:68%"></i><i style="height:74%"></i><i style="height:63%"></i>
+        <i style="height:88%"></i><i style="height:100%"></i>
+      </div>
+      <div class="metrics">
+        <div><b>R$ 71</b><span>Custo por agendamento</span></div>
+        <div><b>34%</b><span>Avaliação → fechamento</span></div>
+        <div><b>4,8x</b><span>Retorno sobre a mídia</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== DEPOIMENTOS EM VÍDEO ==================== -->
+<section class="section" id="cases">
+  <div class="wrap stack g4">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Depoimentos</p>
+      <h2 class="h-lg">Quem já opera com a gente</h2>
+      <p class="lead">Sem gráfico e sem número. É o cliente falando o que mudou na clínica dele.</p>
+    </div>
+
+    <div class="depos">
+      <!-- Para publicar um vídeo, coloque o ID do YouTube em data-video.
+           Ex.: data-video="dQw4w9WgXcQ". Vazio, o card avisa que falta. -->
+      <article class="depo rv" data-video="">
+        <button class="depo-tela" type="button">
+          <span class="depo-play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+          <span class="depo-selo">Depoimento em vídeo</span>
+        </button>
+        <blockquote>
+          <p>Espaço reservado para o depoimento do cliente.</p>
+          <footer>
+            <span class="avatar">CL</span>
+            <span><b>Nome do cliente</b><span>Especialidade · UF</span></span>
+          </footer>
+        </blockquote>
+      </article>
+
+      <article class="depo rv" data-video="">
+        <button class="depo-tela" type="button">
+          <span class="depo-play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+          <span class="depo-selo">Depoimento em vídeo</span>
+        </button>
+        <blockquote>
+          <p>Espaço reservado para o depoimento do cliente.</p>
+          <footer>
+            <span class="avatar">CL</span>
+            <span><b>Nome do cliente</b><span>Especialidade · UF</span></span>
+          </footer>
+        </blockquote>
+      </article>
+
+      <article class="depo rv" data-video="">
+        <button class="depo-tela" type="button">
+          <span class="depo-play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+          <span class="depo-selo">Depoimento em vídeo</span>
+        </button>
+        <blockquote>
+          <p>Espaço reservado para o depoimento do cliente.</p>
+          <footer>
+            <span class="avatar">CL</span>
+            <span><b>Nome do cliente</b><span>Especialidade · UF</span></span>
+          </footer>
+        </blockquote>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== NÚMEROS ==================== -->
+<section class="section section--gradiente">
+  <div class="wrap stack g4">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Por que a Green Hub</p>
+      <h2 class="h-lg">Especialistas em clínicas, não em tudo</h2>
+    </div>
+
+    <div class="counters">
+      <div class="counter rv"><b><i>+</i><span data-dado="clinicas" data-count="120">0</span></b><span>Clínicas atendidas</span></div>
+      <div class="counter rv"><b><i>+</i><span data-dado="investidoMi" data-count="18">0</span><i>M</i></b><span>Investidos em mídia</span></div>
+      <div class="counter rv"><b><i>+</i><span data-dado="agendamentosMil" data-count="240">0</span><i>mil</i></b><span>Agendamentos gerados</span></div>
+      <div class="counter rv"><b><i>+</i><span data-dado="estados" data-count="14">0</span></b><span>Estados atendidos</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SOBRE ==================== -->
+<section class="section section--paper" id="sobre">
+  <div class="wrap about">
+    <div class="stack g2 rv">
+      <p class="eyebrow">Sobre a Green Hub</p>
+      <h2 class="h-lg">Mais que agência. Um hub de soluções.</h2>
+      <p class="body-mut">Nascemos dentro do universo das clínicas e ficamos nele. Cada processo que aplicamos foi testado em clínica real, com agenda real, recepção real e paciente que compara preço.</p>
+      <p class="body-mut">Não vendemos pacote fechado. Entramos pelo gargalo que está travando o crescimento hoje e vamos abrindo as outras frentes conforme a operação aguenta.</p>
+      <a href="#contato" class="btn btn--dark" style="margin-top:1rem;align-self:flex-start;">Conhecer a Green Hub</a>
+    </div>
+
+    <ul class="about-list rv">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <span><b>Só clínica.</b> Nada de atender restaurante, imobiliária e clínica com o mesmo playbook.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <span><b>Squad dedicado.</b> Gestor de tráfego, editor, copy, CS e implantador de CRM na mesma conta.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <span><b>Número aberto.</b> Painel compartilhado, sem relatório maquiado no fim do mês.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <span><b>Sem fidelidade.</b> Cancelamento com 30 dias de aviso. A conta segue porque o resultado sustenta.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
 <!-- ==================== CONTATO ==================== -->
 <section class="section section--alt" id="contato">
   <div class="wrap contact">
@@ -1490,7 +1478,7 @@ h1,h2,h3,h4{
       <div class="stack g2">
         <p class="eyebrow">Contato</p>
         <h2 class="h-lg">Pronto para encher a agenda?</h2>
-        <p class="body-mut">Preencha o formulário e o nosso time entra em contato para entender o momento da sua clínica e montar um diagnóstico — sem custo.</p>
+        <p class="body-mut">Preencha o formulário e o nosso time entra em contato para entender o momento da sua clínica e montar um diagnóstico, sem custo.</p>
       </div>
 
       <ul>
@@ -1504,7 +1492,7 @@ h1,h2,h3,h4{
         </li>
         <li>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s7-6.3 7-11a7 7 0 10-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
-          <span><b>Onde estamos</b><span data-dado="cidade">Brasília — DF · atendimento em todo o Brasil</span></span>
+          <span><b>Onde estamos</b><span data-dado="cidade">Brasília, DF · atendimento em todo o Brasil</span></span>
         </li>
         <li>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
@@ -1596,9 +1584,9 @@ h1,h2,h3,h4{
       <div class="foot-brand">
         <a href="#topo" class="brand">
           <img src="assets/logo-prata-256.png" alt="" width="34" />
-          <span><b>Green<span>Hub</span></b><small>Clínicas de estética</small></span>
+          <span><b>Green<span>Hub</span></b><small>Soluções para clínicas</small></span>
         </a>
-        <p>Hub de soluções para clínicas de estética. Marketing, comercial e CRM operando junto.</p>
+        <p>O 1º Hub de soluções para clínicas do Brasil. Marketing, comercial e CRM operando junto.</p>
         <div class="socials">
           <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a>
           <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.75-1.95 4 0 4.4 2.5 4.4 5.8V21h-4v-5.2c0-1.25-.02-2.85-1.75-2.85-1.75 0-2.02 1.35-2.02 2.75V21h-4z"/></svg></a>
@@ -1623,7 +1611,7 @@ h1,h2,h3,h4{
         <ul>
           <li><a href="#sobre">Sobre nós</a></li>
           <li><a href="#metodo">Método</a></li>
-          <li><a href="#cases">Cases</a></li>
+          <li><a href="#cases">Depoimentos</a></li>
           <li><a href="#contato">Trabalhe conosco</a></li>
         </ul>
       </div>
@@ -1631,9 +1619,9 @@ h1,h2,h3,h4{
       <div class="foot-col">
         <h5>Conteúdos</h5>
         <ul>
+          <li><a href="#calculadora">Calculadora de resultados</a></li>
           <li><a href="#">Blog</a></li>
           <li><a href="#">Materiais gratuitos</a></li>
-          <li><a href="#">Newsletter</a></li>
           <li><a href="#">Podcast</a></li>
         </ul>
       </div>
@@ -1666,7 +1654,7 @@ h1,h2,h3,h4{
     whatsapp:        "5561000000000",      // só dígitos, com 55 na frente
     email:           "contato@greenhub.com.br",
     telefone:        "(61) 0000-0000",
-    cidade:          "Brasília — DF · atendimento em todo o Brasil"
+    cidade:          "Brasília, DF · atendimento em todo o Brasil"
   };
 
   var reduz = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1718,9 +1706,10 @@ h1,h2,h3,h4{
 
   /* ---------- marquee de especialidades ---------- */
   var itens = [
-    "Harmonização facial", "Estética corporal", "Depilação a laser", "Odonto estética",
-    "Capilar", "Dermatologia estética", "Emagrecimento", "Pós-operatório",
-    "Bioestimuladores", "Skincare", "Massoterapia", "Micropigmentação"
+    "Mamoplastia", "Lipoaspiração", "Harmonização facial", "Rinoplastia",
+    "Bioestimuladores", "Tricologia", "Abdominoplastia", "Preenchimento",
+    "Toxina botulínica", "Implante capilar", "Fios de sustentação", "Lipo HD",
+    "Blefaroplastia", "Enzimas", "Ginecomastia", "Skinbooster"
   ];
   var trilha = document.getElementById("trilha");
   itens.concat(itens).forEach(function(t){
@@ -1792,7 +1781,7 @@ h1,h2,h3,h4{
   if (!leve && !reduz) {
 
     /* --- luz seguindo o cursor dentro dos cartões --- */
-    var cartoes = document.querySelectorAll(".pillar, .case, .etapa, .sol-item, .quote, .panel, .form, .cta-band");
+    var cartoes = document.querySelectorAll(".pillar, .depo, .etapa, .sol-item, .panel, .form, .cta-band, .proj-saida");
     cartoes.forEach(function(c){
       c.classList.add("lume");
       c.addEventListener("pointermove", function(e){
@@ -1941,43 +1930,27 @@ h1,h2,h3,h4{
     });
   });
 
-  /* ---------- carrossel de depoimentos ---------- */
-  var trilhaQ = document.getElementById("trilha-quotes");
-  var total = trilhaQ.children.length;
-  var atual = 0;
-  var pontos = document.getElementById("pontos");
-  var timer;
+  /* ---------- depoimentos em vídeo ---------- */
+  document.querySelectorAll(".depo").forEach(function(card){
+    var tela = card.querySelector(".depo-tela");
+    if (!tela) return;
+    var nome = (card.querySelector("footer b") || {}).textContent || "cliente";
+    tela.setAttribute("aria-label", "Assistir depoimento de " + nome);
 
-  for (var i = 0; i < total; i++) {
-    (function(idx){
-      var b = document.createElement("button");
-      b.type = "button";
-      b.setAttribute("aria-label", "Depoimento " + (idx + 1));
-      b.addEventListener("click", function(){ vaiPara(idx); reinicia(); });
-      pontos.appendChild(b);
-    })(i);
-  }
-
-  function vaiPara(idx){
-    atual = (idx + total) % total;
-    trilhaQ.style.transform = "translateX(" + (-atual * 100) + "%)";
-    [].forEach.call(pontos.children, function(b, i){
-      b.setAttribute("aria-current", String(i === atual));
-    });
-  }
-  function reinicia(){
-    if (reduz) return;
-    clearInterval(timer);
-    timer = setInterval(function(){ vaiPara(atual + 1); }, 6500);
-  }
-  document.querySelectorAll(".quotes-nav button").forEach(function(b){
-    b.addEventListener("click", function(){
-      vaiPara(atual + parseInt(b.getAttribute("data-dir"), 10));
-      reinicia();
+    tela.addEventListener("click", function(){
+      var id = (card.getAttribute("data-video") || "").trim();
+      if (!id) {
+        alert("Coloque o ID do vídeo do YouTube no atributo data-video deste card.");
+        return;
+      }
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube.com/embed/" + encodeURIComponent(id) + "?autoplay=1&rel=0";
+      f.title = "Depoimento de " + nome;
+      f.allow = "accelerometer; autoplay; encrypted-media; picture-in-picture";
+      f.setAttribute("allowfullscreen", "");
+      tela.appendChild(f);
     });
   });
-  vaiPara(0);
-  reinicia();
 
   /* ---------- vídeo de apresentação ---------- */
   var play = document.querySelector(".play");
@@ -2127,12 +2100,12 @@ h1,h2,h3,h4{
       } else if (roas >= 1) {
         nivel = "ok"; rotulo = "No limite";
         leitura = "O retorno de " + moeda2.format(roas) + " por real investido paga a mídia, mas sobra pouco para o resto da operação. " +
-          "Com esse ticket, o custo por cliente de " + moeda.format(custoCliente) + " está apertado — mexer no CPL ou na conversão muda mais o jogo do que aumentar a verba.";
+          "Com esse ticket, o custo por cliente de " + moeda.format(custoCliente) + " está apertado. Mexer no CPL ou na conversão muda mais o jogo do que aumentar a verba.";
       } else {
         nivel = "fraco"; rotulo = "Atenção";
         leitura = "A projeção devolve menos do que entra: " + moeda2.format(roas) + " por real investido. " +
           "Cada cliente está custando " + moeda.format(custoCliente) + " para um ticket de " + moeda.format(ticket) + ". " +
-          "Antes de escalar, o ponto é conversão e oferta — mais verba nesse cenário só aumenta o prejuízo.";
+          "Antes de escalar, o ponto é conversão e oferta. Mais verba nesse cenário só aumenta o prejuízo.";
       }
 
       selo.setAttribute("data-nivel", nivel);
