@@ -865,7 +865,7 @@ h1,h2,h3,h4{
 .cta-remate{ font-style:normal; color:var(--aqua); }
 
 .site-footer{ background:var(--ink-2); border-top:1px solid var(--line); padding-block:4rem 2rem; }
-.foot-top{ display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:2.5rem; }
+.foot-top{ display:grid; grid-template-columns:1.5fr repeat(2,1fr); gap:2.5rem; }
 .foot-brand{ display:flex; flex-direction:column; gap:1.1rem; }
 .foot-brand p{ font-size:.9rem; color:var(--tx-mut); max-width:32ch; }
 .foot-col h5{ font-size:.74rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--aqua); margin:0 0 1.1rem; }
@@ -1032,9 +1032,9 @@ h1,h2,h3,h4{
     </div>
 
     <div class="hero-stats rv">
-      <div><b data-dado="clinicas" data-count="120" data-prefix="+">0</b><span>Clínicas atendidas</span></div>
-      <div><b data-dado="investidoMi" data-count="18" data-prefix="+" data-suffix="M">0</b><span>Investidos em mídia</span></div>
-      <div><b data-dado="agendamentosMil" data-count="240" data-prefix="+" data-suffix="mil">0</b><span>Agendamentos gerados</span></div>
+      <div><b data-dado="clientes" data-count="120" data-prefix="+">0</b><span>Clientes atendidos</span></div>
+      <div><b data-dado="investidoMi" data-count="10" data-prefix="+" data-suffix="M">0</b><span>Gerenciados em mídia</span></div>
+      <div><b data-dado="resultadoMi" data-count="50" data-prefix="+" data-suffix="M">0</b><span>De resultado gerado</span></div>
       <div><b data-dado="estados" data-count="14" data-prefix="+">0</b><span>Estados atendidos</span></div>
     </div>
   </div>
@@ -1414,9 +1414,9 @@ h1,h2,h3,h4{
     </div>
 
     <div class="counters">
-      <div class="counter rv"><b><i>+</i><span data-dado="clinicas" data-count="120">0</span></b><span>Clínicas atendidas</span></div>
-      <div class="counter rv"><b><i>+</i><span data-dado="investidoMi" data-count="18">0</span><i>M</i></b><span>Investidos em mídia</span></div>
-      <div class="counter rv"><b><i>+</i><span data-dado="agendamentosMil" data-count="240">0</span><i>mil</i></b><span>Agendamentos gerados</span></div>
+      <div class="counter rv"><b><i>+</i><span data-dado="clientes" data-count="120">0</span></b><span>Clientes atendidos</span></div>
+      <div class="counter rv"><b><i>+</i><span data-dado="investidoMi" data-count="10">0</span><i>M</i></b><span>Gerenciados em mídia</span></div>
+      <div class="counter rv"><b><i>+</i><span data-dado="resultadoMi" data-count="50">0</span><i>M</i></b><span>De resultado gerado</span></div>
       <div class="counter rv"><b><i>+</i><span data-dado="estados" data-count="14">0</span></b><span>Estados atendidos</span></div>
     </div>
   </div>
@@ -1598,19 +1598,10 @@ h1,h2,h3,h4{
           <li><a href="#sobre">Sobre nós</a></li>
           <li><a href="#metodo">Método</a></li>
           <li><a href="#cases">Cases e depoimentos</a></li>
-          <li><a href="#contato">Trabalhe conosco</a></li>
+          <li><a href="#calculadora">Calculadora de resultados</a></li>
         </ul>
       </div>
 
-      <div class="foot-col">
-        <h5>Conteúdos</h5>
-        <ul>
-          <li><a href="#calculadora">Calculadora de resultados</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Materiais gratuitos</a></li>
-          <li><a href="#">Podcast</a></li>
-        </ul>
-      </div>
     </div>
 
     <div class="foot-bottom">
@@ -1633,9 +1624,9 @@ h1,h2,h3,h4{
      Todos os números, contatos e provas sociais do site saem daqui.
      ============================================================ */
   var DADOS = {
-    clinicas:        120,                  // clínicas atendidas
-    investidoMi:     18,                   // milhões investidos em mídia
-    agendamentosMil: 240,                  // mil agendamentos gerados
+    clientes:        120,                  // clientes atendidos
+    investidoMi:     10,                   // milhões gerenciados em mídia
+    resultadoMi:     50,                   // milhões de resultado gerado
     estados:         14,                   // estados atendidos
     whatsapp:        "5561000000000",      // só dígitos, com 55 na frente
     email:           "contato@greenhub.com.br",
