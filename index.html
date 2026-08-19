@@ -12,6 +12,14 @@
 <meta property="og:description" content="Do primeiro clique à cadeira ocupada. Aquisição, atendimento, CRM e recompra em uma única operação." />
 <meta property="og:type" content="website" />
 <link rel="icon" href="assets/logo-lime-256.png" />
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K5K5SFP4');</script>
+<!-- End Google Tag Manager -->
 <style>
 /* ============================================================
    GREEN HUB — site institucional
@@ -835,6 +843,15 @@ h1,h2,h3,h4{
   background:rgba(var(--aqua-rgb),.1); border:1px solid var(--line); font-size:.92rem;
 }
 .form-ok[data-show="true"]{ display:flex; }
+.mel{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+.form-erro{
+  display:none; gap:.8rem; align-items:flex-start;
+  padding:1rem 1.2rem; border-radius:var(--r-s); font-size:.92rem;
+  background:rgba(255,99,110,.12); border:1px solid rgba(255,99,110,.4); color:#FFB4B8;
+}
+.form-erro[data-show="true"]{ display:block; }
+.form-erro a{ color:var(--aqua); text-decoration:underline; }
+.btn[data-enviando="true"]{ opacity:.65; pointer-events:none; }
 .form-ok svg{ width:20px; height:20px; flex:none; color:var(--aqua); margin-top:.15rem; }
 
 .contact-info{ display:flex; flex-direction:column; gap:1.6rem; }
@@ -951,6 +968,11 @@ h1,h2,h3,h4{
 </style>
 </head>
 <body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K5K5SFP4"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <div class="progress" id="progresso"></div>
 <div class="grao" aria-hidden="true"></div>
@@ -1530,12 +1552,20 @@ h1,h2,h3,h4{
         <textarea id="msg" name="msg" rows="4"></textarea>
       </div>
 
-      <button type="submit" class="btn btn--primary" style="justify-content:center;">
+      <!-- armadilha para robô: humano não vê, robô preenche e o envio é descartado -->
+      <div class="mel" aria-hidden="true">
+        <label for="sobrenome-extra">Não preencha este campo</label>
+        <input type="text" id="sobrenome-extra" name="sobrenome-extra" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <button type="submit" class="btn btn--primary" id="btnEnviar" style="justify-content:center;">
         Quero meu diagnóstico
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </button>
 
       <p class="form-note">Ao enviar, você concorda em ser contatado pelo time da Green Hub. Não enviamos spam.</p>
+
+      <div class="form-erro" id="erroEnvio" role="alert"></div>
 
       <div class="form-ok" id="ok" role="status" aria-live="polite">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
@@ -1628,9 +1658,9 @@ h1,h2,h3,h4{
     investidoMi:     10,                   // milhões gerenciados em mídia
     resultadoMi:     50,                   // milhões de resultado gerado
     estados:         14,                   // estados atendidos
-    whatsapp:        "5561000000000",      // só dígitos, com 55 na frente
+    whatsapp:        "5561991824897",      // só dígitos, com 55 na frente
     email:           "contato@greenhub.com.br",
-    telefone:        "(61) 0000-0000",
+    telefone:        "(61) 99182-4897",
     cidade:          "Brasília, DF · atendimento em todo o Brasil"
   };
 
@@ -2137,8 +2167,51 @@ h1,h2,h3,h4{
     });
   });
 
+  /* ---------- envio para o CRM ----------
+     ATENÇÃO: estas chaves ficam visíveis no código-fonte da página, como
+     em qualquer formulário que envia direto do navegador. Quem abrir o
+     site consegue lê-las e postar leads falsos. A proteção real precisa
+     estar no endpoint (limite por IP, verificação de origem). Aqui há
+     apenas uma armadilha para robô simples. */
+  var CRM = {
+    url:         "https://miezatcdfldmqmxgpkwr.supabase.co/functions/v1/receive-lead",
+    tenant_id:   "8320459c-6a66-4b35-8e98-a237209ade7b",
+    webhook_key: "276f6f75-446f-458b-b602-42ecbc7393b9",
+    pipeline_id: "09d33060-f74f-4588-9449-c2ebb3e840d5"
+  };
+
+  var btnEnviar = document.getElementById("btnEnviar");
+  var erroEnvio = document.getElementById("erroEnvio");
+  var mel = document.getElementById("sobrenome-extra");
+
+  function so_digitos(v){ return String(v || "").replace(/\D/g, ""); }
+
+  /* telefone brasileiro com DDD, sempre com 55 na frente */
+  function telefoneE164(v){
+    var d = so_digitos(v);
+    if (d.length > 11 && d.indexOf("55") === 0) return d;
+    return "55" + d;
+  }
+
+  /* de onde veio o lead: útil para a Green medir campanha */
+  function origem(){
+    var q = new URLSearchParams(location.search), o = {};
+    ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(function(k){
+      if (q.get(k)) o[k] = q.get(k);
+    });
+    o.pagina = location.origin + location.pathname;
+    if (document.referrer) o.referencia = document.referrer;
+    return o;
+  }
+
+  function mostraErro(html){
+    erroEnvio.innerHTML = html;
+    erroEnvio.setAttribute("data-show", "true");
+  }
+
   form.addEventListener("submit", function(e){
     e.preventDefault();
+
     var campos = form.querySelectorAll("[required]");
     var tudoOk = true;
     campos.forEach(function(c){ if (!valida(c)) tudoOk = false; });
@@ -2146,11 +2219,92 @@ h1,h2,h3,h4{
       form.querySelector('.field[data-error="true"] input, .field[data-error="true"] select').focus();
       return;
     }
-    // TODO: enviar para o CRM / webhook da Green Hub
-    ok.setAttribute("data-show", "true");
-    form.querySelectorAll("input, select, textarea").forEach(function(c){ c.value = ""; });
-    ok.scrollIntoView({ block: "nearest", behavior: reduz ? "auto" : "smooth" });
+
+    // robô preencheu o campo escondido: finge que deu certo e não envia nada
+    if (mel && mel.value) { ok.setAttribute("data-show", "true"); return; }
+
+    var nome    = document.getElementById("nome").value.trim();
+    var clinica = document.getElementById("clinica").value.trim();
+    var email   = document.getElementById("email").value.trim();
+    var tel     = document.getElementById("tel").value.trim();
+    var gargalo = document.getElementById("gargalo").value;
+    var msg     = document.getElementById("msg").value.trim();
+
+    var desafio = gargalo + (msg ? " | " + msg : "");
+
+    var corpo = {
+      tenant_id:   CRM.tenant_id,
+      webhook_key: CRM.webhook_key,
+      pipeline_id: CRM.pipeline_id,
+      name:  nome,
+      phone: telefoneE164(tel),
+      custom_fields: {
+        nome_e_sobrenome: nome,
+        whatsapp:         telefoneE164(tel),
+        email:            email,
+        clinica:          clinica,
+        maior_desafio:    desafio,
+        objetivo:         gargalo,
+        origem:           JSON.stringify(origem())
+      }
+    };
+
+    erroEnvio.setAttribute("data-show", "false");
+    btnEnviar.setAttribute("data-enviando", "true");
+    var textoOriginal = btnEnviar.firstChild.nodeValue;
+    btnEnviar.firstChild.nodeValue = "Enviando...";
+
+    function destrava(){
+      btnEnviar.setAttribute("data-enviando", "false");
+      btnEnviar.firstChild.nodeValue = textoOriginal;
+    }
+
+    fetch(CRM.url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(corpo)
+    })
+    .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return { r: r, j: j }; }); })
+    .then(function(res){
+      destrava();
+      if (!res.r.ok || res.j.success === false) throw new Error(res.j.message || ("HTTP " + res.r.status));
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "gerar_lead",
+        formulario: "contato_site",
+        gargalo: gargalo,
+        lead_id: res.j.lead_id || null
+      });
+
+      ok.setAttribute("data-show", "true");
+      form.querySelectorAll("input, select, textarea").forEach(function(c){ c.value = ""; });
+      ok.scrollIntoView({ block: "nearest", behavior: reduz ? "auto" : "smooth" });
+    })
+    .catch(function(err){
+      destrava();
+      // nunca deixar o lead se perder em silêncio: oferece o WhatsApp
+      mostraErro('Não conseguimos enviar agora. Chame no <a href="https://wa.me/' +
+        DADOS.whatsapp + '" target="_blank" rel="noopener">WhatsApp</a> que o time responde na hora.');
+      if (window.console) console.warn("Falha ao enviar o lead:", err);
+    });
   });
+
+  /* ---------- eventos de conversão para o GTM ---------- */
+  window.dataLayer = window.dataLayer || [];
+  document.querySelectorAll('a[href^="https://wa.me/"]').forEach(function(a){
+    a.addEventListener("click", function(){
+      window.dataLayer.push({ event: "clique_whatsapp", local: a.closest("section") ? (a.closest("section").id || "rodape") : "flutuante" });
+    });
+  });
+  document.querySelectorAll(".depo-tela").forEach(function(t){
+    t.addEventListener("click", function(){
+      var c = t.closest(".depo");
+      window.dataLayer.push({ event: "play_depoimento", cliente: (c.querySelector(".depo-pe b") || {}).textContent || "" });
+    });
+  });
+  var fp = document.getElementById("formProjecao");
+  if (fp) fp.addEventListener("submit", function(){ window.dataLayer.push({ event: "usou_calculadora" }); });
 
   /* ============================================================
      ÁRVORE DO HERO
